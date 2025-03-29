@@ -1,406 +1,414 @@
 <!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haotian Xie - Personal Website </title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Futura&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            font-size: 14px;
-            margin: 0;
-            padding: 0;
-            background-color: #ffffff;
-            color: #333;
-            display: flex;
-        }
-        .sidebar {
-            width: 150px;
-            background-color: #f0f4f8;
-            padding: 10px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            overflow-y: auto;
-            border-right: 1px solid #ddd;
-        }
-        .sidebar h2 {
-            font-size: 14px;
-            margin-bottom: 10px;
-            color: #4a90e2;
-        }
-        .sidebar a {
-            display: block;
-            padding: 4px 0;
-            text-decoration: none;
-            color: #4a90e2;
-            font-size: 13px;
-        }
-        .main-content {
-            margin-left: 170px;
-            padding: 20px;
-            width: calc(100% - 170px);
-        }
-        .publication {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-        }
-        .publication img {
-            width: 120px;
-            height: auto;
-            border-radius: 5px;
-            margin-right: 15px;
-        }
-        .publication-details {
-            flex: 1;
-        }
-        .publication h3 {
-            font-size: 1.1em;
-            margin: 0;
-        }
-        .publication p {
-            font-size: 0.9em;
-            color: #555;
-            margin: 5px 0;
-        }
-        .pub-buttons {
-            margin-top: 5px;
-        }
-        .pub-buttons a {
-            display: inline-block;
-            padding: 4px 8px;
-            margin-right: 5px;
-            border: 1px solid #555;
-            border-radius: 4px;
-            font-size: 0.85em;
-            text-decoration: none;
-            color: #333;
-            cursor: pointer;
-        }
-        .pub-buttons a:hover {
-            background-color: #ddd;
-        }
-        .popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60%;
-            background: #e3f2fd;
-            color: #000;
-            padding: 20px;
-            display: none;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            overflow-y: auto;
-            max-height: 80vh;
-        }
-        .popup pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        .popup iframe {
-            width: 100%;
-            height: 400px;
-            border: none;
-        }
-        .close-btn {
-            position: absolute;
-            top: 5px;
-            right: 15px;
-            cursor: pointer;
-            font-size: 1.2em;
-            color: black;
-        }
-        footer {
-            text-align: center;
-            padding: 10px;
-            margin-top: 20px;
-            border-top: 1px solid #ddd;
-            font-size: 0.8em;
-        }
-        .footer-note {
-            font-size: 0.75em;
-            color: #666;
-            margin-top: 5px;
-        }
-        .section {
-            margin-top: 15px;
-        }
-        .section h2 {
-            border-bottom: 1px solid #4a90e2;
-            padding-bottom: 5px;
-    </style>
-    <script>
-        function showPopup(id, src) {
-            var popup = document.getElementById(id);
-            if (src) {
-                popup.querySelector("iframe").src = src;
-            }
-            popup.style.display = "block";
-        }
-        function closePopup(id) {
-            document.getElementById(id).style.display = "none";
-        }
-    </script>
-    <script>
-        function updateTimestamp() {
-            const now = new Date();
-            const formattedDate = now.toISOString().replace('T', ' ').split('.')[0] + ' UTC';
-            document.getElementById("last-modified").innerText = `Page generated ${formattedDate}, by jemdoc. (source)`;
-        }
-    </script>
-    
-</head>
-<body onload="updateTimestamp()">
-    <div class="sidebar">
-        <h2>Haotian XIE</h2>
-        <a href="index.html">Home</a>
-        <a href="Biography.html">Biography</a>
-        <h2>Research</h2>
-        <a href="Experiences.html">Experiences</a>
-        <a href="Publications.html">Publications</a>
-    </div>
-
-    <div class="main-content">
-        <header>
-            <img src="https://media.licdn.com/dms/image/v2/D4E03AQFuGwLLfODOlw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1728370105190?e=1743638400&v=beta&t=lCdcmLAACDFbCa-gvyXDYmL0lYxTXJM2rbmgvErFq-A" alt="Haotian Xie">
-            <div>
-                <h1>Haotian XIE (谢昊天) </h1>
-                <p>Master Student, Department of Data and Systems Engineering, The University of Hong Kong</p>
-                <p>Research Assistant, Department of Industrial and Systems Engineering, The Hong Kong Polytechnic University</p>
-                <p>haotianxie@connect.hku.hk</p>
-                <p>
-                <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ&hl=zh-TW&oi=ao"> Google Scholar</a> |
-                <a href="https://www.linkedin.com/in/haotianxiehtxie"> LinkedIn</a> |
-                <a href="https://github.com/hao-tian-xie"> GitHub</a> |
-                <a href="CV_Haotian Xie.pdf"> Resume</a> |
-                <a href="mailto:{{ haotianxie.connect.hku.hk }}"> Email</a>
-
-                </p>
-            </div>
-
-        </header>
-
-        <div class="highlight">
-            I am currently seeking Ph.D. positions. If you are interested in me, please feel free to contact me!
-        </div>
-        
-        <div class="section">
-            <h2>Research Interests</h2>
-            <ul>
-                <li>Data-driven and human-centered decision-making</li>
-                <li>Supply chain and transportation management</li>
-                <li>Nonequilibrium statistical physics and information theory</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>News</h2>
-            <ul>
-                <li>2025-04-01: Started as a research assistant in the Department of Industrial and Systems Engineering at the Hong Kong Polytechnic University.</li>
-                <li>2024-09-01: Started my Master program at The University of Hong Kong.</li>
-                <li>2024-07-19: My paper titled “Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis” is accepted by <a href="https://doi.org/10.1016/j.jairtraman.2024.102655">Journal of Air Transport Management</a>.</li>
-                <li>2024-06-30: Graduated from Beijing Normal University.</li>
-                <li>2024-06-20: Awarded "Outstanding Thesis" for my bachelor's thesis at Beijing Normal University (Top 5%).</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>Selected Publications</h2>
-
-            <div class="publication">
-                <img src="paper1.jpg" alt="JATM">
-                <div class="publication-details">
-                    <h3>Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis</h3>
-                    <p><b>Haotian XIE<sup>✝</sup></b>, Yi LI, Yang PU, Chen ZHANG and Junlin HUANG</p>
-                    <p><i>In Journal of Air Transport Management, 2024</i></p>
-                    <div class="pub-buttons">
-                        <a href="https://www-sciencedirect-com.eproxy.lib.hku.hk/journal/journal-of-air-transport-management">JATM</a>
-                        <a href="https://doi.org/10.1016/j.jairtraman.2024.102655">HTML</a>
-                        <a href="#" onclick="showPopup('cite-popup-1')">CITE</a>
-                        <a href="#" onclick="showPopup('bib-popup-1')">BIB</a>
-                        <a href="#" onclick="showPopup('pdf-popup-1', 'paper1.pdf')">PDF</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="publication">
-                <img src="https://ars.els-cdn.com/content/image/1-s2.0-S2772390923000197-gr1_lrg.jpg" alt="CLSCN">
-                <div class="publication-details">
-                    <h3>Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach</h3>
-                    <p>Yi LI, Yongqi TAN, Yang PU, Yunying ZHU and <b>Haotian XIE<sup>✝</sup></b></p>
-                    <p><i>In Cleaner Logistics and Supply Chain, 2023</i></p>
-                    <div class="pub-buttons">
-                        <a href="https://www.sciencedirect.com/journal/cleaner-logistics-and-supply-chain">CLSCN</a>
-                        <a href="https://doi.org/10.1016/j.clscn.2023.100110">HTML</a>
-                        <a href="#" onclick="showPopup('cite-popup-2')">CITE</a>
-                        <a href="#" onclick="showPopup('bib-popup-2')">BIB</a>
-                        <a href="#" onclick="showPopup('pdf-popup-2', 'paper2.pdf')">PDF</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="publication">
-                <img src="paper4.png" alt="CNA">
-                <div class="publication-details">
-                    <h3>AISM: A Novel Method for Node Importance Ranking in Complex Networks</h3>
-                    <p><b>Haotian XIE<sup>✝</sup></b> and Chen ZHANG</p>
-                    <p><i>In Conference The 12th International Conference on Complex Networks and their Applications, 2023</i></p>
-                    <div class="pub-buttons">
-                        <a href="https://2023.complexnetworks.org/">CNA</a>
-                        <a href="https://drive.google.com/file/d/1OLVhjqTkhKVTjQKLwkc4T2ZntJLC5Rrb/view">HTML</a>
-                        <a href="#" onclick="showPopup('cite-popup-4')">CITE</a>
-                        <a href="#" onclick="showPopup('bib-popup-4')">BIB</a>
-                        <a href="#" onclick="showPopup('pdf-popup-4', 'paper4.pdf')">PDF</a>
-                    </div>
-                </div>
-            </div>
-            
-                    <div id="cite-popup-1" class="popup">
-            <span class="close-btn" onclick="closePopup('cite-popup-1')">&times;</span>
-            <pre>
-<p><b>MLA:</b> Xie, Haotian, et al. "Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis." Journal of Air Transport Management 120 (2024): 102655.<br>
-<b>APA:</b> Xie, H., Li, Y., Pu, Y., Zhang, C., & Huang, J. (2024). Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis. Journal of Air Transport Management, 120, 102655.<br>
-<b>Chicago:</b> Xie, Haotian, Yi Li, Yang Pu, Chen Zhang, and Junlin Huang. "Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis." Journal of Air Transport Management 120 (2024): 102655.<br>
-<b>Harvard:</b> Xie, H., Li, Y., Pu, Y., Zhang, C. and Huang, J., 2024. Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis. Journal of Air Transport Management, 120, p.102655.<br>
-<b>Vancouver:</b> Xie H, Li Y, Pu Y, Zhang C, Huang J. Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis. Journal of Air Transport Management. 2024 Sep 1;120:102655.<br>
-<b>GB/T 7714:</b> Xie H, Li Y, Pu Y, et. al. Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis[J]. Journal of Air Transport Management, 2024(120):102655.    
-</p>
-            </pre>
-        </div>
-        
-        <div id="bib-popup-1" class="popup">
-            <span class="close-btn" onclick="closePopup('bib-popup-1')">&times;</span>
-            <pre>
-<p>@article{XIE2024102655,
-title = {Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis},
-journal = {Journal of Air Transport Management},
-volume = {120},
-pages = {102655},
-year = {2024},
-issn = {0969-6997},
-doi = {https://doi.org/10.1016/j.jairtraman.2024.102655},
-url = {https://www.sciencedirect.com/science/article/pii/S0969699724001200},
-author = {Haotian Xie and Yi Li and Yang Pu and Chen Zhang and Junlin Huang}
-}</p>
-            </pre>
-        </div>
-        
-        <div id="pdf-popup-1" class="popup">
-            <span class="close-btn" onclick="closePopup('pdf-popup-1')">&times;</span>
-            <iframe src=""></iframe>
-        </div>
-        
-        <div id="cite-popup-2" class="popup">
-            <span class="close-btn" onclick="closePopup('cite-popup-2')">&times;</span>
-            <pre>
-<p><b>MLA:</b> Li, Yi, et al. "Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach." Cleaner Logistics and Supply Chain 7 (2023): 100110.<br>
-<b>APA:</b> Li, Y., Tan, Y., Pu, Y., Zhu, Y., & Xie, H. (2023). Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach. Cleaner Logistics and Supply Chain, 7, 100110.<br>
-<b>Chicago:</b> Li, Yi, Yongqi Tan, Yang Pu, Yunying Zhu, and Haotian Xie. "Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach." Cleaner Logistics and Supply Chain 7 (2023): 100110.<br>
-<b>Harvard:</b> Li, Y., Tan, Y., Pu, Y., Zhu, Y. and Xie, H., 2023. Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach. Cleaner Logistics and Supply Chain, 7, p.100110.<br>
-<b>Vancouver:</b> Li Y, Tan Y, Pu Y, Zhu Y, Xie H. Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach. Cleaner Logistics and Supply Chain. 2023 Jun 1;7:100110.<br>
-<b>GB/T 7714:</b> Li Y, Tan Y, Pu Y, et. al. Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach[J]. Cleaner Logistics and Supply Chain, 2023(7):100110.    
-</p>
-            </pre>
-        </div>
-        
-        <div id="bib-popup-2" class="popup">
-            <span class="close-btn" onclick="closePopup('bib-popup-2')">&times;</span>
-            <pre>
-<p>@article{LI2023100110,
-title = {Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach},
-journal = {Cleaner Logistics and Supply Chain},
-volume = {7},
-pages = {100110},
-year = {2023},
-issn = {2772-3909},
-doi = {https://doi.org/10.1016/j.clscn.2023.100110},
-url = {https://www.sciencedirect.com/science/article/pii/S2772390923000197},
-author = {Yi Li and Yongqi Tan and Yang Pu and Yunying Zhu and Haotian Xie}
-}</p>
-            </pre>
-        </div>
-        
-        <div id="pdf-popup-2" class="popup">
-            <span class="close-btn" onclick="closePopup('pdf-popup-2')">&times;</span>
-            <iframe src=""></iframe>
-        </div>
-        <div id="cite-popup-4" class="popup">
-            <span class="close-btn" onclick="closePopup('cite-popup-4')">&times;</span>
-            <pre>
-<p><b>MLA:</b> Haotian, Xie, Chen, Zhang. "AISM: A Novel Method for Node Importance Ranking in Complex Networks.", The 12th International Conference on Complex Networks and their Applications. Springer, 2022.<br>
-<b>APA:</b> Xie, H. & Zhang, C. (2023). AISM: A Novel Method for Node Importance Ranking in Complex Networks. The 12th International Conference on Complex Networks and their Applications (pp.292). Springer<br>
-<b>Chicago:</b> Xie, Haotian and Zhang, Chen. "AISM: A Novel Method for Node Importance Ranking in Complex Networks." The 12th International Conference on Complex Networks and their Applications. pp.292. Springer, 2023.<br>
-<b>Harvard:</b> Xie, H. and Zhang, C., 2023. AISM: A Novel Method for Node Importance Ranking in Complex Networks. The 12th International Conference on Complex Networks and their Applications (pp.292). Springer<br>
-<b>Vancouver:</b> Xie H, Zhang C. AISM: A Novel Method for Node Importance Ranking in Complex Networks. The 12th International Conference on Complex Networks and their Applications. 2023 Nov 28 (pp.292). Springer<br>
-<b>GB/T 7714:</b> Xie H, Zhang C. AISM: A Novel Method for Node Importance Ranking in Complex Networks[C]. The 12th International Conference on Complex Networks and their Applications, 2023, 292. Springer    
-</p>
-            </pre>
-        </div>
-        
-        <div id="bib-popup-4" class="popup">
-            <span class="close-btn" onclick="closePopup('bib-popup-4')">&times;</span>
-            <pre>
-<p>@inproceedings{xie2023aism,
-  title={AISM: A Novel Method for Node Importance Ranking in Complex Networks},
-  author={Xie, Haotian and Zhang, Chen},
-  booktitle={The 12th International Conference on Complex Networks and their Applications},
-  pages={292},
-  year={2023},
-  organization={Springer}
-}
-</p>
-            </pre>
-        </div>
-
-<div class="section">
-    <h2>Research Metrics</h2>
-    
-    <div class="metrics-grid">
-        <div class="metric-card">
-            <div class="metric-value">18</div>
-            <div class="metric-label">Total Citations</div>
-            <div class="metric-source">Google Scholar</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-value">3</div>
-            <div class="metric-label">h-index</div>
-            <div class="metric-source">Since 2023</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-value">0</div>
-            <div class="metric-label">i10-index</div>
-            <div class="metric-source">Since 2023</div>
-        </div>
-    </div>
-    
-    <div class="chart-container">
-        <canvas id="citationsChart"></canvas>
-    </div>
-    
-    <p class="update-note">Metrics updated: 2024-04-20 (Sync with 
-        <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank">
-        Google Scholar</a>)
-    </p>
-</div>
-            
-        <div id="pdf-popup-4" class="popup">
-            <span class="close-btn" onclick="closePopup('pdf-popup-4')">&times;</span>
-            <iframe src=""></iframe>
-        </div>
-        <footer>
-            <p>© 2025 Haotian Xie | Personal Website </p>
-            <p id="last-modified" class="footer-note"></p>
-        </footer>
-    </div>
-</body>
-</html>
+ <html lang="zh">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Haotian Xie - Personal Website </title>
+     <link rel="stylesheet" href="style.css">
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Futura&display=swap" rel="stylesheet">
+     <style>
+         body {
+             font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
+             font-size: 14px;
+             margin: 0;
+             padding: 0;
+             background-color: #ffffff;
+             color: #333;
+             display: flex;
+         }
+         .sidebar {
+             width: 150px;
+             background-color: #f0f4f8;
+             padding: 10px;
+             height: 100vh;
+             position: fixed;
+             left: 0;
+             top: 0;
+             overflow-y: auto;
+             border-right: 1px solid #ddd;
+         }
+         .sidebar h2 {
+             font-size: 14px;
+             margin-bottom: 10px;
+             color: #4a90e2;
+         }
+         .sidebar a {
+             display: block;
+             padding: 4px 0;
+             text-decoration: none;
+             color: #4a90e2;
+             font-size: 13px;
+         }
+         .main-content {
+             margin-left: 170px;
+             padding: 20px;
+             width: calc(100% - 170px);
+         }
+         header {
+             display: flex;
+             align-items: center;
+             border-bottom: 1px solid #ddd;
+             padding-bottom: 10px;
+             background-color: #f8f9fa;
+             padding: 15px;
+             border-radius: 8px;
+         }
+         header img {
+             width: 100px;
+             border-radius: 10px;
+             margin-right: 15px;
+         }
+         header h1 {
+             font-size: 1.6em;
+             margin: 0;
+         }
+         header p {
+             margin: 5px 0;
+             color: #555;
+         }
+         .highlight {
+             background-color: #fff3cd;
+             padding: 10px;
+             border-radius: 5px;
+             font-size: 1em;
+         }
+         .section {
+             margin-top: 15px;
+         }
+         .section h2 {
+             border-bottom: 1px solid #4a90e2;
+             padding-bottom: 5px;
+         }
+         footer {
+             text-align: center;
+             padding: 10px;
+             margin-top: 20px;
+             border-top: 1px solid #ddd;
+             font-size: 0.8em;
+         }
+         .footer-note {
+             font-size: 0.75em;
+             color: #666;
+             margin-top: 5px;
+         }
+         .section p, .section ul {
+             font-size: 1em;
+             line-height: 1.5;
+         }
+ .publication {
+             display: flex;
+             align-items: flex-start;
+             margin-bottom: 20px;
+             border-bottom: 1px solid #ddd;
+             padding-bottom: 10px;
+         }
+         .publication img {
+             width: 120px;
+             height: auto;
+             border-radius: 5px;
+             margin-right: 15px;
+         }
+         .publication-details {
+             flex: 1;
+         }
+         .publication h3 {
+             font-size: 1.1em;
+             margin: 0;
+         }
+         .publication p {
+             font-size: 0.9em;
+             color: #555;
+             margin: 5px 0;
+         }
+         .pub-buttons {
+             margin-top: 5px;
+         }
+         .pub-buttons a {
+             display: inline-block;
+             padding: 4px 8px;
+             margin-right: 5px;
+             border: 1px solid #555;
+             border-radius: 4px;
+             font-size: 0.85em;
+             text-decoration: none;
+             color: #333;
+             cursor: pointer;
+         }
+         .pub-buttons a:hover {
+             background-color: #ddd;
+         }
+         .popup {
+             position: fixed;
+             top: 50%;
+             left: 50%;
+             transform: translate(-50%, -50%);
+             width: 60%;
+             background: #e3f2fd;
+             color: #000;
+             padding: 20px;
+             display: none;
+             border-radius: 10px;
+             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+             overflow-y: auto;
+             max-height: 80vh;
+         }
+         .popup pre {
+             white-space: pre-wrap;
+             word-wrap: break-word;
+         }
+         .popup iframe {
+             width: 100%;
+             height: 400px;
+             border: none;
+         }
+         .close-btn {
+             position: absolute;
+             top: 5px;
+             right: 15px;
+             cursor: pointer;
+             font-size: 1.2em;
+             color: black;
+         }
+         footer {
+             text-align: center;
+             padding: 10px;
+             margin-top: 20px;
+             border-top: 1px solid #ddd;
+             font-size: 0.8em;
+         }
+     </style>
+     <script>
+         function updateTimestamp() {
+             const now = new Date();
+             const formattedDate = now.toISOString().replace('T', ' ').split('.')[0] + ' UTC';
+             document.getElementById("last-modified").innerText = `Page generated ${formattedDate}, by jemdoc. (source)`;
+         }
+     </script>
+     <script>
+         function showPopup(id, src) {
+             var popup = document.getElementById(id);
+             if (src) {
+                 popup.querySelector("iframe").src = src;
+             }
+             popup.style.display = "block";
+         }
+         function closePopup(id) {
+             document.getElementById(id).style.display = "none";
+         }
+     </script>
+ </head>
+ <body onload="updateTimestamp()">
+     <div class="sidebar">
+         <h2>Haotian XIE</h2>
+         <a href="index.html">Home</a>
+         <a href="Biography.html">Biography</a>
+         <h2>Research</h2>
+         <a href="Experiences.html">Experiences</a>
+         <a href="Publications.html">Publications</a>
+     </div>
+ 
+     <div class="main-content">
+         <header>
+             <img src="https://media.licdn.com/dms/image/v2/D4E03AQFuGwLLfODOlw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1728370105190?e=1743638400&v=beta&t=lCdcmLAACDFbCa-gvyXDYmL0lYxTXJM2rbmgvErFq-A" alt="Haotian Xie">
+             <div>
+                 <h1>Haotian XIE (谢昊天) </h1>
+                 <p>Master Student, Department of Data and Systems Engineering, The University of Hong Kong</p>
+                 <p>Research Assistant, Department of Industrial and Systems Engineering, The Hong Kong Polytechnic University</p>
+                 <p>haotianxie@connect.hku.hk</p>
+                 <p>
+                 <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ&hl=zh-TW&oi=ao"> Google Scholar</a> |
+                 <a href="https://www.linkedin.com/in/haotianxiehtxie"> LinkedIn</a> |
+                 <a href="https://github.com/hao-tian-xie"> GitHub</a> |
+                 <a href="CV_Haotian Xie.pdf"> Resume</a> |
+                 <a href="mailto:{{ haotianxie.connect.hku.hk }}"> Email</a>
+ 
+                 </p>
+             </div>
+ 
+         </header>
+ 
+         <div class="highlight">
+             I am currently seeking Ph.D. positions. If you are interested in me, please feel free to contact me!
+         </div>
+ 
+         <div class="section">
+             <h2>Research Interests</h2>
+             <ul>
+                 <li>Data-driven and human-centered decision-making</li>
+                 <li>Supply chain and transportation management</li>
+                 <li>Nonequilibrium statistical physics and information theory</li>
+             </ul>
+         </div>
+ 
+         <div class="section">
+             <h2>News</h2>
+             <ul>
+                 <li>2025-04-01: Started as a research assistant in the Department of Industrial and Systems Engineering at the Hong Kong Polytechnic University.</li>
+                 <li>2024-09-01: Started my Master program at The University of Hong Kong.</li>
+                 <li>2024-07-19: My paper titled “Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis” is accepted by <a href="https://doi.org/10.1016/j.jairtraman.2024.102655">Journal of Air Transport Management</a>.</li>
+                 <li>2024-06-30: Graduated from Beijing Normal University.</li>
+                 <li>2024-06-20: Awarded "Outstanding Thesis" for my bachelor's thesis at Beijing Normal University (Top 5%).</li>
+             </ul>
+         </div>
+ 
+         <div class="section">
+             <h2>Selected Publications</h2>
+ 
+             <div class="publication">
+                 <img src="paper1.jpg" alt="JATM">
+                 <div class="publication-details">
+                     <h3>Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis</h3>
+                     <p><b>Haotian XIE<sup>✝</sup></b>, Yi LI, Yang PU, Chen ZHANG and Junlin HUANG</p>
+                     <p><i>In Journal of Air Transport Management, 2024</i></p>
+                     <div class="pub-buttons">
+                         <a href="https://www-sciencedirect-com.eproxy.lib.hku.hk/journal/journal-of-air-transport-management">JATM</a>
+                         <a href="https://doi.org/10.1016/j.jairtraman.2024.102655">HTML</a>
+                         <a href="#" onclick="showPopup('cite-popup-1')">CITE</a>
+                         <a href="#" onclick="showPopup('bib-popup-1')">BIB</a>
+                         <a href="#" onclick="showPopup('pdf-popup-1', 'paper1.pdf')">PDF</a>
+                     </div>
+                 </div>
+             </div>
+ 
+             <div class="publication">
+                 <img src="https://ars.els-cdn.com/content/image/1-s2.0-S2772390923000197-gr1_lrg.jpg" alt="CLSCN">
+                 <div class="publication-details">
+                     <h3>Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach</h3>
+                     <p>Yi LI, Yongqi TAN, Yang PU, Yunying ZHU and <b>Haotian XIE<sup>✝</sup></b></p>
+                     <p><i>In Cleaner Logistics and Supply Chain, 2023</i></p>
+                     <div class="pub-buttons">
+                         <a href="https://www.sciencedirect.com/journal/cleaner-logistics-and-supply-chain">CLSCN</a>
+                         <a href="https://doi.org/10.1016/j.clscn.2023.100110">HTML</a>
+                         <a href="#" onclick="showPopup('cite-popup-2')">CITE</a>
+                         <a href="#" onclick="showPopup('bib-popup-2')">BIB</a>
+                         <a href="#" onclick="showPopup('pdf-popup-2', 'paper2.pdf')">PDF</a>
+                     </div>
+                 </div>
+             </div>
+ 
+             <div class="publication">
+                 <img src="paper4.png" alt="CNA">
+                 <div class="publication-details">
+                     <h3>AISM: A Novel Method for Node Importance Ranking in Complex Networks</h3>
+                     <p><b>Haotian XIE<sup>✝</sup></b> and Chen ZHANG</p>
+                     <p><i>In Conference The 12th International Conference on Complex Networks and their Applications, 2023</i></p>
+                     <div class="pub-buttons">
+                         <a href="https://2023.complexnetworks.org/">CNA</a>
+                         <a href="https://drive.google.com/file/d/1OLVhjqTkhKVTjQKLwkc4T2ZntJLC5Rrb/view">HTML</a>
+                         <a href="#" onclick="showPopup('cite-popup-4')">CITE</a>
+                         <a href="#" onclick="showPopup('bib-popup-4')">BIB</a>
+                         <a href="#" onclick="showPopup('pdf-popup-4', 'paper4.pdf')">PDF</a>
+                     </div>
+                 </div>
+             </div>
+ 
+                     <div id="cite-popup-1" class="popup">
+             <span class="close-btn" onclick="closePopup('cite-popup-1')">&times;</span>
+             <pre>
+ <p><b>MLA:</b> Xie, Haotian, et al. "Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis." Journal of Air Transport Management 120 (2024): 102655.<br>
+ <b>APA:</b> Xie, H., Li, Y., Pu, Y., Zhang, C., & Huang, J. (2024). Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis. Journal of Air Transport Management, 120, 102655.<br>
+ <b>Chicago:</b> Xie, Haotian, Yi Li, Yang Pu, Chen Zhang, and Junlin Huang. "Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis." Journal of Air Transport Management 120 (2024): 102655.<br>
+ <b>Harvard:</b> Xie, H., Li, Y., Pu, Y., Zhang, C. and Huang, J., 2024. Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis. Journal of Air Transport Management, 120, p.102655.<br>
+ <b>Vancouver:</b> Xie H, Li Y, Pu Y, Zhang C, Huang J. Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis. Journal of Air Transport Management. 2024 Sep 1;120:102655.<br>
+ <b>GB/T 7714:</b> Xie H, Li Y, Pu Y, et. al. Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis[J]. Journal of Air Transport Management, 2024(120):102655.    
+ </p>
+             </pre>
+         </div>
+ 
+         <div id="bib-popup-1" class="popup">
+             <span class="close-btn" onclick="closePopup('bib-popup-1')">&times;</span>
+             <pre>
+ <p>@article{XIE2024102655,
+ title = {Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis},
+ journal = {Journal of Air Transport Management},
+ volume = {120},
+ pages = {102655},
+ year = {2024},
+ issn = {0969-6997},
+ doi = {https://doi.org/10.1016/j.jairtraman.2024.102655},
+ url = {https://www.sciencedirect.com/science/article/pii/S0969699724001200},
+ author = {Haotian Xie and Yi Li and Yang Pu and Chen Zhang and Junlin Huang}
+ }</p>
+             </pre>
+         </div>
+ 
+         <div id="pdf-popup-1" class="popup">
+             <span class="close-btn" onclick="closePopup('pdf-popup-1')">&times;</span>
+             <iframe src=""></iframe>
+         </div>
+ 
+         <div id="cite-popup-2" class="popup">
+             <span class="close-btn" onclick="closePopup('cite-popup-2')">&times;</span>
+             <pre>
+ <p><b>MLA:</b> Li, Yi, et al. "Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach." Cleaner Logistics and Supply Chain 7 (2023): 100110.<br>
+ <b>APA:</b> Li, Y., Tan, Y., Pu, Y., Zhu, Y., & Xie, H. (2023). Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach. Cleaner Logistics and Supply Chain, 7, 100110.<br>
+ <b>Chicago:</b> Li, Yi, Yongqi Tan, Yang Pu, Yunying Zhu, and Haotian Xie. "Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach." Cleaner Logistics and Supply Chain 7 (2023): 100110.<br>
+ <b>Harvard:</b> Li, Y., Tan, Y., Pu, Y., Zhu, Y. and Xie, H., 2023. Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach. Cleaner Logistics and Supply Chain, 7, p.100110.<br>
+ <b>Vancouver:</b> Li Y, Tan Y, Pu Y, Zhu Y, Xie H. Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach. Cleaner Logistics and Supply Chain. 2023 Jun 1;7:100110.<br>
+ <b>GB/T 7714:</b> Li Y, Tan Y, Pu Y, et. al. Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach[J]. Cleaner Logistics and Supply Chain, 2023(7):100110.    
+ </p>
+             </pre>
+         </div>
+ 
+         <div id="bib-popup-2" class="popup">
+             <span class="close-btn" onclick="closePopup('bib-popup-2')">&times;</span>
+             <pre>
+ <p>@article{LI2023100110,
+ title = {Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL–AISM approach},
+ journal = {Cleaner Logistics and Supply Chain},
+ volume = {7},
+ pages = {100110},
+ year = {2023},
+ issn = {2772-3909},
+ doi = {https://doi.org/10.1016/j.clscn.2023.100110},
+ url = {https://www.sciencedirect.com/science/article/pii/S2772390923000197},
+ author = {Yi Li and Yongqi Tan and Yang Pu and Yunying Zhu and Haotian Xie}
+ }</p>
+             </pre>
+         </div>
+ 
+         <div id="pdf-popup-2" class="popup">
+             <span class="close-btn" onclick="closePopup('pdf-popup-2')">&times;</span>
+             <iframe src=""></iframe>
+         </div>
+         <div id="cite-popup-4" class="popup">
+             <span class="close-btn" onclick="closePopup('cite-popup-4')">&times;</span>
+             <pre>
+ <p><b>MLA:</b> Haotian, Xie, Chen, Zhang. "AISM: A Novel Method for Node Importance Ranking in Complex Networks.", The 12th International Conference on Complex Networks and their Applications. Springer, 2022.<br>
+ <b>APA:</b> Xie, H. & Zhang, C. (2023). AISM: A Novel Method for Node Importance Ranking in Complex Networks. The 12th International Conference on Complex Networks and their Applications (pp.292). Springer<br>
+ <b>Chicago:</b> Xie, Haotian and Zhang, Chen. "AISM: A Novel Method for Node Importance Ranking in Complex Networks." The 12th International Conference on Complex Networks and their Applications. pp.292. Springer, 2023.<br>
+ <b>Harvard:</b> Xie, H. and Zhang, C., 2023. AISM: A Novel Method for Node Importance Ranking in Complex Networks. The 12th International Conference on Complex Networks and their Applications (pp.292). Springer<br>
+ <b>Vancouver:</b> Xie H, Zhang C. AISM: A Novel Method for Node Importance Ranking in Complex Networks. The 12th International Conference on Complex Networks and their Applications. 2023 Nov 28 (pp.292). Springer<br>
+ <b>GB/T 7714:</b> Xie H, Zhang C. AISM: A Novel Method for Node Importance Ranking in Complex Networks[C]. The 12th International Conference on Complex Networks and their Applications, 2023, 292. Springer    
+ </p>
+             </pre>
+         </div>
+ 
+         <div id="bib-popup-4" class="popup">
+             <span class="close-btn" onclick="closePopup('bib-popup-4')">&times;</span>
+             <pre>
+ <p>@inproceedings{xie2023aism,
+   title={AISM: A Novel Method for Node Importance Ranking in Complex Networks},
+   author={Xie, Haotian and Zhang, Chen},
+   booktitle={The 12th International Conference on Complex Networks and their Applications},
+   pages={292},
+   year={2023},
+   organization={Springer}
+ }
+ </p>
+             </pre>
+         </div>
+ 
+         <div id="pdf-popup-4" class="popup">
+             <span class="close-btn" onclick="closePopup('pdf-popup-4')">&times;</span>
+             <iframe src=""></iframe>
+         </div>
+         <footer>
+             <p>© 2025 Haotian Xie | Personal Website </p>
+             <p id="last-modified" class="footer-note"></p>
+         </footer>
+     </div>
+ </body>
+ </html>
