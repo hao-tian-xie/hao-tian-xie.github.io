@@ -178,7 +178,6 @@
             border-top: 1px solid #ddd;
             font-size: 0.8em;
         }
-    /* 学术指标样式 */
 .metrics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -239,7 +238,6 @@
     padding-right: 10px;
 }
 
-/* 移动端适配 */
 @media (max-width: 768px) {
     .metrics-grid {
         grid-template-columns: 1fr;
@@ -253,18 +251,17 @@
     }
 }
     </style>
-    <!-- 图表库 -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <script>
-// 年度引用数据配置
+    
 const citationConfig = {
     type: 'line',
     data: {
-        labels: ["2019", "2020", "2021", "2022", "2023", "2024"],
+        labels: ["2022", "2023", "2024", "2025"],
         datasets: [{
             label: 'Annual Citations',
-            data: [0, 0, 0, 5, 18, 15],
+            data: [1,4,8,5],
             backgroundColor: 'rgba(44, 123, 229, 0.1)',
             borderColor: '#2c7be5',
             borderWidth: 2,
@@ -313,13 +310,9 @@ const citationConfig = {
     }
 };
 
-// 初始化图表
 document.addEventListener('DOMContentLoaded', () => {
-    // 创建图表
     const ctx = document.getElementById('citationsChart').getContext('2d');
     new Chart(ctx, citationConfig);
-
-    // 自动更新日期
     const formatDate = (date) => date.toISOString().split('T')[0];
     document.querySelector('.update-note').innerHTML = `
         Metrics updated: ${formatDate(new Date())} (Sync with 
@@ -551,11 +544,9 @@ author = {Yi Li and Yongqi Tan and Yang Pu and Yunying Zhu and Haotian Xie}
             </pre>
         </div>
 
-        <!-- 学术数据展示 -->
 <div class="section">
     <h2>Research Metrics</h2>
     
-    <!-- 统计卡片 -->
     <div class="metrics-grid">
         <div class="metric-card">
             <div class="metric-value">38</div>
@@ -573,8 +564,7 @@ author = {Yi Li and Yongqi Tan and Yang Pu and Yunying Zhu and Haotian Xie}
             <div class="metric-source">Since 2023</div>
         </div>
     </div>
-
-    <!-- 图表容器 -->
+    
     <div class="chart-container">
         <canvas id="citationsChart"></canvas>
     </div>
