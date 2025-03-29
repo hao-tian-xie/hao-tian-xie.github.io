@@ -250,6 +250,28 @@
         padding: 10px;
     }
 }
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+  header { flex-direction: column; }
+  header img { margin-bottom: 15px; }
+}
+.sidebar a.active {
+  font-weight: bold;
+  background-color: #e3f2fd;
+}
+@media (max-width: 600px) {
+  .popup { width: 90%; }
+}
     </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
