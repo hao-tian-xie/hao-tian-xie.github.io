@@ -46,58 +46,7 @@
             padding: 20px;
             width: calc(100% - 170px);
         }
-        header {
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-        }
-        header img {
-            width: 100px;
-            border-radius: 10px;
-            margin-right: 15px;
-        }
-        header h1 {
-            font-size: 1.6em;
-            margin: 0;
-        }
-        header p {
-            margin: 5px 0;
-            color: #555;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        .section {
-            margin-top: 15px;
-        }
-        .section h2 {
-            border-bottom: 1px solid #4a90e2;
-            padding-bottom: 5px;
-        }
-        footer {
-            text-align: center;
-            padding: 10px;
-            margin-top: 20px;
-            border-top: 1px solid #ddd;
-            font-size: 0.8em;
-        }
-        .footer-note {
-            font-size: 0.75em;
-            color: #666;
-            margin-top: 5px;
-        }
-        .section p, .section ul {
-            font-size: 1em;
-            line-height: 1.5;
-        }
-.publication {
+        .publication {
             display: flex;
             align-items: flex-start;
             margin-bottom: 20px;
@@ -178,161 +127,36 @@
             border-top: 1px solid #ddd;
             font-size: 0.8em;
         }
-.metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.metric-card {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #eee;
-    transition: transform 0.2s;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.metric-card:hover {
-    transform: translateY(-3px);
-}
-
-.metric-value {
-    font-size: 2.2em;
-    color: #2c7be5;
-    font-weight: 600;
-    margin-bottom: 5px;
-    font-family: 'Futura', sans-serif;
-}
-
-.metric-label {
-    color: #6c757d;
-    font-size: 0.9em;
-    margin-bottom: 3px;
-}
-
-.metric-source {
-    font-size: 0.75em;
-    color: #95aac9;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-}
-
-.chart-container {
-    margin: 30px 0;
-    position: relative;
-    height: 400px;
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    border: 1px solid #e9ecef;
-}
-
-.update-note {
-    font-size: 0.85em;
-    color: #6c757d;
-    text-align: right;
-    margin-top: -10px;
-    padding-right: 10px;
-}
-
-@media (max-width: 768px) {
-    .metrics-grid {
-        grid-template-columns: 1fr;
-        max-width: 300px;
-        margin: 20px auto;
-    }
-    
-    .chart-container {
-        height: 300px;
-        padding: 10px;
-    }
-}
-
-    </style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
-<script>
-    
-const citationConfig = {
-    type: 'line',
-    data: {
-        labels: ["2022", "2023", "2024", "2025"],
-        datasets: [{
-            label: 'Annual Citations',
-            data: [1,4,8,5],
-            backgroundColor: 'rgba(44, 123, 229, 0.1)',
-            borderColor: '#2c7be5',
-            borderWidth: 2,
-            tension: 0.3,
-            pointRadius: 5,
-            pointHoverRadius: 7
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            tooltip: {
-                backgroundColor: 'rgba(0,0,0,0.8)',
-                titleFont: { size: 14 },
-                bodyFont: { size: 12 }
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                grid: { color: '#f3f6f9' },
-                ticks: { 
-                    color: '#6c757d',
-                    stepSize: 5
-                },
-                title: {
-                    display: true,
-                    text: 'Citations',
-                    color: '#6c757d'
-                }
-            },
-            x: {
-                grid: { display: false },
-                ticks: { 
-                    color: '#6c757d',
-                    autoSkip: false
-                },
-                title: {
-                    display: true,
-                    text: 'Year',
-                    color: '#6c757d'
-                }
-            }
+        .footer-note {
+            font-size: 0.75em;
+            color: #666;
+            margin-top: 5px;
         }
-    }
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-    const ctx = document.getElementById('citationsChart').getContext('2d');
-    new Chart(ctx, citationConfig);
-    const formatDate = (date) => date.toISOString().split('T')[0];
-    document.querySelector('.update-note').innerHTML = `
-        Metrics updated: ${formatDate(new Date())} (Sync with 
-        <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank">
-        Google Scholar</a>)
-    `;
-});
-</script>
+        .section {
+            margin-top: 15px;
+        }
+        .section h2 {
+            border-bottom: 1px solid #4a90e2;
+            padding-bottom: 5px;
+    </style>
+    <script>
+        function showPopup(id, src) {
+            var popup = document.getElementById(id);
+            if (src) {
+                popup.querySelector("iframe").src = src;
+            }
+            popup.style.display = "block";
+        }
+        function closePopup(id) {
+            document.getElementById(id).style.display = "none";
+        }
+    </script>
     <script>
         function updateTimestamp() {
             const now = new Date();
             const formattedDate = now.toISOString().replace('T', ' ').split('.')[0] + ' UTC';
             document.getElementById("last-modified").innerText = `Page generated ${formattedDate}, by jemdoc. (source)`;
         }
-    </script>
-    <script>
-         function closePopup(id) {
-             document.getElementById(id).style.display = "none";
-         }
     </script>
     
 </head>
