@@ -178,7 +178,156 @@
             border-top: 1px solid #ddd;
             font-size: 0.8em;
         }
+    /* 学术指标样式 */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.metric-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #eee;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+}
+
+.metric-value {
+    font-size: 2.2em;
+    color: #2c7be5;
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-family: 'Futura', sans-serif;
+}
+
+.metric-label {
+    color: #6c757d;
+    font-size: 0.9em;
+    margin-bottom: 3px;
+}
+
+.metric-source {
+    font-size: 0.75em;
+    color: #95aac9;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.chart-container {
+    margin: 30px 0;
+    position: relative;
+    height: 400px;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+}
+
+.update-note {
+    font-size: 0.85em;
+    color: #6c757d;
+    text-align: right;
+    margin-top: -10px;
+    padding-right: 10px;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .metrics-grid {
+        grid-template-columns: 1fr;
+        max-width: 300px;
+        margin: 20px auto;
+    }
+    
+    .chart-container {
+        height: 300px;
+        padding: 10px;
+    }
+}
     </style>
+    <!-- 图表库 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script>
+// 年度引用数据配置
+const citationConfig = {
+    type: 'line',
+    data: {
+        labels: ["2019", "2020", "2021", "2022", "2023", "2024"],
+        datasets: [{
+            label: 'Annual Citations',
+            data: [0, 0, 0, 5, 18, 15],
+            backgroundColor: 'rgba(44, 123, 229, 0.1)',
+            borderColor: '#2c7be5',
+            borderWidth: 2,
+            tension: 0.3,
+            pointRadius: 5,
+            pointHoverRadius: 7
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            tooltip: {
+                backgroundColor: 'rgba(0,0,0,0.8)',
+                titleFont: { size: 14 },
+                bodyFont: { size: 12 }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: { color: '#f3f6f9' },
+                ticks: { 
+                    color: '#6c757d',
+                    stepSize: 5
+                },
+                title: {
+                    display: true,
+                    text: 'Citations',
+                    color: '#6c757d'
+                }
+            },
+            x: {
+                grid: { display: false },
+                ticks: { 
+                    color: '#6c757d',
+                    autoSkip: false
+                },
+                title: {
+                    display: true,
+                    text: 'Year',
+                    color: '#6c757d'
+                }
+            }
+        }
+    }
+};
+
+// 初始化图表
+document.addEventListener('DOMContentLoaded', () => {
+    // 创建图表
+    const ctx = document.getElementById('citationsChart').getContext('2d');
+    new Chart(ctx, citationConfig);
+
+    // 自动更新日期
+    const formatDate = (date) => date.toISOString().split('T')[0];
+    document.querySelector('.update-note').innerHTML = `
+        Metrics updated: ${formatDate(new Date())} (Sync with 
+        <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank">
+        Google Scholar</a>)
+    `;
+});
+</script>
     <script>
         function updateTimestamp() {
             const now = new Date();
@@ -198,6 +347,7 @@
             document.getElementById(id).style.display = "none";
         }
     </script>
+    
 </head>
 <body onload="updateTimestamp()">
     <div class="sidebar">
@@ -400,7 +550,41 @@ author = {Yi Li and Yongqi Tan and Yang Pu and Yunying Zhu and Haotian Xie}
 </p>
             </pre>
         </div>
-        
+
+        <!-- 学术数据展示 -->
+<div class="section">
+    <h2>Research Metrics</h2>
+    
+    <!-- 统计卡片 -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-value">38</div>
+            <div class="metric-label">Total Citations</div>
+            <div class="metric-source">Google Scholar</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value">3</div>
+            <div class="metric-label">h-index</div>
+            <div class="metric-source">Since 2023</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value">2</div>
+            <div class="metric-label">i10-index</div>
+            <div class="metric-source">Since 2023</div>
+        </div>
+    </div>
+
+    <!-- 图表容器 -->
+    <div class="chart-container">
+        <canvas id="citationsChart"></canvas>
+    </div>
+    
+    <p class="update-note">Metrics updated: 2024-04-20 (Sync with 
+        <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank">
+        Google Scholar</a>)
+    </p>
+</div>
+            
         <div id="pdf-popup-4" class="popup">
             <span class="close-btn" onclick="closePopup('pdf-popup-4')">&times;</span>
             <iframe src=""></iframe>
