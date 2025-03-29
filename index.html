@@ -272,6 +272,26 @@
 @media (max-width: 600px) {
   .popup { width: 90%; }
 }
+.loading {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #2c7be5;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
     </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
@@ -361,6 +381,26 @@ document.addEventListener('DOMContentLoaded', () => {
         function closePopup(id) {
             document.getElementById(id).style.display = "none";
         }
+        function showPopup(id, src) {
+  const popup = document.getElementById(id);
+  
+  popup.innerHTML = `
+    <div class="loading">
+      <div class="spinner"></div>
+      Loading PDF...
+    </div>
+    <iframe style="display:none" onload="this.style.display='block'">
+  `;
+  
+  const iframe = popup.querySelector('iframe');
+  iframe.src = src;
+
+  setTimeout(() => {
+    if (iframe.style.display === 'none') {
+      popup.innerHTML = `Failed to load PDF. <a href="${src}" target="_blank">Open directly</a>`;
+    }
+  }, 5000);
+}
     </script>
     
 </head>
