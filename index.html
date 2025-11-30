@@ -6,7 +6,7 @@
     <title>Haotian Xie | PolyU</title>
     <meta name="description" content="Academic Homepage of Haotian Xie - Research Assistant at The Hong Kong Polytechnic University">
     <style>
-        /* 1. 基础设置 */
+        /* 1. 基礎設置 */
         :root {
             --primary-blue: #1a73e8;       
             --hover-blue: #1557b0;
@@ -24,9 +24,9 @@
             background-color: var(--bg-body);
             color: var(--text-main);
             margin: 0;
-            padding: 30px 2%; /* 左右留白自适应 */
-            line-height: 1.8;
-            font-size: 18px; 
+            padding: 30px 2%; 
+            line-height: 1.6; /* 行高微調 */
+            font-size: 16px;  /* 字號調小至 16px */
             -webkit-font-smoothing: antialiased;
         }
 
@@ -45,17 +45,17 @@
         .container {
             width: 100%;
             display: flex;
-            gap: 40px; 
+            gap: 30px; 
             align-items: flex-start;
             box-sizing: border-box;
         }
 
-        /* 3. 左侧边栏 (30%) */
+        /* 3. 左側邊欄 (30%) */
         .sidebar {
             flex: 3;
-            min-width: 300px;
+            min-width: 280px;
             background: var(--bg-card);
-            padding: 40px;
+            padding: 30px; /* 內邊距微調 */
             border-radius: var(--card-radius);
             box-shadow: var(--card-shadow);
             text-align: left;
@@ -64,11 +64,11 @@
         }
 
         .avatar {
-            width: 150px;
-            height: 150px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             border: 3px solid #fff;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             display: block;
@@ -83,9 +83,9 @@
         }
 
         .profile-title {
-            font-size: 1.05em;
+            font-size: 1em;
             color: var(--text-light);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             font-weight: 500;
             line-height: 1.5;
         }
@@ -94,14 +94,14 @@
             display: inline-block;
             background-color: var(--primary-blue);
             color: #fff !important;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 0.95em;
+            font-size: 0.9em;
             text-decoration: none !important;
             box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
             transition: all 0.2s ease;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
             text-align: center;
         }
 
@@ -114,23 +114,23 @@
         .contact-info {
             font-size: 0.95em;
             color: var(--text-light);
-            margin-bottom: 35px;
+            margin-bottom: 30px;
         }
         
         .contact-info div {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .edu-box {
             border-top: 1px solid #eee;
-            padding-top: 25px;
+            padding-top: 20px;
         }
 
         .edu-item {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .edu-school {
@@ -146,68 +146,85 @@
             color: var(--text-light);
         }
 
-        /* 4. 右侧内容 (70%) */
+        /* 4. 右側內容 (70%) */
         .main-content {
             flex: 7;
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 25px; /* 卡片間距 */
         }
 
         section {
             background: var(--bg-card);
-            padding: 40px;
+            padding: 35px;
             border-radius: var(--card-radius);
             box-shadow: var(--card-shadow);
         }
 
         .section-title {
-            font-size: 1.5em;
+            font-size: 1.4em;
             font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 30px;
-            border-left: 6px solid var(--primary-blue);
-            padding-left: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary-blue);
+            padding-left: 15px;
             line-height: 1.1;
         }
 
         p {
             text-align: justify;
-            margin-bottom: 1.5em;
+            margin-bottom: 1.2em;
         }
 
         .highlight {
             color: var(--primary-blue);
             font-weight: 600;
             background-color: rgba(26, 115, 232, 0.08);
-            padding: 2px 6px;
+            padding: 0 5px;
             border-radius: 4px;
         }
 
-        /* 论文列表样式 (无年份) */
+        /* 列表樣式 */
+        .list-item {
+            margin-bottom: 10px;
+            list-style: none;
+            position: relative;
+            padding-left: 20px;
+        }
+        .list-item::before {
+            content: "•";
+            color: var(--primary-blue);
+            font-size: 1.2em;
+            position: absolute;
+            left: 0;
+            top: -3px;
+            font-weight: bold;
+        }
+
+        /* 論文列表樣式 */
         .pub-item {
-            margin-bottom: 35px; /* 增加条目间距 */
+            margin-bottom: 30px;
             padding-left: 0;
         }
 
         .pub-title {
-            font-size: 1.1em;
+            font-size: 1.05em;
             font-weight: 600;
             color: var(--text-main);
             display: block;
-            margin-bottom: 8px;
-            line-height: 1.5;
+            margin-bottom: 5px;
+            line-height: 1.4;
             text-align: justify;
         }
 
         .pub-authors {
-            font-size: 1em;
+            font-size: 0.95em;
             color: var(--text-light);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .pub-venue {
-            font-size: 1em;
+            font-size: 0.95em;
             font-style: italic;
             color: #444;
         }
@@ -216,43 +233,34 @@
             font-size: 0.8em;
             background-color: #f1f3f4;
             color: var(--text-light);
-            padding: 3px 10px;
+            padding: 2px 8px;
             border-radius: 12px;
-            margin-left: 10px;
+            margin-left: 8px;
             font-weight: 500;
             vertical-align: middle;
             border: 1px solid #e0e0e0;
         }
-
-        .service-list { padding-left: 0; }
-        .service-list li {
-            margin-bottom: 12px;
-            list-style: none;
-            position: relative;
-            padding-left: 25px;
-        }
-        .service-list li::before {
-            content: "•";
-            color: var(--primary-blue);
-            font-size: 1.2em;
-            position: absolute;
-            left: 0;
-            top: -2px;
-            font-weight: bold;
-        }
         
-        /* 简单表格样式，用于 Skills */
+        /* 技能表格樣式 */
+        .skill-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
         .skill-table td {
             padding: 8px 15px 8px 0;
             vertical-align: top;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .skill-table tr:last-child td {
+            border-bottom: none;
         }
         .skill-label {
             font-weight: 600;
             color: var(--text-main);
-            width: 120px;
+            width: 140px; /* 固定標籤寬度 */
         }
 
-        /* 移动端适配 */
+        /* 響應式適配 */
         @media (max-width: 900px) {
             .container { flex-direction: column; gap: 20px; }
             .sidebar, .main-content { width: 100%; position: static; }
@@ -267,7 +275,7 @@
         <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=X42fddQAAAAJ&citpid=1" alt="Haotian Xie" class="avatar">
         
         <h1 class="profile-name">Haotian Xie</h1>
-        <p style="color: #666; font-size: 0.9em; margin-bottom: 5px;">(谢昊天)</p>
+        <p style="color: #666; font-size: 0.9em; margin-bottom: 5px;">(謝昊天)</p>
         
         <div class="profile-title">
             Research Assistant<br>
@@ -285,7 +293,7 @@
         </div>
 
         <div class="edu-box">
-            <h3 style="font-size: 1.2em; margin-bottom: 20px; color: var(--text-main);">Education</h3>
+            <h3 style="font-size: 1.1em; margin-bottom: 15px; color: var(--text-main);">Education</h3>
             <div class="edu-item">
                 <span class="edu-school">The University of Hong Kong</span>
                 <div class="edu-degree">Master of Science in Industrial Engineering and Logistics Management (2024 - 2025)</div>
@@ -308,6 +316,35 @@
             <p>
                 My research interests lie at the intersection of Operations Research and Complex Systems. Specifically, I focus on <span class="highlight">Data-driven Decision Making</span>, <span class="highlight">Logistics & Supply Chain Management</span>, and <span class="highlight">Complex Networks Theory</span>. I am passionate about applying mathematical modeling and optimization techniques to solve real-world problems in supply chain finance and transportation systems.
             </p>
+        </section>
+
+        <section id="honors">
+            <div class="section-title">Honors & Awards</div>
+            <ul style="padding-left: 0; margin: 0;">
+                <li class="list-item"><strong>Tony Reynolds Academic Excellence Prize</strong>, HKU (Top 5%), 2025</li>
+                <li class="list-item"><strong>Excellent Graduation Thesis</strong>, HKU, 2025</li>
+                <li class="list-item"><strong>Excellent Graduation Thesis</strong>, BNU, 2024</li>
+                <li class="list-item"><strong>YUAN CHUAN Scholarship</strong>, BNU (Top 3%), 2023</li>
+                <li class="list-item"><strong>First Academic Scholarship</strong>, BNU (Top 5%), 2023</li>
+            </ul>
+        </section>
+
+        <section id="skills">
+            <div class="section-title">Skills</div>
+            <table class="skill-table">
+                <tr>
+                    <td class="skill-label">Languages</td>
+                    <td>Mandarin (Native), Cantonese (Native), English (C1)</td>
+                </tr>
+                <tr>
+                    <td class="skill-label">Programming</td>
+                    <td>Python, MATLAB, C, HTML</td>
+                </tr>
+                <tr>
+                    <td class="skill-label">Tools</td>
+                    <td>LaTeX, Microsoft Office</td>
+                </tr>
+            </table>
         </section>
 
         <section id="publications">
@@ -364,15 +401,6 @@
                     <span class="tag">JCR Q1</span> <span class="tag">IF=5.0</span>
                 </div>
             </div>
-        </section>
-
-        <section id="services">
-            <div class="section-title">Academic Services</div>
-            <ul class="service-list">
-                <li>Reviewer for <strong>Information Processing & Management</strong></li>
-                <li>Reviewer for <strong>Expert Systems with Applications</strong></li>
-                <li>Reviewer for <strong>Journal of Air Transport Management</strong></li>
-            </ul>
         </section>
 
     </main>
