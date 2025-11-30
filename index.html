@@ -6,7 +6,7 @@
     <title>Haotian Xie | PolyU</title>
     <meta name="description" content="Academic Homepage of Haotian Xie - Research Assistant at The Hong Kong Polytechnic University">
     <style>
-        /* 1. 基础设置与变量 */
+        /* 1. 基础设置 */
         :root {
             --primary-blue: #1a73e8;       
             --hover-blue: #1557b0;
@@ -14,7 +14,7 @@
             --text-light: #5f6368;         
             --bg-body: #f8f9fa;            
             --bg-card: #ffffff;            
-            --card-radius: 12px;           /* 圆角稍微调小一点，适应宽屏 */
+            --card-radius: 12px;           
             --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); 
             --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
@@ -24,7 +24,7 @@
             background-color: var(--bg-body);
             color: var(--text-main);
             margin: 0;
-            padding: 30px 2%; /* 两边留极少的白，按比例缩放 */
+            padding: 30px 2%; /* 左右留白自适应 */
             line-height: 1.8;
             font-size: 18px; 
             -webkit-font-smoothing: antialiased;
@@ -41,27 +41,26 @@
             text-decoration: underline;
         }
 
-        /* 2. 核心布局容器 - Flexbox 3:7 比例 */
+        /* 2. 布局容器 (Flex 3:7) */
         .container {
             width: 100%;
             display: flex;
-            gap: 30px; /* 栏间距 */
+            gap: 40px; 
             align-items: flex-start;
             box-sizing: border-box;
         }
 
-        /* 3. 左侧边栏 (Sidebar) - 30% */
+        /* 3. 左侧边栏 (30%) */
         .sidebar {
-            flex: 3; /* 占据 3/10 */
-            min-width: 300px; /* 最小宽度保护 */
+            flex: 3;
+            min-width: 300px;
             background: var(--bg-card);
             padding: 40px;
             border-radius: var(--card-radius);
             box-shadow: var(--card-shadow);
-            text-align: left; /* 左对齐 */
+            text-align: left;
             position: sticky;
             top: 30px;
-            height: fit-content;
         }
 
         .avatar {
@@ -72,7 +71,7 @@
             margin-bottom: 25px;
             border: 3px solid #fff;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            display: block; /* 块级显示，方便左对齐 */
+            display: block;
         }
 
         .profile-name {
@@ -91,7 +90,6 @@
             line-height: 1.5;
         }
 
-        /* 按钮适应左对齐 */
         .scholar-btn {
             display: inline-block;
             background-color: var(--primary-blue);
@@ -126,7 +124,6 @@
             gap: 12px;
         }
 
-        /* 教育背景 */
         .edu-box {
             border-top: 1px solid #eee;
             padding-top: 25px;
@@ -149,9 +146,9 @@
             color: var(--text-light);
         }
 
-        /* 4. 右侧主内容 (Main Content) - 70% */
+        /* 4. 右侧内容 (70%) */
         .main-content {
-            flex: 7; /* 占据 7/10 */
+            flex: 7;
             display: flex;
             flex-direction: column;
             gap: 30px;
@@ -159,7 +156,7 @@
 
         section {
             background: var(--bg-card);
-            padding: 40px; /* 内边距加大 */
+            padding: 40px;
             border-radius: var(--card-radius);
             box-shadow: var(--card-shadow);
         }
@@ -175,9 +172,8 @@
         }
 
         p {
-            text-align: justify; /* 两端对齐 */
+            text-align: justify;
             margin-bottom: 1.5em;
-            color: #333;
         }
 
         .highlight {
@@ -188,22 +184,10 @@
             border-radius: 4px;
         }
 
-        /* 论文部分 */
-        .year-header {
-            font-size: 1.3em;
-            font-weight: 700;
-            color: var(--text-light);
-            margin: 40px 0 20px 0;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #f1f3f4;
-        }
-
-        .year-header:first-of-type {
-            margin-top: 0;
-        }
-
+        /* 论文列表样式 (无年份) */
         .pub-item {
-            margin-bottom: 30px;
+            margin-bottom: 35px; /* 增加条目间距 */
+            padding-left: 0;
         }
 
         .pub-title {
@@ -236,15 +220,11 @@
             border-radius: 12px;
             margin-left: 10px;
             font-weight: 500;
-            font-style: normal;
             vertical-align: middle;
             border: 1px solid #e0e0e0;
         }
 
-        /* 服务列表 */
-        .service-list {
-            padding-left: 0;
-        }
+        .service-list { padding-left: 0; }
         .service-list li {
             margin-bottom: 12px;
             list-style: none;
@@ -260,20 +240,22 @@
             top: -2px;
             font-weight: bold;
         }
+        
+        /* 简单表格样式，用于 Skills */
+        .skill-table td {
+            padding: 8px 15px 8px 0;
+            vertical-align: top;
+        }
+        .skill-label {
+            font-weight: 600;
+            color: var(--text-main);
+            width: 120px;
+        }
 
-        /* 响应式适配 */
+        /* 移动端适配 */
         @media (max-width: 900px) {
-            .container {
-                flex-direction: column; /* 手机平板改为上下堆叠 */
-                gap: 20px;
-            }
-            .sidebar, .main-content {
-                flex: auto;
-                width: 100%;
-            }
-            .sidebar {
-                position: static; /* 手机上取消固定 */
-            }
+            .container { flex-direction: column; gap: 20px; }
+            .sidebar, .main-content { width: 100%; position: static; }
         }
     </style>
 </head>
@@ -321,7 +303,7 @@
         <section id="about">
             <div class="section-title">About Me</div>
             <p>
-                I am currently a Research Assistant at the Department of Industrial and Systems Engineering, <strong>The Hong Kong Polytechnic University</strong>. I received my Master's degree from <strong>The University of Hong Kong</strong> in 2025 and my Bachelor's degree from <strong>Beijing Normal University</strong> in 2024.
+                I am currently a Research Assistant at the Department of Industrial and Systems Engineering, <strong>The Hong Kong Polytechnic University (PolyU)</strong>. I received my Master's degree from <strong>The University of Hong Kong (HKU)</strong> in 2025 and my Bachelor's degree from <strong>Beijing Normal University (BNU)</strong> in 2024.
             </p>
             <p>
                 My research interests lie at the intersection of Operations Research and Complex Systems. Specifically, I focus on <span class="highlight">Data-driven Decision Making</span>, <span class="highlight">Logistics & Supply Chain Management</span>, and <span class="highlight">Complex Networks Theory</span>. I am passionate about applying mathematical modeling and optimization techniques to solve real-world problems in supply chain finance and transportation systems.
@@ -331,23 +313,22 @@
         <section id="publications">
             <div class="section-title">Publications</div>
             
-            <div class="year-header">Preprints & Working Papers</div>
-            
             <div class="pub-item">
                 <span class="pub-title">Identifying extreme precipitation using nonequilibrium thermodynamics</span>
                 <div class="pub-authors"><strong>H. Xie</strong>, H. Liu, & Y. Tang</div>
-                <div class="pub-venue">Under revision</div>
+                <div class="pub-venue">
+                    Under revision
+                </div>
             </div>
 
             <div class="pub-item">
                 <span class="pub-title">Link prediction for complex networks with zero-shot learning</span>
                 <div class="pub-authors"><strong>H. Xie*</strong>, Y. Pu, & Y. Tan</div>
-                <div class="pub-venue">Under review</div>
+                <div class="pub-venue">
+                    Under review
+                </div>
             </div>
 
-
-            <div class="year-header">2025</div>
-            
             <div class="pub-item">
                 <a href="https://doi.org/10.1016/j.elerap.2024.101533" target="_blank" class="pub-title">Decentralized autonomous organizations in e-commerce supply chains: A bayesian method to barrier identification and interrelationship mapping</a>
                 <div class="pub-authors"><strong>H. Xie*</strong>, Y. P. Tsang</div>
@@ -356,8 +337,6 @@
                     <span class="tag">JCR Q1</span> <span class="tag">IF=6.3</span>
                 </div>
             </div>
-
-            <div class="year-header">2024</div>
 
             <div class="pub-item">
                 <a href="https://doi.org/10.1016/j.jairtraman.2024.102655" target="_blank" class="pub-title">Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis</a>
@@ -368,8 +347,6 @@
                 </div>
             </div>
 
-            <div class="year-header">2023</div>
-
             <div class="pub-item">
                 <a href="https://doi.org/10.1016/j.clscn.2023.100110" target="_blank" class="pub-title">Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL-AISM approach</a>
                 <div class="pub-authors">Y. Li, Y. Tan, Y. Pu, Y. Zhu, & <strong>H. Xie*</strong></div>
@@ -378,8 +355,6 @@
                     <span class="tag">JCR Q1</span> <span class="tag">IF=6.9</span>
                 </div>
             </div>
-
-            <div class="year-header">2021</div>
 
             <div class="pub-item">
                 <span class="pub-title">Classifying Drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction</span>
