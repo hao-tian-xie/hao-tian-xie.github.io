@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haotian Xie | HKU</title>
+    <meta name="description" content="Academic Homepage of Haotian Xie - Industrial Engineering & Logistics Management">
+    <style>
+        /* CSS 样式部分 - 追求极简和加载速度 */
+        :root {
+            --primary-color: #003366; /* 类似 HKU 蓝 */
+            --text-color: #333;
+            --bg-color: #fff;
+            --link-color: #0066cc;
+            --date-color: #666;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: var(--bg-color);
+        }
+
+        /* 头部布局 */
+        header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 50px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 30px;
+        }
+
+        .avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%; /* 圆形头像 */
+            object-fit: cover;
+            margin-right: 30px;
+            border: 2px solid #eee;
+            /* 防止图片变形 */
+            background-color: #f0f0f0; 
+        }
+
+        .header-info h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.2em;
+            color: var(--primary-color);
+        }
+
+        .header-info p {
+            margin: 5px 0;
+        }
+
+        .social-links a {
+            margin-right: 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* 章节通用样式 */
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        /* 列表样式 */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .paper-title {
+            font-weight: bold;
+            display: block;
+        }
+
+        .paper-author {
+            font-style: italic;
+            color: #444;
+        }
+
+        .paper-venue {
+            color: #555;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #eee;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            color: #555;
+            margin-left: 5px;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .avatar {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=X42fddQAAAAJ&citpid=1" alt="Haotian Xie" class="avatar">
+        <div class="header-info">
+            <h1>Haotian Xie (谢昊天)</h1>
+            <p>M.S. Student in Industrial Engineering and Logistics Management</p>
+            <p><strong>The University of Hong Kong (HKU)</strong></p>
+            <p>Email: haotiantimxie@gmail.com</p>
+            <div class="social-links" style="margin-top: 10px;">
+                <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank">[Google Scholar]</a>
+                </div>
+        </div>
+    </header>
+
+    <section id="about">
+        <h2>About Me</h2>
+        <p>
+            I am a Master's student at HKU, advised by Prof. Jiayang Li. Before this, I obtained my B.S. in Systems Science and Engineering and B.Ec. in Finance from Beijing Normal University (BNU) in 2024.
+        </p>
+        <p>
+            My research interests lie at the intersection of <strong>Operations Research</strong> and <strong>Complex Systems</strong>, focusing on:
+        </p>
+        <ul>
+            <li>🔹 Data-driven & Multi-criteria Decision Making</li>
+            <li>🔹 Logistics & Supply Chain Management</li>
+            <li>🔹 Complex Networks Theory</li>
+        </ul>
+    </section>
+
+    <section id="news">
+        <h2>News</h2>
+        <ul>
+            <li><strong>[May 2025]</strong> I will present my work at <em>2025 IEEE International Annual Conference on Complex Systems and Intelligent Science</em> in Shenzhen.</li>
+            <li><strong>[Apr 2025]</strong> Joined PolyU & Bolly Express project as a Research Assistant.</li>
+            <li><strong>[2024]</strong> Paper accepted by <em>Journal of Air Transport Management</em>.</li>
+        </ul>
+    </section>
+
+    <section id="publications">
+        <h2>Selected Publications</h2>
+        
+        <ul>
+            <li>
+                <span class="paper-title">Decentralized autonomous organizations in e-commerce supply chains: A bayesian method to barrier identification and interrelationship mapping</span>
+                <span class="paper-author"><strong>Haotian Xie*</strong>, Yung Po Tsang</span>
+                <div class="paper-venue">
+                    <em>Electronic Commerce Research and Applications</em>, 2025.
+                    <span class="tag">JCR Q1</span> <span class="tag">IF=6.3</span>
+                </div>
+                <div class="links">
+                    <a href="https://doi.org/10.1016/j.elerap.2024.101533" target="_blank">[DOI]</a> 
+                    </div>
+            </li>
+
+            <li>
+                <span class="paper-title">Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis</span>
+                <span class="paper-author"><strong>Haotian Xie</strong>, Li, Y., Pu, Y., Zhang, C., & Huang, J.</span>
+                <div class="paper-venue">
+                    <em>Journal of Air Transport Management</em>, 2024.
+                    <span class="tag">JCR Q1</span> <span class="tag">IF=4.5</span>
+                </div>
+                <div class="links">
+                    <a href="https://doi.org/10.1016/j.jairtraman.2024.102655" target="_blank">[DOI]</a>
+                </div>
+            </li>
+
+            <li>
+                <span class="paper-title">Exploring the drivers of green supply chain management in the Chinese electronics industry</span>
+                <span class="paper-author">Li, Y., Tan, Y., Pu, Y., Zhu, Y., & <strong>Haotian Xie*</strong></span>
+                <div class="paper-venue">
+                    <em>Cleaner Logistics and Supply Chain</em>, 2023.
+                    <span class="tag">JCR Q1</span> <span class="tag">IF=6.9</span>
+                </div>
+                <div class="links">
+                    <a href="https://doi.org/10.1016/j.clscn.2023.100110" target="_blank">[DOI]</a>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <section id="service">
+        <h2>Academic Services</h2>
+        <ul>
+            <li>Reviewer, <em>Information Processing & Management</em></li>
+            <li>Reviewer, <em>Expert Systems with Applications</em></li>
+            <li>Reviewer, <em>Journal of Air Transport Management</em></li>
+        </ul>
+    </section>
+
+    <footer style="margin-top: 60px; font-size: 0.8em; color: #888; text-align: center;">
+        <p>&copy; 2025 Haotian Xie. Last updated: Nov 2025.</p>
+    </footer>
+
+</body>
+</html>
