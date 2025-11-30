@@ -3,20 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haotian Xie - Google Scholar Profile Style</title>
+    <title>Haotian Xie | PolyU</title>
+    <meta name="description" content="Academic Homepage of Haotian Xie - Research Assistant at PolyU">
     <style>
-        /* 全局重置与字体 - Google 风格核心 */
+        /* Google Fonts 风格重置 */
+        :root {
+            --google-blue: #1a73e8;
+            --google-grey: #5f6368;
+            --text-black: #202124;
+            --bg-color: #ffffff;
+            --border-color: #dadce0;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+            color: var(--text-black);
             margin: 0;
             padding: 0;
-            background-color: #fff;
-            color: #202124;
-            line-height: 1.4;
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            -webkit-font-smoothing: antialiased;
         }
 
         a {
-            color: #1a0dab; /* Google 经典蓝 */
+            color: var(--google-blue);
             text-decoration: none;
         }
 
@@ -26,292 +36,320 @@
 
         /* 布局容器 */
         .container {
-            max-width: 960px;
+            max-width: 1024px;
             margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* 顶部个人信息区域 (Profile Header) */
-        .profile-header {
             display: flex;
-            align-items: flex-start;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
+            flex-wrap: wrap;
+            padding: 40px 20px;
+            gap: 50px;
         }
 
-        .avatar-container {
-            margin-right: 24px;
+        /* 左侧边栏 (Sidebar) */
+        .sidebar {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
         }
 
+        /* 右侧主内容 (Main) */
+        .main-content {
+            flex: 2.5;
+            min-width: 300px;
+        }
+
+        /* 头像样式 */
         .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%; /* Scholar 个人页常用圆形，也可以改成 8px 圆角矩形 */
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
             object-fit: cover;
-            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
         }
 
-        .profile-info h1 {
+        /* 侧边栏信息 */
+        .profile-name {
             font-size: 24px;
-            font-weight: normal;
-            margin: 10px 0 5px 0;
+            font-weight: 400;
+            margin: 0 0 5px 0;
+            color: var(--text-black);
         }
 
-        .profile-info .affiliation {
+        .profile-title {
             font-size: 16px;
-            color: #202124;
+            color: var(--google-grey);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .contact-info {
+            font-size: 14px;
+            color: var(--google-grey);
+            margin-bottom: 30px;
+        }
+
+        .contact-info div {
             margin-bottom: 8px;
         }
 
-        .profile-info .email {
-            font-size: 14px;
-            color: #5f6368;
+        .section-title {
+            font-size: 20px;
+            font-weight: 400;
+            color: var(--google-blue);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* 列表通用样式 */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
             margin-bottom: 12px;
         }
 
-        .profile-info .interests {
-            font-size: 14px;
-            line-height: 1.6;
+        /* 侧边栏 - 教育背景 */
+        .edu-item {
+            margin-bottom: 15px;
+        }
+        .edu-school {
+            font-weight: 500;
+            display: block;
+        }
+        .edu-degree {
+            font-size: 0.9em;
+            color: var(--google-grey);
         }
 
-        .interest-tag {
-            color: #1a0dab;
-            margin-right: 8px;
-            cursor: pointer;
-        }
-
-        /* 主体内容双栏布局 */
-        .main-body {
-            display: flex;
-        }
-
-        /* 左侧：论文列表 (占 70%) */
-        .publications-section {
-            flex: 1;
-            margin-right: 40px;
-        }
-
-        /* 右侧：侧边栏 (占 30%) - 放置 News 和 Service */
-        .sidebar-section {
-            width: 300px;
-            font-size: 14px;
-        }
-
-        /* 仿 Scholar 论文表格 */
-        table.pub-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            text-align: left;
-            color: #5f6368;
-            font-weight: normal;
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
-            font-size: 14px;
-        }
-
-        td {
-            padding: 20px 0;
-            border-bottom: 1px solid #f1f1f1;
-            vertical-align: top;
+        /* 主内容 - 论文列表 */
+        .pub-item {
+            margin-bottom: 25px;
         }
 
         .pub-title {
-            font-size: 16px;
-            font-weight: bold; /* 略微加粗强调标题 */
-            margin-bottom: 4px;
+            font-size: 18px;
+            font-weight: 500;
             display: block;
+            margin-bottom: 4px;
+            color: var(--text-black);
         }
 
         .pub-authors {
-            color: #5f6368;
-            font-size: 14px;
-            margin-bottom: 4px;
+            font-size: 15px;
+            color: var(--google-grey);
+            margin-bottom: 2px;
         }
 
         .pub-venue {
-            color: #5f6368;
-            font-size: 13px;
-            font-style: italic;
-        }
-
-        .year-col {
-            color: #5f6368;
-            text-align: right;
-            padding-right: 10px;
-        }
-
-        /* 侧边栏卡片样式 */
-        .sidebar-box {
-            margin-bottom: 30px;
-            border-left: 3px solid #4285f4; /* Google 蓝条装饰 */
-            padding-left: 15px;
-        }
-
-        .sidebar-title {
             font-size: 15px;
-            color: #202124;
-            margin-bottom: 10px;
-            font-weight: bold;
-            text-transform: uppercase;
+            font-style: italic;
+            color: var(--text-black);
         }
 
-        .sidebar-list li {
-            margin-bottom: 10px;
-            color: #444;
-            list-style-type: none;
+        .tag {
+            font-size: 12px;
+            border: 1px solid var(--border-color);
+            color: var(--google-grey);
+            padding: 1px 6px;
+            border-radius: 4px;
+            margin-left: 5px;
+            vertical-align: middle;
         }
-        
-        .sidebar-list ul {
-             padding-left: 0;
+
+        .links {
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        .links a {
+            margin-right: 12px;
+            font-weight: 500;
+        }
+
+        /* 新闻列表 */
+        .news-list li {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .news-date {
+            font-weight: bold;
+            min-width: 80px;
+            color: var(--text-black);
+            font-size: 14px;
+        }
+        .news-content {
+            font-size: 14px;
+            color: var(--text-black);
         }
 
         /* 移动端适配 */
         @media (max-width: 768px) {
-            .main-body {
+            .container {
                 flex-direction: column;
+                gap: 30px;
             }
-            .sidebar-section {
-                width: 100%;
-                margin-top: 40px;
-                border-top: 1px solid #eee;
-                padding-top: 20px;
+            .sidebar {
+                max-width: 100%;
+                text-align: center;
+            }
+            .avatar {
+                margin: 0 auto 20px auto;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="profile-header">
-            <div class="avatar-container">
-                <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=X42fddQAAAAJ&citpid=1" alt="Haotian Xie" class="avatar">
-            </div>
-            <div class="profile-info">
-                <h1>Haotian Xie (谢昊天)</h1>
-                <div class="affiliation">
-                    Master's Student in Industrial Engineering and Logistics Management<br>
-                    <strong>The University of Hong Kong (HKU)</strong>
-                </div>
-                <div class="email">
-                    Verified email at connect.hku.hk (or haotiantimxie@gmail.com)
-                </div>
-                <div class="interests">
-                    <span class="interest-tag">Data-driven Decision Making</span>
-                    <span class="interest-tag">Supply Chain Management</span>
-                    <span class="interest-tag">Complex Networks</span>
-                </div>
-            </div>
+<div class="container">
+    
+    <aside class="sidebar">
+        <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=X42fddQAAAAJ&citpid=1" alt="Haotian Xie" class="avatar">
+        
+        <h1 class="profile-name">Haotian Xie<br><span style="font-size: 0.8em; color: #5f6368;">(谢昊天)</span></h1>
+        <div class="profile-title">
+            Research Assistant<br>
+            Dept. of Industrial and Systems Engineering<br>
+            The Hong Kong Polytechnic University (PolyU)
         </div>
 
-        <div class="main-body">
+        <div class="contact-info">
+            <div>📍 Hong Kong, China</div>
+            <div>📧 haotiantimxie@gmail.com</div>
+            <div>🔗 <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank">Google Scholar</a></div>
+        </div>
+
+        <div style="margin-bottom: 30px;">
+            <h3 style="font-size: 16px; color: var(--text-black); margin-bottom: 10px;">Research Interests</h3>
+            <ul style="font-size: 14px; color: var(--google-grey);">
+                <li>• Data-driven Decision Making</li>
+                <li>• Logistics & Supply Chain</li>
+                <li>• Complex Networks</li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 style="font-size: 16px; color: var(--text-black); margin-bottom: 10px;">Education</h3>
+            <div class="edu-item">
+                <span class="edu-school">The University of Hong Kong</span>
+                <div class="edu-degree">M.S. in IELM (2024 - 2025)</div>
+            </div>
+            <div class="edu-item">
+                <span class="edu-school">Beijing Normal University</span>
+                <div class="edu-degree">B.S. in Systems Science (2020 - 2024)</div>
+                <div class="edu-degree">B.Ec. in Finance (Dual Degree)</div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        
+        <section id="bio" style="margin-bottom: 40px;">
+            <div class="section-title">About Me</div>
+            <p>
+                I am currently a Research Assistant at the Department of Industrial and Systems Engineering (ISE), <strong>The Hong Kong Polytechnic University (PolyU)</strong>. 
+            </p>
+            <p>
+                I received my Master's degree from <strong>HKU</strong> in 2025 and my Bachelor's degree from <strong>BNU</strong> in 2024. My research focuses on the intersection of Operations Research and Complex Systems, specifically applying data-driven optimization and network theory to solve problems in logistics and supply chain finance.
+            </p>
+        </section>
+
+        <section id="news" style="margin-bottom: 40px;">
+            <div class="section-title">News</div>
+            <ul class="news-list">
+                <li>
+                    <span class="news-date">May 2025</span>
+                    <span class="news-content">Presentation at <em>2025 IEEE Int'l Conf. on Complex Systems</em>.</span>
+                </li>
+                <li>
+                    <span class="news-date">Apr 2025</span>
+                    <span class="news-content">Joined PolyU as a Research Assistant.</span>
+                </li>
+                <li>
+                    <span class="news-date">2024</span>
+                    <span class="news-content">Awarded "Excellent Graduation Thesis" at BNU.</span>
+                </li>
+            </ul>
+        </section>
+
+        <section id="publications">
+            <div class="section-title">Publications</div>
+            <p style="font-size: 14px; color: var(--google-grey); margin-bottom: 20px;">* Corresponding author</p>
             
-            <div class="publications-section">
-                <table class="pub-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 85%;">TITLE</th>
-                            <th style="width: 15%; text-align: right; padding-right: 10px;">YEAR</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                        <tr>
-                            <td>
-                                [cite_start]<a href="https://doi.org/10.1016/j.elerap.2024.101533" target="_blank" class="pub-title">Decentralized autonomous organizations in e-commerce supply chains: A bayesian method to barrier identification and interrelationship mapping [cite: 1]</a>
-                                <div class="pub-authors"><strong>H Xie*</strong>, YP Tsang</div>
-                                <div class="pub-venue">Electronic Commerce Research and Applications, 101533 (JCR Q1)</div>
-                            </td>
-                            <td class="year-col">2025</td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                [cite_start]<a href="https://doi.org/10.1016/j.jairtraman.2024.102655" target="_blank" class="pub-title">Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis [cite: 2]</a>
-                                <div class="pub-authors"><strong>H Xie</strong>, Y Li, Y Pu, C Zhang, J Huang</div>
-                                <div class="pub-venue">Journal of Air Transport Management 120, 102655 (JCR Q1)</div>
-                            </td>
-                            <td class="year-col">2024</td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                [cite_start]<a href="https://doi.org/10.1016/j.clscn.2023.100110" target="_blank" class="pub-title">Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL-AISM approach [cite: 3]</a>
-                                <div class="pub-authors">Y Li, Y Tan, Y Pu, Y Zhu, <strong>H Xie*</strong></div>
-                                <div class="pub-venue">Cleaner Logistics and Supply Chain 7, 100110 (JCR Q1)</div>
-                            </td>
-                            <td class="year-col">2023</td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                [cite_start]<a href="#" class="pub-title">Classifying Drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction [cite: 4]</a>
-                                <div class="pub-authors">K Yang, T Liu, Z Wang... <strong>H Xie</strong>... K Zhang</div>
-                                <div class="pub-venue">iScience 25, 104180 (JCR Q1)</div>
-                            </td>
-                            <td class="year-col">2021</td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                [cite_start]<a href="#" class="pub-title">Identifying extreme precipitation using nonequilibrium thermodynamics (Under revision) [cite: 5]</a>
-                                <div class="pub-authors"><strong>H Xie</strong>, H Liu, Y Tang</div>
-                                <div class="pub-venue">Preprint / Under Revision</div>
-                            </td>
-                            <td class="year-col">2024</td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                [cite_start]<a href="#" class="pub-title">Link prediction for complex networks with zero-shot learning (Under review) [cite: 6]</a>
-                                <div class="pub-authors"><strong>H Xie*</strong>, Y Pu, Y Tan</div>
-                                <div class="pub-venue">Preprint / Under Review</div>
-                            </td>
-                            <td class="year-col">2024</td>
-                        </tr>
-
-                    </tbody>
-                </table>
-                <div style="margin-top: 30px; font-size: 13px; color: #5f6368; text-align: center;">
-                    <p>Depending on the specific requirements, PDF links can be added next to the titles.</p>
+            <div class="pub-item">
+                <a href="#" class="pub-title">Decentralized autonomous organizations in e-commerce supply chains: A bayesian method to barrier identification and interrelationship mapping</a>
+                <div class="pub-authors"><strong>Haotian Xie*</strong>, Yung Po Tsang</div>
+                <div class="pub-venue">
+                    <em>Electronic Commerce Research and Applications</em>, 2025.
+                    <span class="tag">JCR Q1</span> <span class="tag">IF=6.3</span>
                 </div>
             </div>
 
-            <div class="sidebar-section">
-                
-                <div class="sidebar-box">
-                    <div class="sidebar-title">News</div>
-                    <ul class="sidebar-list">
-                        <li><strong>May 2025</strong><br>Presentation at IEEE Conf. on Complex Systems, Shenzhen.</li>
-                        <li><strong>Apr 2025</strong><br>RA at PolyU & Bolly Express.</li>
-                        <li><strong>Sep 2024</strong><br>Joined HKU IELM.</li>
-                    </ul>
+            <div class="pub-item">
+                <a href="#" class="pub-title">Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis</a>
+                <div class="pub-authors"><strong>Haotian Xie</strong>, Li, Y., Pu, Y., Zhang, C., & Huang, J.</div>
+                <div class="pub-venue">
+                    <em>Journal of Air Transport Management</em>, 2024.
+                    <span class="tag">JCR Q1</span> <span class="tag">IF=4.5</span>
                 </div>
-
-                <div class="sidebar-box">
-                    <div class="sidebar-title">Academic Services</div>
-                    <ul class="sidebar-list">
-                        <li>Reviewer, <em>Information Processing & Management</em></li>
-                        <li>Reviewer, <em>Expert Systems with Applications</em></li>
-                        <li>Reviewer, <em>J. Air Transport Management</em></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-box">
-                    <div class="sidebar-title">Links</div>
-                    <ul class="sidebar-list">
-                        <li><a href="CV_Haotian_XIE.pdf">Download CV</a></li>
-                        <li><a href="https://scholar.google.com/citations?user=X42fddQAAAAJ">Google Scholar Profile</a></li>
-                    </ul>
-                </div>
-
             </div>
-        </div>
 
-    </div>
+            <div class="pub-item">
+                <a href="#" class="pub-title">Exploring the drivers of green supply chain management in the Chinese electronics industry</a>
+                <div class="pub-authors">Li, Y., Tan, Y., Pu, Y., Zhu, Y., & <strong>Haotian Xie*</strong></div>
+                <div class="pub-venue">
+                    <em>Cleaner Logistics and Supply Chain</em>, 2023.
+                    <span class="tag">JCR Q1</span> <span class="tag">IF=6.9</span>
+                </div>
+            </div>
+
+            <div class="pub-item">
+                <a href="#" class="pub-title">Classifying Drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction</a>
+                <div class="pub-authors">Yang, K., Liu, T., Wang, Z., ..., <strong>Haotian Xie</strong>, ..., Zhang, K.</div>
+                <div class="pub-venue">
+                    <em>iScience</em>, 2021.
+                    <span class="tag">JCR Q1</span> <span class="tag">IF=5.0</span>
+                </div>
+            </div>
+
+            <h3 style="font-size: 16px; margin-top: 30px; margin-bottom: 15px; color: var(--text-black);">Preprints & Working Papers</h3>
+            
+            <div class="pub-item">
+                <span class="pub-title">Identifying extreme precipitation using nonequilibrium thermodynamics</span>
+                <div class="pub-authors"><strong>Haotian Xie</strong>, Liu, H., & Tang, Y.</div>
+                <div class="pub-venue">
+                    <em>Under revision</em>
+                </div>
+            </div>
+
+            <div class="pub-item">
+                <span class="pub-title">Link prediction for complex networks with zero-shot learning</span>
+                <div class="pub-authors"><strong>Haotian Xie*</strong>, Pu, Y. & Tan, Y.</div>
+                <div class="pub-venue">
+                    <em>Under review</em>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="services">
+            <div class="section-title">Service</div>
+            <ul style="color: var(--text-black); font-size: 14px;">
+                <li>Reviewer for <em>Information Processing & Management</em></li>
+                <li>Reviewer for <em>Expert Systems with Applications</em></li>
+                <li>Reviewer for <em>Journal of Air Transport Management</em></li>
+            </ul>
+        </section>
+
+    </main>
+</div>
+
+<footer style="border-top: 1px solid #eee; margin-top: 50px; padding: 30px 0; text-align: center; color: #9aa0a6; font-size: 12px;">
+    &copy; 2025 Haotian Xie. Hosted on GitHub Pages.
+</footer>
 
 </body>
 </html>
