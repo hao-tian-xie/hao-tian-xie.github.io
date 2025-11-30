@@ -3,239 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haotian Xie | The Hong Kong Polytechnic University</title>
+    <title>Haotian Xie | PolyU</title>
     <meta name="description" content="Academic Homepage of Haotian Xie - Research Assistant at The Hong Kong Polytechnic University">
     <style>
-        /* CSS 变量：定义颜色和基础设置 */
+        /* 1. 基础设置与变量 */
         :root {
-            --google-blue: #1a73e8;
-            --google-blue-hover: #1765cc;
-            --google-grey: #5f6368;
-            --text-black: #202124;
-            --bg-color: #ffffff;
-            --border-color: #dadce0;
-        }
-
-        /* 基础排版设置 */
-        html {
-            /* 基础字体大小设为 16px，移动端可根据系统缩放自动调整 */
-            font-size: 100%; 
+            --primary-blue: #1a73e8;       /* Google Blue */
+            --hover-blue: #1557b0;
+            --text-main: #202124;          /* 深灰黑 */
+            --text-light: #5f6368;         /* 浅灰 */
+            --bg-body: #f8f9fa;            /* 浅灰背景，更护眼 */
+            --bg-card: #ffffff;            /* 卡片白底 */
+            --card-radius: 16px;           /* 大圆角 */
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* 柔和阴影 */
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
-            color: var(--text-black);
+            font-family: var(--font-stack);
+            background-color: var(--bg-body);
+            color: var(--text-main);
             margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            background-color: var(--bg-color);
+            padding: 40px 20px;
+            line-height: 1.8; /* 增大行高 */
+            font-size: 18px;  /* 增大基准字号 */
             -webkit-font-smoothing: antialiased;
-            /* 确保字体在不同设备上的可读性 */
-            font-size: 1rem; 
         }
 
         a {
-            color: var(--google-blue);
+            color: var(--primary-blue);
             text-decoration: none;
             transition: color 0.2s;
         }
 
         a:hover {
-            color: var(--google-blue-hover);
+            color: var(--hover-blue);
             text-decoration: underline;
         }
 
-        /* 布局容器 */
+        /* 2. 布局容器 */
         .container {
-            max-width: 1100px;
+            max-width: 1100px; /* 稍微加宽 */
             margin: 0 auto;
             display: flex;
-            flex-wrap: wrap;
-            padding: 3rem 1.5rem; /* 使用 rem 单位适配 */
-            gap: 4rem;
+            gap: 50px;
+            align-items: flex-start;
         }
 
-        /* 左侧边栏 (Sidebar) */
+        /* 3. 左侧边栏 (Sidebar) */
         .sidebar {
             flex: 1;
-            min-width: 280px; /* 稍微调宽以容纳全拼 */
-            max-width: 320px;
+            min-width: 320px;
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: var(--card-radius);
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            position: sticky;
+            top: 40px; /* 滚动时固定 */
         }
 
-        /* 右侧主内容 (Main) */
-        .main-content {
-            flex: 2.5;
-            min-width: 300px;
-        }
-
-        /* 头像样式 */
         .avatar {
-            width: 180px;
-            height: 180px;
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        /* 侧边栏文本 */
         .profile-name {
-            font-size: 1.75rem; /* 约 28px */
-            font-weight: 400;
-            margin: 0 0 0.5rem 0;
-            color: var(--text-black);
-            line-height: 1.3;
+            font-size: 1.6em;
+            font-weight: 700;
+            margin: 10px 0 5px 0;
+            color: var(--text-main);
         }
 
         .profile-title {
-            font-size: 1rem;
-            color: var(--google-grey);
-            margin-bottom: 1.5rem;
+            font-size: 1em;
+            color: var(--text-light);
+            margin-bottom: 25px;
             font-weight: 500;
         }
 
         .contact-info {
-            font-size: 0.9rem;
-            color: var(--google-grey);
-            margin-bottom: 2rem;
+            font-size: 0.9em;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            text-align: left;
+            padding-left: 10px;
         }
-
+        
         .contact-info div {
-            margin-bottom: 0.5rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* Follow Me 按钮样式 */
-        .follow-btn {
+        /* Google Scholar 按钮样式 */
+        .scholar-btn {
             display: inline-block;
-            background-color: var(--google-blue);
-            color: #ffffff !important; /* 强制白色文字 */
-            padding: 0.6rem 1.2rem;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            text-decoration: none;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            transition: background-color 0.2s, box-shadow 0.2s;
-            margin-top: 0.5rem;
-            text-align: center;
+            background-color: var(--primary-blue);
+            color: #fff !important;
+            padding: 12px 24px;
+            border-radius: 50px; /* 胶囊圆角 */
+            font-weight: 600;
+            font-size: 0.95em;
+            text-decoration: none !important;
+            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+            width: 80%;
+            margin-bottom: 30px;
         }
 
-        .follow-btn:hover {
-            background-color: var(--google-blue-hover);
-            text-decoration: none;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        .scholar-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(26, 115, 232, 0.4);
+            background-color: var(--hover-blue);
         }
 
-        /* 章节标题 */
+        /* 教育背景部分 */
+        .edu-box {
+            text-align: left;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .edu-item {
+            margin-bottom: 15px;
+        }
+
+        .edu-school {
+            font-weight: 600;
+            color: var(--text-main);
+            display: block;
+            font-size: 0.95em;
+        }
+
+        .edu-degree {
+            font-size: 0.85em;
+            color: var(--text-light);
+        }
+
+        /* 4. 右侧主内容 (Main Content) */
+        .main-content {
+            flex: 2.5;
+            display: flex;
+            flex-direction: column;
+            gap: 30px; /* 模块间距 */
+        }
+
+        /* 通用卡片样式 */
+        section {
+            background: var(--bg-card);
+            padding: 35px;
+            border-radius: var(--card-radius);
+            box-shadow: var(--card-shadow);
+        }
+
         .section-title {
-            font-size: 1.25rem;
-            font-weight: 400;
-            color: var(--google-blue);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border-color);
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary-blue);
+            padding-left: 15px;
+            line-height: 1.2;
         }
 
         /* 文本两端对齐 */
         p {
-            text-align: justify; /* 关键：两端对齐 */
-            margin-bottom: 1rem;
+            text-align: justify;
+            margin-bottom: 1.2em;
         }
 
-        /* 列表通用样式 */
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+        /* 关键词高亮 */
+        .highlight {
+            color: var(--primary-blue);
+            font-weight: 600;
+            background-color: rgba(26, 115, 232, 0.05); /* 淡淡的背景色 */
+            padding: 0 4px;
+            border-radius: 4px;
         }
 
-        /* 教育背景 */
-        .edu-item {
-            margin-bottom: 1.2rem;
-        }
-        .edu-school {
-            font-weight: 500;
-            display: block;
-            color: var(--text-black);
-        }
-        .edu-degree {
-            font-size: 0.9rem;
-            color: var(--google-grey);
-            line-height: 1.4;
+        /* 5. 论文列表样式 */
+        .year-header {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--text-light);
+            margin: 30px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #f1f3f4;
         }
 
-        /* 论文列表 */
         .pub-item {
-            margin-bottom: 2rem;
-            text-align: justify; /* 关键：两端对齐 */
+            margin-bottom: 25px;
+            padding-left: 0;
         }
 
         .pub-title {
-            font-size: 1.1rem;
-            font-weight: 500;
+            font-size: 1.05em;
+            font-weight: 600;
+            color: var(--text-main);
             display: block;
-            margin-bottom: 0.4rem;
-            color: var(--text-black);
+            margin-bottom: 6px;
             line-height: 1.4;
+            text-align: justify; /* 标题也两端对齐 */
         }
 
         .pub-authors {
-            font-size: 0.95rem;
-            color: var(--google-grey);
-            margin-bottom: 0.3rem;
+            font-size: 0.95em;
+            color: var(--text-light);
+            margin-bottom: 4px;
         }
 
         .pub-venue {
-            font-size: 0.95rem;
+            font-size: 0.95em;
             font-style: italic;
-            color: var(--text-black);
+            color: var(--text-main);
         }
 
-        /* 标签样式 (Q1, IF) */
         .tag {
-            font-size: 0.75rem;
-            border: 1px solid var(--border-color);
-            color: var(--google-grey);
+            font-size: 0.75em;
+            background-color: #f1f3f4;
+            color: var(--text-light);
             padding: 2px 8px;
-            border-radius: 4px;
+            border-radius: 12px;
             margin-left: 8px;
-            vertical-align: middle;
-            white-space: nowrap; /* 防止标签内换行 */
+            font-weight: 500;
             font-style: normal;
+            vertical-align: middle;
+            border: 1px solid #e0e0e0;
         }
 
-        /* 学术服务列表 */
+        .links {
+            margin-top: 8px;
+            font-size: 0.9em;
+        }
+
+        .links a {
+            margin-right: 15px;
+            font-weight: 600;
+        }
+
+        /* 6. Service 列表 */
         .service-list li {
-            margin-bottom: 0.8rem;
-            font-size: 0.95rem;
-            text-align: justify;
+            margin-bottom: 10px;
+            list-style: none;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .service-list li::before {
+            content: "•";
+            color: var(--primary-blue);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
         }
 
-        /* 移动端适配 (Responsive) */
-        @media (max-width: 800px) {
+        /* 7. 响应式设计 (Mobile) */
+        @media (max-width: 850px) {
             .container {
                 flex-direction: column;
-                gap: 2rem;
-                padding: 2rem 1rem;
+                gap: 30px;
             }
             .sidebar {
-                max-width: 100%;
-                text-align: center;
-                border-bottom: 1px solid #eee;
-                padding-bottom: 2rem;
+                width: 100%;
+                min-width: auto;
+                box-sizing: border-box; /* 防止padding撑开 */
+                position: static;
             }
-            .avatar {
-                margin: 0 auto 1.5rem auto;
+            .main-content {
+                width: 100%;
             }
-            .contact-info {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+            body {
+                padding: 20px 15px;
+                font-size: 16px; /* 手机上稍微调小一点点，避免太大 */
             }
-            /* 移动端文本大小微调 */
-            .profile-name { font-size: 1.5rem; }
-            .section-title { font-size: 1.1rem; }
-            body { font-size: 0.95rem; }
         }
     </style>
 </head>
@@ -246,7 +293,8 @@
     <aside class="sidebar">
         <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=X42fddQAAAAJ&citpid=1" alt="Haotian Xie" class="avatar">
         
-        <h1 class="profile-name">Haotian Xie<br><span style="font-size: 0.8em; color: #5f6368;">(谢昊天)</span></h1>
+        <h1 class="profile-name">Haotian Xie</h1>
+        <p style="color: #666; font-size: 0.9em; margin-bottom: 2px;">(谢昊天)</p>
         
         <div class="profile-title">
             Research Assistant<br>
@@ -254,28 +302,17 @@
             The Hong Kong Polytechnic University
         </div>
 
-        <div style="margin-bottom: 2rem;">
-            <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank" class="follow-btn">
-                Follow me on Google Scholar
-            </a>
-        </div>
+        <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank" class="scholar-btn">
+            Follow me on Google Scholar
+        </a>
 
         <div class="contact-info">
             <div>📍 Hong Kong, China</div>
             <div>📧 haotiantimxie@gmail.com</div>
         </div>
 
-        <div style="margin-bottom: 2.5rem;">
-            <h3 style="font-size: 1rem; color: var(--text-black); margin-bottom: 0.8rem;">Research Interests</h3>
-            <ul style="font-size: 0.9rem; color: var(--google-grey);">
-                <li>• Data-driven Decision Making</li>
-                <li>• Logistics and Supply Chain Management</li>
-                <li>• Complex Networks Theory</li>
-            </ul>
-        </div>
-
-        <div>
-            <h3 style="font-size: 1rem; color: var(--text-black); margin-bottom: 0.8rem;">Education</h3>
+        <div class="edu-box">
+            <h3 style="font-size: 1.1em; margin-bottom: 15px; color: var(--text-main);">Education</h3>
             <div class="edu-item">
                 <span class="edu-school">The University of Hong Kong</span>
                 <div class="edu-degree">Master of Science in Industrial Engineering and Logistics Management (2024 - 2025)</div>
@@ -283,97 +320,100 @@
             <div class="edu-item">
                 <span class="edu-school">Beijing Normal University</span>
                 <div class="edu-degree">Bachelor of Science in Systems Science (2020 - 2024)</div>
-                <div class="edu-degree">Bachelor of Economics in Finance (Dual Degree)</div>
+                <div class="edu-degree">Bachelor of Economics in Finance</div>
             </div>
         </div>
     </aside>
 
     <main class="main-content">
         
-        <section id="bio">
+        <section id="about">
             <div class="section-title">About Me</div>
             <p>
-                I am currently a Research Assistant at the Department of Industrial and Systems Engineering, <strong>The Hong Kong Polytechnic University</strong>. 
+                I am currently a Research Assistant at the Department of Industrial and Systems Engineering, <strong>The Hong Kong Polytechnic University</strong>. I received my Master's degree from <strong>The University of Hong Kong</strong> in 2025 and my Bachelor's degree from <strong>Beijing Normal University</strong> in 2024.
             </p>
             <p>
-                I received my Master of Science degree from <strong>The University of Hong Kong</strong> in 2025 and my Bachelor of Science degree from <strong>Beijing Normal University</strong> in 2024. My research focuses on the intersection of Operations Research and Complex Systems, specifically applying data-driven optimization and network theory to solve problems in logistics and supply chain finance.
+                My research interests lie at the intersection of Operations Research and Complex Systems. Specifically, I focus on <span class="highlight">Data-driven Decision Making</span>, <span class="highlight">Logistics & Supply Chain Management</span>, and <span class="highlight">Complex Networks Theory</span>. I am passionate about applying mathematical modeling and optimization techniques to solve real-world problems in supply chain finance and transportation systems.
             </p>
         </section>
 
         <section id="publications">
             <div class="section-title">Publications</div>
-            <p style="font-size: 0.9rem; color: var(--google-grey); margin-bottom: 1.5rem;">* Corresponding author</p>
             
-            <div class="pub-item">
-                <a href="#" class="pub-title">Decentralized autonomous organizations in e-commerce supply chains: A bayesian method to barrier identification and interrelationship mapping</a>
-                <div class="pub-authors"><strong>Haotian Xie*</strong>, Yung Po Tsang</div>
-                <div class="pub-venue">
-                    <em>Electronic Commerce Research and Applications</em>, 2025.
-                    <span class="tag">Journal Citation Reports Q1</span> <span class="tag">Impact Factor: 6.3</span>
-                </div>
-            </div>
-
-            <div class="pub-item">
-                <a href="#" class="pub-title">Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis</a>
-                <div class="pub-authors"><strong>Haotian Xie</strong>, Li, Y., Pu, Y., Zhang, C., & Huang, J.</div>
-                <div class="pub-venue">
-                    <em>Journal of Air Transport Management</em>, 2024.
-                    <span class="tag">Journal Citation Reports Q1</span> <span class="tag">Impact Factor: 4.5</span>
-                </div>
-            </div>
-
-            <div class="pub-item">
-                <a href="#" class="pub-title">Exploring the drivers of green supply chain management in the Chinese electronics industry</a>
-                <div class="pub-authors">Li, Y., Tan, Y., Pu, Y., Zhu, Y., & <strong>Haotian Xie*</strong></div>
-                <div class="pub-venue">
-                    <em>Cleaner Logistics and Supply Chain</em>, 2023.
-                    <span class="tag">Journal Citation Reports Q1</span> <span class="tag">Impact Factor: 6.9</span>
-                </div>
-            </div>
-
-            <div class="pub-item">
-                <a href="#" class="pub-title">Classifying Drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction</a>
-                <div class="pub-authors">Yang, K., Liu, T., Wang, Z., ..., <strong>Haotian Xie</strong>, ..., Zhang, K.</div>
-                <div class="pub-venue">
-                    <em>iScience</em>, 2021.
-                    <span class="tag">Journal Citation Reports Q1</span> <span class="tag">Impact Factor: 5.0</span>
-                </div>
-            </div>
-
-            <h3 style="font-size: 1.1rem; margin-top: 2.5rem; margin-bottom: 1rem; color: var(--text-black);">Preprints and Working Papers</h3>
+            <div class="year-header">Preprints & Working Papers</div>
             
             <div class="pub-item">
                 <span class="pub-title">Identifying extreme precipitation using nonequilibrium thermodynamics</span>
-                <div class="pub-authors"><strong>Haotian Xie</strong>, Liu, H., & Tang, Y.</div>
-                <div class="pub-venue">
-                    <em>Under revision</em>
-                </div>
+                <div class="pub-authors"><strong>H. Xie</strong>, H. Liu, & Y. Tang</div>
+                <div class="pub-venue">Under revision</div>
             </div>
 
             <div class="pub-item">
                 <span class="pub-title">Link prediction for complex networks with zero-shot learning</span>
-                <div class="pub-authors"><strong>Haotian Xie*</strong>, Pu, Y. & Tan, Y.</div>
+                <div class="pub-authors"><strong>H. Xie*</strong>, Y. Pu, & Y. Tan</div>
+                <div class="pub-venue">Under review</div>
+            </div>
+
+
+            <div class="year-header">2025</div>
+            
+            <div class="pub-item">
+                <a href="https://doi.org/10.1016/j.elerap.2024.101533" target="_blank" class="pub-title">Decentralized autonomous organizations in e-commerce supply chains: A bayesian method to barrier identification and interrelationship mapping</a>
+                <div class="pub-authors"><strong>H. Xie*</strong>, Y. P. Tsang</div>
                 <div class="pub-venue">
-                    <em>Under review</em>
+                    Electronic Commerce Research and Applications, 2025.
+                    <span class="tag">JCR Q1</span> <span class="tag">IF=6.3</span>
                 </div>
             </div>
 
+            <div class="year-header">2024</div>
+
+            <div class="pub-item">
+                <a href="https://doi.org/10.1016/j.jairtraman.2024.102655" target="_blank" class="pub-title">Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis</a>
+                <div class="pub-authors"><strong>H. Xie</strong>, Y. Li, Y. Pu, C. Zhang, & J. Huang</div>
+                <div class="pub-venue">
+                    Journal of Air Transport Management, 2024.
+                    <span class="tag">JCR Q1</span> <span class="tag">IF=4.5</span>
+                </div>
+            </div>
+
+            <div class="year-header">2023</div>
+
+            <div class="pub-item">
+                <a href="https://doi.org/10.1016/j.clscn.2023.100110" target="_blank" class="pub-title">Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL-AISM approach</a>
+                <div class="pub-authors">Y. Li, Y. Tan, Y. Pu, Y. Zhu, & <strong>H. Xie*</strong></div>
+                <div class="pub-venue">
+                    Cleaner Logistics and Supply Chain, 2023.
+                    <span class="tag">JCR Q1</span> <span class="tag">IF=6.9</span>
+                </div>
+            </div>
+
+            <div class="year-header">2021</div>
+
+            <div class="pub-item">
+                <span class="pub-title">Classifying Drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction</span>
+                <div class="pub-authors">K. Yang, T. Liu, Z. Wang, ..., <strong>H. Xie</strong>, ..., K. Zhang</div>
+                <div class="pub-venue">
+                    iScience, 2021.
+                    <span class="tag">JCR Q1</span> <span class="tag">IF=5.0</span>
+                </div>
+            </div>
         </section>
 
         <section id="services">
-            <div class="section-title">Academic Service</div>
+            <div class="section-title">Academic Services</div>
             <ul class="service-list">
-                <li>Reviewer for <em>Information Processing & Management</em></li>
-                <li>Reviewer for <em>Expert Systems with Applications</em></li>
-                <li>Reviewer for <em>Journal of Air Transport Management</em></li>
+                <li>Reviewer for <strong>Information Processing & Management</strong></li>
+                <li>Reviewer for <strong>Expert Systems with Applications</strong></li>
+                <li>Reviewer for <strong>Journal of Air Transport Management</strong></li>
             </ul>
         </section>
 
     </main>
 </div>
 
-<footer style="border-top: 1px solid #eee; margin-top: 4rem; padding: 2rem 0; text-align: center; color: #9aa0a6; font-size: 0.8rem;">
-    &copy; 2025 Haotian Xie. Hosted on GitHub Pages.
+<footer style="text-align: center; margin-top: 40px; color: #9aa0a6; font-size: 0.8em; padding-bottom: 20px;">
+    &copy; 2025 Haotian Xie. All rights reserved.
 </footer>
 
 </body>
