@@ -20,8 +20,8 @@
         }
 
         html {
-            scroll-behavior: smooth; /* 启用平滑滚动 */
-            scroll-padding-top: 80px; /* 点击导航跳转时留出头部空间 */
+            scroll-behavior: smooth; 
+            scroll-padding-top: 80px; 
         }
 
         body {
@@ -45,7 +45,7 @@
             color: var(--hover-blue);
         }
 
-        /* 2. 布局容器 (Flex 3:7) */
+        /* 2. 布局容器 */
         .container {
             width: 100%;
             display: flex;
@@ -63,7 +63,7 @@
             border-radius: var(--card-radius);
             box-shadow: var(--card-shadow);
             text-align: left;
-            position: sticky; /* 左侧也是悬浮的 */
+            position: sticky;
             top: 30px;
             z-index: 10;
         }
@@ -158,10 +158,10 @@
             gap: 25px;
         }
 
-        /* 新增：右侧顶部导航栏 */
+        /* 导航栏 */
         .navbar {
-            background: rgba(248, 249, 250, 0.95); /* 半透明背景，防止遮挡文字 */
-            backdrop-filter: blur(5px); /* 毛玻璃效果 */
+            background: rgba(248, 249, 250, 0.95);
+            backdrop-filter: blur(5px);
             padding: 10px 0 15px 0;
             position: sticky;
             top: 0;
@@ -190,7 +190,6 @@
             text-decoration: none;
         }
 
-        /* 鼠标悬停时的下划线动画 */
         .nav-item::after {
             content: '';
             position: absolute;
@@ -345,7 +344,7 @@
         @media (max-width: 900px) {
             .container { flex-direction: column; gap: 20px; }
             .sidebar, .main-content { width: 100%; position: static; }
-            .navbar { position: static; border-bottom: none; } /* 手机上不悬浮 */
+            .navbar { position: static; border-bottom: none; }
         }
     </style>
 </head>
@@ -407,27 +406,14 @@
             <p>
                 My research interests lie at the intersection of Operations Research and Complex Systems. Specifically, I focus on <span class="highlight">Data-driven Decision Making</span>, <span class="highlight">Logistics & Supply Chain Management</span>, and <span class="highlight">Complex Networks Theory</span>. I am passionate about applying mathematical modeling and optimization techniques to solve real-world problems in supply chain finance and transportation systems.
             </p>
+            <p style="border-top: 1px solid #eee; padding-top: 20px; color: #444;">
+                📢 <strong>I am actively seeking a Ph.D. position starting in Fall 2026.</strong> I am also open to potential academic collaborations and discussions. Please feel free to reach out to me via email.
+            </p>
         </section>
 
         <section id="publications">
             <div class="section-title">Publications</div>
             
-            <div class="pub-item">
-                <span class="pub-title">Identifying extreme precipitation using nonequilibrium thermodynamics</span>
-                <div class="pub-authors"><strong>H. Xie</strong>, H. Liu, & Y. Tang</div>
-                <div class="pub-venue">
-                    Under revision
-                </div>
-            </div>
-
-            <div class="pub-item">
-                <span class="pub-title">Link prediction for complex networks with zero-shot learning</span>
-                <div class="pub-authors"><strong>H. Xie*</strong>, Y. Pu, & Y. Tan</div>
-                <div class="pub-venue">
-                    Under review
-                </div>
-            </div>
-
             <div class="pub-item">
                 <span class="pub-title">Decentralized autonomous organizations in e-commerce supply chains: A bayesian method to barrier identification and interrelationship mapping</span>
                 <div class="pub-authors"><strong>H. Xie*</strong>, Y. P. Tsang</div>
@@ -479,6 +465,27 @@
                     <a href="https://scholar.google.com/scholar?q=Classifying+Drosophila+olfactory+projection+neuron+boutons" target="_blank" class="btn-small">Google Scholar</a>
                 </div>
             </div>
+
+            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px dashed #f1f3f4;">
+                <h3 style="font-size: 1.1em; color: var(--text-light); margin-bottom: 20px;">Under Revision</h3>
+                
+                <div class="pub-item">
+                    <span class="pub-title">A Virtual Node-Based Zero-Shot Learning Framework for Link Prediction in Complex Networks</span>
+                    <div class="pub-authors"><strong>H. Xie</strong>, Y. Pu, Y. Tan, & W. Yan</div>
+                    <div class="pub-venue">
+                        Under revision at <em>Information Sciences</em>
+                    </div>
+                </div>
+
+                <div class="pub-item">
+                    <span class="pub-title">Topological Persistence Pinpoints Higher-order Network Vulnerabilities</span>
+                    <div class="pub-authors"><strong>H. Xie</strong>, et al.</div>
+                    <div class="pub-venue">
+                        Under revision at <em>Chaos</em>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
         <section id="honors">
