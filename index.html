@@ -3,304 +3,346 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haotian Xie | Research</title>
-    <meta name="description" content="Academic Homepage of Haotian Xie - HKU">
+    <title>Haotian Xie - Academic Profile</title>
     <style>
-        /* Apple Style Design Language */
+        /* Google Style CSS Variables */
         :root {
-            --bg-color: #f5f5f7; /* Apple 经典的浅灰背景 */
-            --card-bg: #ffffff;
-            --primary-text: #1d1d1f; /* Apple 黑 */
-            --secondary-text: #86868b; /* Apple 灰 */
-            --accent-color: #0066cc; /* 链接蓝 */
-            --border-radius: 18px;
-            --section-spacing: 60px;
+            --google-blue: #1a0dab;
+            --google-gray: #5f6368;
+            --google-bg: #fff;
+            --link-hover: #1a0dab;
+            --border-color: #dadce0;
+            --font-family: Arial, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--primary-text);
+            font-family: var(--font-family);
+            background-color: #fff;
+            color: #202124;
             margin: 0;
             padding: 0;
             line-height: 1.5;
-            -webkit-font-smoothing: antialiased; /* 让字体渲染更像 Mac */
         }
 
+        /* 顶部导航模拟 Google */
+        .navbar {
+            padding: 20px 30px;
+            border-bottom: 1px solid #ebebeb;
+            display: flex;
+            align-items: center;
+        }
+        .logo {
+            font-size: 20px;
+            color: #5f6368;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .logo span { color: #4285f4; font-weight: bold; margin-right: 5px;}
+
+        /* 主体布局：侧边栏 + 内容 */
         .container {
-            max-width: 720px; /* 限制宽度，增加阅读舒适感 */
-            margin: 0 auto;
-            padding: 60px 20px;
+            max-width: 1100px;
+            margin: 40px auto;
+            display: flex;
+            gap: 60px;
+            padding: 0 20px;
         }
 
-        /* 头部设计 - 极简 */
-        header {
-            text-align: center;
-            margin-bottom: var(--section-spacing);
+        /* 左侧个人信息栏 */
+        .profile-sidebar {
+            width: 250px;
+            flex-shrink: 0;
         }
 
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* 柔和阴影 */
-            background-color: #fff;
-        }
-
-        h1 {
-            font-size: 40px;
-            font-weight: 600;
-            margin: 0 0 10px 0;
-            letter-spacing: -0.02em;
-        }
-
-        .subtitle {
-            font-size: 19px;
-            font-weight: 400;
-            color: var(--secondary-text);
+            border: 1px solid #eee;
             margin-bottom: 20px;
         }
 
-        .social-links a {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-size: 15px;
-            margin: 0 10px;
-            transition: opacity 0.2s;
-        }
-        
-        .social-links a:hover {
-            opacity: 0.7;
-            text-decoration: underline;
-        }
-
-        /* 卡片式布局 */
-        section {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04); /* 极淡的阴影 */
-        }
-
-        h2 {
+        .name {
             font-size: 24px;
-            font-weight: 600;
-            margin-top: 0;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #ebeped;
-            letter-spacing: -0.01em;
+            font-weight: normal;
+            margin: 0 0 10px 0;
         }
 
-        /* News 列表 - 紧凑 */
-        ul.news-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        ul.news-list li {
-            display: flex;
-            margin-bottom: 12px;
-            font-size: 15px;
-        }
-
-        .date-badge {
-            font-variant-numeric: tabular-nums;
-            color: var(--secondary-text);
-            min-width: 90px;
-            font-weight: 500;
-        }
-
-        /* Publication 列表 - 清晰 */
-        .pub-item {
-            margin-bottom: 25px;
-        }
-
-        .pub-title {
-            font-size: 17px;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 4px;
-            color: var(--primary-text);
-        }
-
-        .pub-authors {
-            font-size: 15px;
-            color: var(--secondary-text);
-            margin-bottom: 4px;
-            display: block;
-        }
-
-        .pub-venue {
+        .affiliation {
             font-size: 14px;
-            color: var(--secondary-text);
-            font-style: italic;
+            color: #333;
+            margin-bottom: 5px;
         }
-        
-        .pub-links {
-            margin-top: 6px;
+
+        .email {
             font-size: 13px;
+            color: var(--google-gray);
+            margin-bottom: 20px;
         }
 
-        .pub-links a {
-            color: var(--accent-color);
-            text-decoration: none;
-            margin-right: 10px;
-            font-weight: 500;
+        .tags {
+            margin-top: 20px;
         }
-
-        /* 标签样式 */
         .tag {
-            display: inline-block;
-            background: #f0f0f2;
-            color: #666;
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-left: 6px;
-            vertical-align: middle;
-            text-transform: uppercase;
+            display: block;
+            color: var(--google-blue);
+            text-decoration: none;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        .tag:hover { text-decoration: underline; }
+
+        /* 右侧主要内容 */
+        .main-content {
+            flex-grow: 1;
+        }
+
+        /* 自动生成的 News */
+        .news-box {
+            background: #f8f9fa;
+            border: 1px solid var(--border-color);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            display: none; /* JS 有新文章时才会显示 */
+        }
+        .news-header {
+            font-size: 16px;
+            color: #202124;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .news-item {
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: baseline;
+        }
+        .news-date {
+            color: var(--google-gray);
+            font-size: 12px;
+            min-width: 80px;
+            margin-right: 10px;
+        }
+
+        /* 论文列表 */
+        .section-title {
+            font-size: 18px;
+            color: #202124;
+            border-bottom: 1px solid #ebebeb;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            margin-top: 0;
+        }
+
+        .paper-item {
+            margin-bottom: 25px;
+        }
+
+        .paper-title {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+        .paper-title a {
+            color: var(--google-blue);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .paper-title a:hover { text-decoration: underline; }
+
+        .paper-meta {
+            font-size: 14px;
+            color: var(--google-gray);
         }
         
-        .tag.new {
-            background: #e6f2ff;
-            color: #0066cc;
+        .paper-year {
+            font-size: 13px;
+            color: #5f6368;
+            margin-left: 10px;
         }
 
-        /* 移动端适配 */
-        @media (max-width: 600px) {
-            .container { padding: 40px 15px; }
-            section { padding: 25px; }
-            h1 { font-size: 32px; }
-            .date-badge { min-width: 75px; font-size: 14px; }
+        /* 加载动画 */
+        #loading {
+            color: var(--google-gray);
+            font-size: 14px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .profile-sidebar { width: 100%; text-align: center; }
+            .avatar { margin: 0 auto 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=X42fddQAAAAJ&citpid=1" alt="Haotian Xie" class="avatar">
-            <h1>Haotian Xie</h1>
-            <div class="subtitle">
-                M.S. Student at HKU · Industrial Engineering & Logistics Management
-            </div>
-            <div class="social-links">
-                <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank">Google Scholar</a>
-                <a href="mailto:haotiantimxie@gmail.com">Email</a>
-                </div>
-        </header>
-
-        <section id="news">
-            <h2>News</h2>
-            <ul class="news-list">
-                <li>
-                    <span class="date-badge">May 2025</span>
-                    <span>Presenting at IEEE Complex Systems & Intelligent Science Conf. (Shenzhen).</span>
-                </li>
-                <li>
-                    <span class="date-badge">Apr 2025</span>
-                    <span>Started RA position at PolyU & Bolly Express.</span>
-                </li>
-                <li>
-                    <span class="date-badge">Sep 2024</span>
-                    <span>Joined The University of Hong Kong (HKU).</span>
-                </li>
-            </ul>
-        </section>
-
-        <section id="publications">
-            <h2>Publications</h2>
-            
-            <div class="pub-group">
-                <h3 style="font-size: 14px; text-transform: uppercase; color: #86868b; margin-bottom: 20px; letter-spacing: 1px;">Peer-Reviewed Journals</h3>
-                
-                <div class="pub-item">
-                    <span class="pub-title">Decentralized autonomous organizations in e-commerce supply chains: A bayesian method to barrier identification and interrelationship mapping</span>
-                    <span class="pub-authors"><strong>Haotian Xie*</strong>, Yung Po Tsang</span>
-                    <div class="pub-venue">
-                        Electronic Commerce Research and Applications, 2025.
-                        <span class="tag new">JCR Q1</span> <span class="tag">IF=6.3</span>
-                    </div>
-                    <div class="pub-links">
-                        <a href="https://doi.org/10.1016/j.elerap.2024.101533" target="_blank">DOI</a>
-                    </div>
-                </div>
-
-                <div class="pub-item">
-                    <span class="pub-title">Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis</span>
-                    <span class="pub-authors"><strong>Haotian Xie</strong>, Li, Y., Pu, Y., Zhang, C., & Huang, J.</span>
-                    <div class="pub-venue">
-                        Journal of Air Transport Management, 2024.
-                        <span class="tag">JCR Q1</span> <span class="tag">IF=4.5</span>
-                    </div>
-                    <div class="pub-links">
-                        <a href="https://doi.org/10.1016/j.jairtraman.2024.102655" target="_blank">DOI</a>
-                    </div>
-                </div>
-
-                <div class="pub-item">
-                    <span class="pub-title">Exploring the drivers of green supply chain management in the Chinese electronics industry</span>
-                    <span class="pub-authors">Li, Y., Tan, Y., Pu, Y., Zhu, Y., & <strong>Haotian Xie*</strong></span>
-                    <div class="pub-venue">
-                        Cleaner Logistics and Supply Chain, 2023.
-                        <span class="tag">JCR Q1</span> <span class="tag">IF=6.9</span>
-                    </div>
-                    <div class="pub-links">
-                        <a href="https://doi.org/10.1016/j.clscn.2023.100110" target="_blank">DOI</a>
-                    </div>
-                </div>
-
-                <div class="pub-item">
-                    <span class="pub-title">Classifying Drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction</span>
-                    <span class="pub-authors">Yang, K., Liu, T., Wang, Z., ... <strong>Haotian Xie</strong>, ... Zhang, K.</span>
-                    <div class="pub-venue">
-                        iScience, 2021.
-                        <span class="tag">JCR Q1</span> <span class="tag">IF=5.0</span>
-                    </div>
-                    <div class="pub-links">
-                        <a href="#">PDF</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pub-group" style="margin-top: 40px;">
-                <h3 style="font-size: 14px; text-transform: uppercase; color: #86868b; margin-bottom: 20px; letter-spacing: 1px;">Working Papers & Preprints</h3>
-                
-                <div class="pub-item">
-                    <span class="pub-title">Link prediction for complex networks with zero-shot learning</span>
-                    <span class="pub-authors"><strong>Haotian Xie*</strong>, Pu, Y. & Tan, Y.</span>
-                    <div class="pub-venue">Under Review</div>
-                </div>
-
-                <div class="pub-item">
-                    <span class="pub-title">Identifying extreme precipitation using nonequilibrium thermodynamics</span>
-                    <span class="pub-authors"><strong>Haotian Xie</strong>, Liu, H., & Tang, Y.</span>
-                    <div class="pub-venue">Under Revision</div>
-                </div>
-            </div>
-
-        </section>
-
-        <section id="interests">
-            <h2>Research Interests</h2>
-            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                <span style="background: #eef1f5; padding: 8px 16px; border-radius: 20px; font-size: 14px;">Data-driven Decision Making</span>
-                <span style="background: #eef1f5; padding: 8px 16px; border-radius: 20px; font-size: 14px;">Logistics & Supply Chain</span>
-                <span style="background: #eef1f5; padding: 8px 16px; border-radius: 20px; font-size: 14px;">Complex Networks</span>
-                <span style="background: #eef1f5; padding: 8px 16px; border-radius: 20px; font-size: 14px;">Operations Research</span>
-            </div>
-        </section>
-        
-        <footer style="text-align: center; color: var(--secondary-text); font-size: 13px; margin-top: 60px; padding-bottom: 40px;">
-            © 2025 Haotian Xie.
-        </footer>
+    <div class="navbar">
+        <a href="#" class="logo"><span>G</span>oogle Scholar Profile Style</a>
     </div>
 
+    <div class="container">
+        <div class="profile-sidebar">
+            <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=X42fddQAAAAJ&citpid=1" alt="Haotian Xie" class="avatar">
+            <h1 class="name">Haotian Xie (谢昊天)</h1>
+            <div class="affiliation">M.S. Student, Industrial Engineering & Logistics Management</div>
+            <div class="affiliation">The University of Hong Kong (HKU)</div>
+            <div class="email">haotiantimxie@gmail.com</div>
+            
+            <div class="tags">
+                <div style="font-weight: bold; margin-bottom:10px; color:#5f6368">Research Interests</div>
+                <a href="#" class="tag">Data-driven Decision Making</a>
+                <a href="#" class="tag">Supply Chain Management</a>
+                <a href="#" class="tag">Complex Networks</a>
+                <a href="#" class="tag">Operations Research</a>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank" style="display:inline-block; padding:8px 16px; background:#1a73e8; color:fff; text-decoration:none; border-radius:4px; font-size:14px; font-weight:500; color: white;">Follow on Google Scholar</a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            
+            <div id="news-section" class="news-box">
+                <div class="news-header">Latest Updates (Auto-generated)</div>
+                <div id="news-list"></div>
+            </div>
+
+            <h2 class="section-title">All Publications</h2>
+            <div id="loading">Fetching papers from academic database...</div>
+            <div id="paper-list"></div>
+
+            <div style="margin-top: 50px; border-top: 1px solid #ebebeb; padding-top: 20px; font-size: 12px; color: #999;">
+                <p>Data source: Semantic Scholar API. Layout inspired by Google Scholar.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 配置区
+        const AUTHOR_NAME = "Haotian Xie";
+        // 你的初始数据 (来自简历，作为备用，防止API挂掉)
+        const MANUAL_PAPERS = [
+            {
+                title: "Decentralized autonomous organizations in e-commerce supply chains: A bayesian method to barrier identification and interrelationship mapping",
+                authors: "Haotian Xie*, Yung Po Tsang",
+                venue: "Electronic Commerce Research and Applications",
+                year: 2025,
+                url: "https://doi.org/10.1016/j.elerap.2024.101533"
+            },
+            {
+                title: "Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis",
+                authors: "Haotian Xie, Li, Y., Pu, Y., Zhang, C., & Huang, J.",
+                venue: "Journal of Air Transport Management",
+                year: 2024,
+                url: "https://doi.org/10.1016/j.jairtraman.2024.102655"
+            },
+            {
+                title: "Exploring the drivers of green supply chain management in the Chinese electronics industry",
+                authors: "Li, Y., Tan, Y., Pu, Y., Zhu, Y., & Haotian Xie*",
+                venue: "Cleaner Logistics and Supply Chain",
+                year: 2023,
+                url: "https://doi.org/10.1016/j.clscn.2023.100110"
+            }
+        ];
+
+        // 渲染文章列表的函数
+        function renderPapers(papers) {
+            const listEl = document.getElementById('paper-list');
+            const newsListEl = document.getElementById('news-list');
+            const newsSection = document.getElementById('news-section');
+            const loadingEl = document.getElementById('loading');
+            
+            // 清空Loading
+            loadingEl.style.display = 'none';
+            listEl.innerHTML = '';
+            newsListEl.innerHTML = '';
+
+            // 按年份降序排列
+            papers.sort((a, b) => b.year - a.year);
+
+            let hasNews = false;
+            const currentYear = new Date().getFullYear();
+
+            papers.forEach(paper => {
+                // 1. 生成文章列表项
+                const item = document.createElement('div');
+                item.className = 'paper-item';
+                
+                // 处理作者列表，高亮自己
+                let authors = paper.authors.map ? paper.authors.map(a => a.name).join(', ') : paper.authors;
+                authors = authors.replace('Haotian Xie', '<b>Haotian Xie</b>');
+
+                item.innerHTML = `
+                    <div class="paper-title">
+                        <a href="${paper.url || paper.homepage || '#'}" target="_blank">${paper.title}</a>
+                    </div>
+                    <div class="paper-meta">
+                        ${authors}
+                    </div>
+                    <div class="paper-meta">
+                        <span style="font-style:italic;">${paper.venue || 'Preprint'}</span>, ${paper.year}
+                    </div>
+                `;
+                listEl.appendChild(item);
+
+                // 2. 自动生成 News (如果是今年或明年的文章)
+                if (paper.year >= currentYear - 1) { // 显示最近2年的动态
+                    hasNews = true;
+                    const newsItem = document.createElement('div');
+                    newsItem.className = 'news-item';
+                    newsItem.innerHTML = `
+                        <div class="news-date">[${paper.year}]</div>
+                        <div>New paper published in <em>${paper.venue || 'Journal'}</em>: "${paper.title.substring(0, 60)}..."</div>
+                    `;
+                    newsListEl.appendChild(newsItem);
+                }
+            });
+
+            if (hasNews) {
+                newsSection.style.display = 'block';
+            }
+        }
+
+        // 尝试从 Semantic Scholar API 获取数据
+        async function fetchAutoData() {
+            try {
+                // 这是一个开放API查询，搜索名字。
+                // 如果你想更精准，可以在 Semantic Scholar 上找到你的 authorId，把 url 改为:
+                // `https://api.semanticscholar.org/graph/v1/author/{YOUR_AUTHOR_ID}/papers?fields=title,year,venue,authors,url`
+                const response = await fetch(`https://api.semanticscholar.org/graph/v1/author/search?query=${encodeURIComponent(AUTHOR_NAME)}&fields=papers.title,papers.year,papers.venue,papers.authors,papers.url&limit=1`);
+                
+                const data = await response.json();
+                
+                if (data.data && data.data.length > 0) {
+                    // 找到第一个匹配的作者（通常是引用最高的那个）
+                    const authorId = data.data[0].authorId;
+                    console.log("Found Author ID:", authorId);
+                    
+                    // 二次查询该作者的所有文章
+                    const paperResponse = await fetch(`https://api.semanticscholar.org/graph/v1/author/${authorId}/papers?fields=title,year,venue,authors,url`);
+                    const paperData = await paperResponse.json();
+                    
+                    if (paperData.data) {
+                        renderPapers(paperData.data);
+                        return; // 成功获取，退出函数
+                    }
+                }
+                // 如果API没找到数据，抛出错误，使用备用数据
+                throw new Error("No papers found via API");
+
+            } catch (error) {
+                console.log("API Fetch failed, using manual data fallback.", error);
+                renderPapers(MANUAL_PAPERS);
+            }
+        }
+
+        // 页面加载时执行
+        fetchAutoData();
+
+    </script>
 </body>
 </html>
