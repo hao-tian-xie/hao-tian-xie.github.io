@@ -8,14 +8,14 @@
     <style>
         /* 1. 基础设置与变量 */
         :root {
-            --primary-blue: #1a73e8;       /* Google Blue */
+            --primary-blue: #1a73e8;       
             --hover-blue: #1557b0;
-            --text-main: #202124;          /* 深灰黑 */
-            --text-light: #5f6368;         /* 浅灰 */
-            --bg-body: #f8f9fa;            /* 浅灰背景，更护眼 */
-            --bg-card: #ffffff;            /* 卡片白底 */
-            --card-radius: 16px;           /* 大圆角 */
-            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* 柔和阴影 */
+            --text-main: #202124;          
+            --text-light: #5f6368;         
+            --bg-body: #f8f9fa;            
+            --bg-card: #ffffff;            
+            --card-radius: 12px;           /* 圆角稍微调小一点，适应宽屏 */
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); 
             --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
@@ -24,9 +24,9 @@
             background-color: var(--bg-body);
             color: var(--text-main);
             margin: 0;
-            padding: 40px 20px;
-            line-height: 1.8; /* 增大行高 */
-            font-size: 18px;  /* 增大基准字号 */
+            padding: 30px 2%; /* 两边留极少的白，按比例缩放 */
+            line-height: 1.8;
+            font-size: 18px; 
             -webkit-font-smoothing: antialiased;
         }
 
@@ -41,81 +41,70 @@
             text-decoration: underline;
         }
 
-        /* 2. 布局容器 */
+        /* 2. 核心布局容器 - Flexbox 3:7 比例 */
         .container {
-            max-width: 1100px; /* 稍微加宽 */
-            margin: 0 auto;
+            width: 100%;
             display: flex;
-            gap: 50px;
+            gap: 30px; /* 栏间距 */
             align-items: flex-start;
+            box-sizing: border-box;
         }
 
-        /* 3. 左侧边栏 (Sidebar) */
+        /* 3. 左侧边栏 (Sidebar) - 30% */
         .sidebar {
-            flex: 1;
-            min-width: 320px;
+            flex: 3; /* 占据 3/10 */
+            min-width: 300px; /* 最小宽度保护 */
             background: var(--bg-card);
-            padding: 30px;
+            padding: 40px;
             border-radius: var(--card-radius);
             box-shadow: var(--card-shadow);
-            text-align: center;
+            text-align: left; /* 左对齐 */
             position: sticky;
-            top: 40px; /* 滚动时固定 */
+            top: 30px;
+            height: fit-content;
         }
 
         .avatar {
-            width: 160px;
-            height: 160px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             border: 3px solid #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: block; /* 块级显示，方便左对齐 */
         }
 
         .profile-name {
-            font-size: 1.6em;
+            font-size: 1.8em;
             font-weight: 700;
-            margin: 10px 0 5px 0;
+            margin: 0 0 5px 0;
             color: var(--text-main);
+            line-height: 1.2;
         }
 
         .profile-title {
-            font-size: 1em;
+            font-size: 1.05em;
             color: var(--text-light);
             margin-bottom: 25px;
             font-weight: 500;
+            line-height: 1.5;
         }
 
-        .contact-info {
-            font-size: 0.9em;
-            color: var(--text-light);
-            margin-bottom: 30px;
-            text-align: left;
-            padding-left: 10px;
-        }
-        
-        .contact-info div {
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Google Scholar 按钮样式 */
+        /* 按钮适应左对齐 */
         .scholar-btn {
             display: inline-block;
             background-color: var(--primary-blue);
             color: #fff !important;
-            padding: 12px 24px;
-            border-radius: 50px; /* 胶囊圆角 */
+            padding: 12px 25px;
+            border-radius: 50px;
             font-weight: 600;
             font-size: 0.95em;
             text-decoration: none !important;
             box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
-            width: 80%;
-            margin-bottom: 30px;
+            transition: all 0.2s ease;
+            margin-bottom: 35px;
+            text-align: center;
         }
 
         .scholar-btn:hover {
@@ -124,164 +113,166 @@
             background-color: var(--hover-blue);
         }
 
-        /* 教育背景部分 */
+        .contact-info {
+            font-size: 0.95em;
+            color: var(--text-light);
+            margin-bottom: 35px;
+        }
+        
+        .contact-info div {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* 教育背景 */
         .edu-box {
-            text-align: left;
             border-top: 1px solid #eee;
-            padding-top: 20px;
+            padding-top: 25px;
         }
 
         .edu-item {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .edu-school {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-main);
             display: block;
-            font-size: 0.95em;
+            font-size: 1em;
+            margin-bottom: 2px;
         }
 
         .edu-degree {
-            font-size: 0.85em;
+            font-size: 0.9em;
             color: var(--text-light);
         }
 
-        /* 4. 右侧主内容 (Main Content) */
+        /* 4. 右侧主内容 (Main Content) - 70% */
         .main-content {
-            flex: 2.5;
+            flex: 7; /* 占据 7/10 */
             display: flex;
             flex-direction: column;
-            gap: 30px; /* 模块间距 */
+            gap: 30px;
         }
 
-        /* 通用卡片样式 */
         section {
             background: var(--bg-card);
-            padding: 35px;
+            padding: 40px; /* 内边距加大 */
             border-radius: var(--card-radius);
             box-shadow: var(--card-shadow);
         }
 
         .section-title {
-            font-size: 1.4em;
-            font-weight: 600;
+            font-size: 1.5em;
+            font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 25px;
-            border-left: 5px solid var(--primary-blue);
-            padding-left: 15px;
-            line-height: 1.2;
+            margin-bottom: 30px;
+            border-left: 6px solid var(--primary-blue);
+            padding-left: 20px;
+            line-height: 1.1;
         }
 
-        /* 文本两端对齐 */
         p {
-            text-align: justify;
-            margin-bottom: 1.2em;
+            text-align: justify; /* 两端对齐 */
+            margin-bottom: 1.5em;
+            color: #333;
         }
 
-        /* 关键词高亮 */
         .highlight {
             color: var(--primary-blue);
             font-weight: 600;
-            background-color: rgba(26, 115, 232, 0.05); /* 淡淡的背景色 */
-            padding: 0 4px;
+            background-color: rgba(26, 115, 232, 0.08);
+            padding: 2px 6px;
             border-radius: 4px;
         }
 
-        /* 5. 论文列表样式 */
+        /* 论文部分 */
         .year-header {
-            font-size: 1.2em;
+            font-size: 1.3em;
             font-weight: 700;
             color: var(--text-light);
-            margin: 30px 0 15px 0;
-            padding-bottom: 5px;
+            margin: 40px 0 20px 0;
+            padding-bottom: 8px;
             border-bottom: 2px solid #f1f3f4;
         }
 
+        .year-header:first-of-type {
+            margin-top: 0;
+        }
+
         .pub-item {
-            margin-bottom: 25px;
-            padding-left: 0;
+            margin-bottom: 30px;
         }
 
         .pub-title {
-            font-size: 1.05em;
+            font-size: 1.1em;
             font-weight: 600;
             color: var(--text-main);
             display: block;
-            margin-bottom: 6px;
-            line-height: 1.4;
-            text-align: justify; /* 标题也两端对齐 */
+            margin-bottom: 8px;
+            line-height: 1.5;
+            text-align: justify;
         }
 
         .pub-authors {
-            font-size: 0.95em;
+            font-size: 1em;
             color: var(--text-light);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .pub-venue {
-            font-size: 0.95em;
+            font-size: 1em;
             font-style: italic;
-            color: var(--text-main);
+            color: #444;
         }
 
         .tag {
-            font-size: 0.75em;
+            font-size: 0.8em;
             background-color: #f1f3f4;
             color: var(--text-light);
-            padding: 2px 8px;
+            padding: 3px 10px;
             border-radius: 12px;
-            margin-left: 8px;
+            margin-left: 10px;
             font-weight: 500;
             font-style: normal;
             vertical-align: middle;
             border: 1px solid #e0e0e0;
         }
 
-        .links {
-            margin-top: 8px;
-            font-size: 0.9em;
+        /* 服务列表 */
+        .service-list {
+            padding-left: 0;
         }
-
-        .links a {
-            margin-right: 15px;
-            font-weight: 600;
-        }
-
-        /* 6. Service 列表 */
         .service-list li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             list-style: none;
             position: relative;
-            padding-left: 20px;
+            padding-left: 25px;
         }
-        
         .service-list li::before {
             content: "•";
             color: var(--primary-blue);
+            font-size: 1.2em;
             position: absolute;
             left: 0;
+            top: -2px;
             font-weight: bold;
         }
 
-        /* 7. 响应式设计 (Mobile) */
-        @media (max-width: 850px) {
+        /* 响应式适配 */
+        @media (max-width: 900px) {
             .container {
-                flex-direction: column;
-                gap: 30px;
+                flex-direction: column; /* 手机平板改为上下堆叠 */
+                gap: 20px;
+            }
+            .sidebar, .main-content {
+                flex: auto;
+                width: 100%;
             }
             .sidebar {
-                width: 100%;
-                min-width: auto;
-                box-sizing: border-box; /* 防止padding撑开 */
-                position: static;
-            }
-            .main-content {
-                width: 100%;
-            }
-            body {
-                padding: 20px 15px;
-                font-size: 16px; /* 手机上稍微调小一点点，避免太大 */
+                position: static; /* 手机上取消固定 */
             }
         }
     </style>
@@ -294,7 +285,7 @@
         <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=X42fddQAAAAJ&citpid=1" alt="Haotian Xie" class="avatar">
         
         <h1 class="profile-name">Haotian Xie</h1>
-        <p style="color: #666; font-size: 0.9em; margin-bottom: 2px;">(谢昊天)</p>
+        <p style="color: #666; font-size: 0.9em; margin-bottom: 5px;">(谢昊天)</p>
         
         <div class="profile-title">
             Research Assistant<br>
@@ -312,7 +303,7 @@
         </div>
 
         <div class="edu-box">
-            <h3 style="font-size: 1.1em; margin-bottom: 15px; color: var(--text-main);">Education</h3>
+            <h3 style="font-size: 1.2em; margin-bottom: 20px; color: var(--text-main);">Education</h3>
             <div class="edu-item">
                 <span class="edu-school">The University of Hong Kong</span>
                 <div class="edu-degree">Master of Science in Industrial Engineering and Logistics Management (2024 - 2025)</div>
