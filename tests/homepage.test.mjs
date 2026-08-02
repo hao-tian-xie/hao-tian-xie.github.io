@@ -4,14 +4,43 @@ import test from 'node:test';
 
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 
-test('exposes an accessible bilingual language control with persistence', () => {
-  assert.match(html, /id="language-toggle"/);
-  assert.match(html, /data-i18n="languageToggle"/);
-  assert.match(html, /data-i18n="title"/);
-  assert.match(html, /haotian-language/);
-  assert.match(html, /function setLanguage\(language\)/);
-  assert.match(html, /document\.documentElement\.lang/);
-  assert.match(html, /谢昊天/);
+test('retains the original two-column academic visual scaffold', () => {
+  assert.match(html, /--primary-blue:\s*#1a73e8/);
+  assert.match(html, /class="container"/);
+  assert.match(html, /class="sidebar"/);
+  assert.match(html, /\.sidebar\s*\{[\s\S]*?flex:\s*3;/);
+  assert.match(html, /\.main-content\s*\{[\s\S]*?flex:\s*7;/);
+  assert.doesNotMatch(html, /id="language-toggle"/);
+  assert.doesNotMatch(html, /data-i18n=/);
+});
+
+test('keeps the section navigation synchronized with reading position', () => {
+  assert.match(html, /aria-current="page"/);
+  assert.match(html, /function setActiveNavigation\(sectionId\)/);
+  assert.match(html, /new IntersectionObserver/);
+  assert.match(html, /link\.setAttribute\('aria-current', 'page'\)/);
+  assert.match(html, /link\.removeAttribute\('aria-current'\)/);
+});
+
+test('keeps the final section active when the document reaches its bottom edge', () => {
+  assert.match(html, /function keepLastSectionCurrentAtDocumentEnd\(\) \{\s*const isAtDocumentEnd = window\.innerHeight \+ window\.scrollY >= document\.documentElement\.scrollHeight - 2;/);
+  assert.match(html, /setActiveNavigation\(sections\[sections\.length - 1\]\.id\);/);
+  assert.match(html, /window\.addEventListener\('scroll', keepLastSectionCurrentAtDocumentEnd, \{ passive: true \}\);/);
+});
+
+test('gives press feedback and respects reduced-motion preferences', () => {
+  assert.match(html, /--ease-out:\s*cubic-bezier\(0\.23,\s*1,\s*0\.32,\s*1\)/);
+  assert.match(html, /\.scholar-btn:active\s*\{[\s\S]*?scale\(0\.97\)/);
+  assert.match(html, /\.btn-small:active\s*\{[\s\S]*?scale\(0\.97\)/);
+  assert.match(html, /@media \(hover: hover\) and \(pointer: fine\)/);
+  assert.match(html, /@media \(prefers-reduced-motion: reduce\)/);
+  assert.doesNotMatch(html, /transition:\s*all/);
+  assert.doesNotMatch(html, /scale\(0\)/);
+  assert.doesNotMatch(html, /ease-in/);
+});
+
+test('keeps the original mobile layout inside the viewport', () => {
+  assert.match(html, /@media \(max-width: 900px\) \{[\s\S]*?\.sidebar, \.main-content \{ width: 100%; position: static; box-sizing: border-box; \}/);
 });
 
 test('retains the complete scholarly record and contact routes', () => {
@@ -42,24 +71,6 @@ test('retains the complete scholarly record and contact routes', () => {
   }
 });
 
-test('uses semantic landmarks and accommodates motion and contrast preferences', () => {
-  for (const fragment of [
-    '<header',
-    '<main',
-    '<footer',
-    'class="skip-link"',
-    'prefers-reduced-motion',
-    'prefers-reduced-transparency',
-    'prefers-contrast: more',
-  ]) {
-    assert.ok(html.includes(fragment), `missing accessibility hook: ${fragment}`);
-  }
-
-  assert.doesNotMatch(html, /transition:\s*all/);
-  assert.doesNotMatch(html, /scale\(0\)/);
-  assert.doesNotMatch(html, /ease-in/);
-});
-
 test('secures every external new-tab link', () => {
   const links = html.match(/<a\b[^>]*>/g) ?? [];
   const externalLinks = links.filter((link) => link.includes('target="_blank"'));
@@ -68,24 +79,4 @@ test('secures every external new-tab link', () => {
   for (const link of externalLinks) {
     assert.match(link, /rel="noopener noreferrer"/, `unsafe new-tab link: ${link}`);
   }
-});
-
-test('renders bilingual degree line breaks as trusted markup', () => {
-  assert.match(html, /data-i18n-html="educationTwoDegree"/);
-  assert.match(html, /educationTwoDegree: 'BSc in Systems Science · 2020–2024<br>Bachelor of Economics in Finance'/);
-  assert.match(html, /educationTwoDegree: '系统科学理学学士 · 2020–2024<br>金融学经济学学士'/);
-});
-
-test('localizes navigation, landmark, and portrait accessibility metadata', () => {
-  assert.match(html, /data-i18n-aria="sectionNav"/);
-  assert.match(html, /data-i18n-aria="educationSkills"/);
-  assert.match(html, /data-i18n-alt="portraitAlt"/);
-  assert.match(html, /sectionNav: '页面分区'/);
-  assert.match(html, /educationSkills: '教育经历与技能'/);
-  assert.match(html, /portraitAlt: '谢昊天肖像'/);
-});
-
-test('keeps every section reachable from the compact mobile navigation', () => {
-  assert.match(html, /\.site-nav\s*\{[\s\S]*?overflow-x: auto;/);
-  assert.doesNotMatch(html, /\.nav-link:nth-child\(n \+ 4\)\s*\{\s*display: none;/);
 });
