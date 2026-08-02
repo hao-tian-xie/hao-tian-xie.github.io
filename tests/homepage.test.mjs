@@ -69,3 +69,23 @@ test('secures every external new-tab link', () => {
     assert.match(link, /rel="noopener noreferrer"/, `unsafe new-tab link: ${link}`);
   }
 });
+
+test('renders bilingual degree line breaks as trusted markup', () => {
+  assert.match(html, /data-i18n-html="educationTwoDegree"/);
+  assert.match(html, /educationTwoDegree: 'BSc in Systems Science · 2020–2024<br>Bachelor of Economics in Finance'/);
+  assert.match(html, /educationTwoDegree: '系统科学理学学士 · 2020–2024<br>金融学经济学学士'/);
+});
+
+test('localizes navigation, landmark, and portrait accessibility metadata', () => {
+  assert.match(html, /data-i18n-aria="sectionNav"/);
+  assert.match(html, /data-i18n-aria="educationSkills"/);
+  assert.match(html, /data-i18n-alt="portraitAlt"/);
+  assert.match(html, /sectionNav: '页面分区'/);
+  assert.match(html, /educationSkills: '教育经历与技能'/);
+  assert.match(html, /portraitAlt: '谢昊天肖像'/);
+});
+
+test('keeps every section reachable from the compact mobile navigation', () => {
+  assert.match(html, /\.site-nav\s*\{[\s\S]*?overflow-x: auto;/);
+  assert.doesNotMatch(html, /\.nav-link:nth-child\(n \+ 4\)\s*\{\s*display: none;/);
+});
