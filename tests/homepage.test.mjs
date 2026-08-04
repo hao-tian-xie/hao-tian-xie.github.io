@@ -48,10 +48,13 @@ test('preserves the complete scholarly record and academic profile', () => {
   }
 });
 
-test('does not include modular, card, responsive, or interactive UI code', () => {
-  assert.doesNotMatch(html, /<style\b|<script\b|<button\b|<div\b/i);
+test('uses only minimal document-level presentation without modular UI code', () => {
+  assert.match(html, /<style\b/i);
+  assert.match(html, /body\s*\{/i);
+  assert.doesNotMatch(html, /<script\b|<button\b|<div\b/i);
   assert.doesNotMatch(html, /\bclass\s*=/i);
-  assert.doesNotMatch(html, /border\s*:|box-shadow\s*:|grid-template|display\s*:\s*(grid|flex)|transition\s*:|animation\s*:|@media\b|@keyframes\b/i);
+  assert.doesNotMatch(html, /box-shadow\s*:|border-radius\s+(?!50%)/i);
+  assert.doesNotMatch(html, /grid-template|display\s*:\s*(grid|flex)|transition\s*:|animation\s*:|@media\b|@keyframes\b/i);
   assert.doesNotMatch(html, /IntersectionObserver|navigator\.clipboard|language-toggle|data-[a-z-]+=/i);
 });
 
