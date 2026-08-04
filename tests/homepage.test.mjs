@@ -1,8 +1,11 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+const variantFiles = (await readdir(new URL('../variants/', import.meta.url)))
+  .filter((file) => /^\d{2}-[^/]+\.html$/.test(file))
+  .sort();
 
 test('uses a plain semantic HTML document', () => {
   for (const element of ['<header', '<nav', '<main', '<section', '<article', '<footer']) {
@@ -56,8 +59,11 @@ test('keeps the page simple while providing responsive bilingual theme controls'
   assert.match(html, /id="control-status"[^>]+aria-live="polite"/i);
   assert.match(html, /data-en="[^"]+"\s+data-zh="[^"]+"/i);
   assert.match(html, /@media\s*\(max-width:\s*720px\)/i);
-  assert.match(html, /width:\s*min\(960px,\s*calc\(100%\s*-\s*2rem\)\)/i);
+  assert.match(html, /width:\s*min\(1080px,\s*calc\(100%\s*-\s*2rem\)\)/i);
   assert.match(html, /html\[data-theme="dark"\]/i);
+  assert.match(html, /nav\s*\{[\s\S]*?position:\s*sticky[\s\S]*?top:\s*0/i);
+  assert.match(html, /#page-controls\s*\{[\s\S]*?position:\s*absolute[\s\S]*?right:\s*0/i);
+  assert.match(html, /text-align:\s*justify/i);
   assert.match(html, /localStorage/);
   assert.match(html, /prefers-color-scheme:\s*dark/);
   assert.match(html, /function\s+setLanguage/);
@@ -66,7 +72,8 @@ test('keeps the page simple while providing responsive bilingual theme controls'
   assert.doesNotMatch(html, /<img\b|<div\b/i);
   assert.doesNotMatch(html, /\bclass\s*=/i);
   assert.doesNotMatch(html, /box-shadow\s*:|grid-template|display\s*:\s*grid|transition\s*:|animation\s*:|@keyframes\b/i);
-  assert.doesNotMatch(html, /IntersectionObserver|navigator\.clipboard|\bcard\b/i);
+  assert.doesNotMatch(html, /IntersectionObserver|navigator\.clipboard|\bcard\b|\bJCR\b|\bIF\s*=/i);
+  assert.doesNotMatch(html, /Joined PolyU|Completed HKU/i);
 });
 
 test('keeps the document navigation in a simple header-to-footer order', () => {
@@ -75,8 +82,8 @@ test('keeps the document navigation in a simple header-to-footer order', () => {
   const mainIndex = html.indexOf('<main');
   const footerIndex = html.indexOf('<footer');
 
-  assert.ok(headerIndex < navIndex, 'header must precede navigation');
-  assert.ok(navIndex < mainIndex, 'navigation must precede main content');
+  assert.ok(navIndex < headerIndex, 'navigation must precede the header');
+  assert.ok(headerIndex < mainIndex, 'header must precede main content');
   assert.ok(mainIndex < footerIndex, 'main content must precede footer');
 });
 
@@ -88,4 +95,21 @@ test('secures every external new-tab link', () => {
   for (const link of externalLinks) {
     assert.match(link, /rel="noopener noreferrer"/, `unsafe new-tab link: ${link}`);
   }
+});
+
+test('publishes ten personal style studies alongside the complete homepage', () => {
+  assert.equal(variantFiles.length, 10, 'expected ten style-study pages');
+  assert.deepEqual(variantFiles, [
+    '01-academicpages.html',
+    '02-al-folio.html',
+    '03-minimal-light.html',
+    '04-guanglun-minimal.html',
+    '05-luost-compact.html',
+    '06-research-first.html',
+    '07-senli-simple.html',
+    '08-gitprofile.html',
+    '09-hugoblox-cv.html',
+    '10-minimal-academic.html',
+  ]);
+  assert.match(html, /href="variants\/"/i);
 });
