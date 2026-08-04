@@ -1,5 +1,7 @@
 # Template-Inspired Academic Homepage Design
 
+> **Status: superseded (2026-08-05).** The current production contract requires a plain, card-free, avatar-free, animation-free semantic homepage with responsive bilingual and theme controls. See `index.html` and `tests/homepage.test.mjs` for the active contract.
+
 ## Goal
 
 Rewrite the homepage around the information architecture of `w-r-s/academic-homepage-template` while keeping Haotian Xie's verified academic record, links, and original visual identity. The result should feel like a focused research homepage rather than a generic template demo.

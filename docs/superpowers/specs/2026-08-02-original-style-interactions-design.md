@@ -1,5 +1,7 @@
 # Original-Style Interaction Refinement
 
+> **Status: superseded (2026-08-05).** The current production contract retains bilingual and theme controls while removing cards, portraits, and motion. See `index.html` and `tests/homepage.test.mjs` for the active contract.
+
 ## Goal
 
 Restore the homepage to the academic two-column visual language in commit `8a79a14`, then make its existing navigation and links feel more responsive without introducing a new visual direction.

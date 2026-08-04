@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hao-tian-xie.github.io/sitemap.xml

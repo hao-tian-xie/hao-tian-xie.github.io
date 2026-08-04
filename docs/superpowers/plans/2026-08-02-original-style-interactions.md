@@ -1,5 +1,7 @@
 # Original-Style Interaction Refinement Implementation Plan
 
+> **Status: superseded (2026-08-05).** This historical plan is retained for provenance and must not be executed against the current homepage.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Restore the original academic homepage appearance and add only accessible, restrained navigation and press interactions.

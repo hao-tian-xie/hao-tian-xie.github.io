@@ -1,16 +1,82 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Haotian Xie — Operations Research &amp; Complex Systems</title>
     <meta name="author" content="Haotian Xie">
-    <meta name="description" content="Academic homepage of Haotian Xie, Research Assistant at The Hong Kong Polytechnic University.">
+    <meta name="description" content="Academic homepage of Haotian Xie, a Research Assistant at PolyU working on operations research, complex systems, logistics, and supply chains.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" id="theme-color" content="#ffffff">
     <link rel="canonical" href="https://hao-tian-xie.github.io/">
     <meta property="og:title" content="Haotian Xie — Operations Research &amp; Complex Systems">
-    <meta property="og:description" content="Academic homepage of Haotian Xie, Research Assistant at The Hong Kong Polytechnic University.">
+    <meta property="og:description" content="Academic homepage of Haotian Xie, a Research Assistant at PolyU working on operations research, complex systems, logistics, and supply chains.">
     <meta property="og:url" content="https://hao-tian-xie.github.io/">
     <meta property="og:type" content="profile">
+    <meta property="og:site_name" content="Haotian Xie">
+    <meta property="og:locale" content="en_US">
+    <meta property="profile:first_name" content="Haotian">
+    <meta property="profile:last_name" content="Xie">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Haotian Xie — Operations Research &amp; Complex Systems">
+    <meta name="twitter:description" content="Research in operations research, complex systems, logistics, supply chains, and data-driven decisions.">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Haotian Xie",
+            "alternateName": "谢昊天",
+            "url": "https://hao-tian-xie.github.io/",
+            "email": "mailto:haotiantimxie@gmail.com",
+            "jobTitle": "Research Assistant",
+            "affiliation": {
+                "@type": "CollegeOrUniversity",
+                "name": "The Hong Kong Polytechnic University"
+            },
+            "alumniOf": [
+                {
+                    "@type": "CollegeOrUniversity",
+                    "name": "The University of Hong Kong"
+                },
+                {
+                    "@type": "CollegeOrUniversity",
+                    "name": "Beijing Normal University"
+                }
+            ],
+            "sameAs": [
+                "https://scholar.google.com/citations?user=X42fddQAAAAJ"
+            ],
+            "knowsAbout": [
+                "Operations Research",
+                "Complex Systems",
+                "Logistics and Supply Chain Management",
+                "Data-driven Decision Making"
+            ]
+        }
+    </script>
+    <script>
+        (() => {
+            const root = document.documentElement;
+            const themeColor = document.getElementById('theme-color');
+            let theme = null;
+
+            try {
+                const savedTheme = window.localStorage.getItem('homepage-theme');
+                if (savedTheme === 'light' || savedTheme === 'dark') {
+                    theme = savedTheme;
+                }
+            } catch {
+                // The system preference remains available when storage is blocked.
+            }
+
+            if (!theme && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                theme = 'dark';
+            }
+
+            root.dataset.theme = theme || 'light';
+            themeColor?.setAttribute('content', root.dataset.theme === 'dark' ? '#111827' : '#ffffff');
+        })();
+    </script>
     <style>
         :root {
             --background: #ffffff;
@@ -18,11 +84,14 @@
             --heading: #111827;
             --muted: #637083;
             --line: #d9e1eb;
+            --control-border: #6f7c90;
             --link: #175dcc;
             --focus: #175dcc;
+            --nav-offset: 5rem;
             color: var(--text);
             background: var(--background);
-            scroll-padding-top: 5rem;
+            color-scheme: light;
+            scroll-padding-top: var(--nav-offset);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             font-size: 16px;
             line-height: 1.65;
@@ -34,8 +103,24 @@
             --heading: #f8fafc;
             --muted: #a8b3c4;
             --line: #334155;
+            --control-border: #718198;
             --link: #8ab4ff;
             --focus: #a8c7ff;
+            color-scheme: dark;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            html:not([data-theme]) {
+                --background: #111827;
+                --text: #d7deea;
+                --heading: #f8fafc;
+                --muted: #a8b3c4;
+                --line: #334155;
+                --control-border: #718198;
+                --link: #8ab4ff;
+                --focus: #a8c7ff;
+                color-scheme: dark;
+            }
         }
 
         * {
@@ -64,6 +149,29 @@
             outline-offset: 3px;
         }
 
+        #skip-link {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
+        }
+
+        #skip-link:focus {
+            top: 8px;
+            left: 8px;
+            z-index: 20;
+            width: auto;
+            height: auto;
+            padding: 8px 12px;
+            overflow: visible;
+            clip-path: none;
+            color: var(--background);
+            background: var(--heading);
+        }
+
         header {
             position: relative;
             padding: 24px 184px 18px 0;
@@ -81,6 +189,10 @@
             margin: 0 0 10px;
             font-size: clamp(2rem, 5vw, 2.75rem);
             letter-spacing: -0.035em;
+        }
+
+        h1 span[lang="zh-Hans"] {
+            white-space: nowrap;
         }
 
         header p {
@@ -134,9 +246,9 @@
         }
 
         button {
-            min-height: 34px;
-            padding: 5px 9px;
-            border: 1px solid var(--line);
+            min-height: 44px;
+            padding: 7px 12px;
+            border: 1px solid var(--control-border);
             border-radius: 2px;
             color: var(--text);
             background: transparent;
@@ -159,12 +271,21 @@
             border-color: var(--link);
         }
 
+        button:active {
+            color: var(--background);
+            background: var(--link);
+        }
+
         #control-status {
-            display: block;
-            min-height: 1.3em;
-            margin-top: 5px;
-            color: var(--muted);
-            font-size: 0.84rem;
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
+            border: 0;
         }
 
         main {
@@ -201,7 +322,7 @@
             padding-left: 1.35rem;
         }
 
-        li + li {
+        main li + li {
             margin-top: 0.55rem;
         }
 
@@ -228,6 +349,11 @@
         #skills dd,
         #publications > p {
             text-align: justify;
+        }
+
+        #about > p,
+        #publications > p {
+            max-width: 92ch;
         }
 
         #publications > ol {
@@ -279,17 +405,13 @@
         }
 
         @media (max-width: 720px) {
-            :root {
-                scroll-padding-top: 7rem;
-            }
-
             body {
                 width: calc(100% - 2rem);
                 padding-bottom: 36px;
             }
 
             header {
-                padding: 68px 0 16px;
+                padding: 72px 0 16px;
             }
 
             #page-controls {
@@ -298,6 +420,16 @@
 
             nav ul {
                 gap: 6px 14px;
+            }
+
+            nav {
+                padding: 8px 0;
+            }
+
+            nav a {
+                display: inline-flex;
+                min-height: 32px;
+                align-items: center;
             }
 
             section {
@@ -320,18 +452,28 @@
                 margin-left: 0;
             }
 
+            #news li > span,
+            #experience li > span,
+            #about > p,
+            #about li,
+            #education li,
+            #awards li,
+            #skills dd,
+            #publications > p {
+                text-align: start;
+            }
+
             #language-toggle,
             #theme-toggle {
                 min-width: 5rem;
             }
 
-            #control-status {
-                margin-bottom: 2px;
-            }
         }
     </style>
 </head>
 <body>
+    <a id="skip-link" href="#main-content" data-en="Skip to main content" data-zh="跳至主要内容">Skip to main content</a>
+
     <nav id="section-nav" aria-label="Homepage sections">
         <ul>
             <li><a href="#about" data-en="About" data-zh="关于">About</a></li>
@@ -345,22 +487,22 @@
     </nav>
 
     <header aria-labelledby="page-title">
-        <h1 id="page-title">Haotian Xie <span lang="zh-Hans">谢昊天</span></h1>
+        <h1 id="page-title"><span lang="en">Haotian Xie</span> <span lang="zh-Hans">谢昊天</span></h1>
         <p><strong data-en="Research Assistant" data-zh="研究助理">Research Assistant</strong><br><span data-en="Department of Industrial and Systems Engineering" data-zh="工业与系统工程系">Department of Industrial and Systems Engineering</span><br><span data-en="The Hong Kong Polytechnic University" data-zh="香港理工大学">The Hong Kong Polytechnic University</span></p>
         <p data-en="Research focus: optimization, networks, and data-driven decisions." data-zh="研究方向：优化、网络与数据驱动决策。">Research focus: optimization, networks, and data-driven decisions.</p>
         <address>
             <a href="mailto:haotiantimxie@gmail.com">haotiantimxie@gmail.com</a> ·
             <span data-en="Hong Kong, China" data-zh="中国香港">Hong Kong, China</span> ·
-            <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+            <a href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" lang="en" aria-label="Google Scholar profile (opens in a new tab)" data-en-label="Google Scholar profile (opens in a new tab)" data-zh-label="Google Scholar 个人主页（在新标签页中打开）">Google Scholar</a>
         </address>
-        <p id="page-controls">
-            <button id="language-toggle" type="button" aria-pressed="false" aria-label="Switch to Chinese">中文</button>
-            <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode">Dark</button>
+        <p id="page-controls" hidden>
+            <button id="language-toggle" type="button" aria-label="Switch to Chinese">中文</button>
+            <button id="theme-toggle" type="button" aria-label="Switch to dark mode">Dark</button>
             <span id="control-status" role="status" aria-live="polite"></span>
         </p>
     </header>
 
-    <main>
+    <main id="main-content" tabindex="-1">
         <section id="about" aria-labelledby="about-title">
             <h2 id="about-title" data-en="About" data-zh="关于我">About</h2>
             <p data-en="My research connects Operations Research with Complex Systems. I use data, mathematical models, and optimization to support better decisions in logistics, supply chains, transportation, and networked systems." data-zh="我的研究连接运筹学与复杂系统，利用数据、数学模型与优化方法，改善物流、供应链、交通运输及网络系统中的决策。">My research connects Operations Research with Complex Systems. I use data, mathematical models, and optimization to support better decisions in logistics, supply chains, transportation, and networked systems.</p>
@@ -379,7 +521,7 @@
             <h2 id="news-title" data-en="News" data-zh="近期动态">News</h2>
             <ol>
                 <li><time datetime="2026">2026</time> <span data-en="Ph.D. search. Exploring opportunities for a Fall 2026 start in operations research, complex systems, and supply chain analytics." data-zh="博士申请：寻找2026年秋季开始、方向涵盖运筹学、复杂系统与供应链分析的机会。">Ph.D. search. Exploring opportunities for a Fall 2026 start in operations research, complex systems, and supply chain analytics.</span></li>
-                <li><time datetime="2026">2026</time> <span data-en="New publication. “Topological persistence pinpoints higher-order network vulnerabilities” appears in Chaos." data-zh="论文发表：《Topological persistence pinpoints higher-order network vulnerabilities》发表于 Chaos。">New publication. “Topological persistence pinpoints higher-order network vulnerabilities” appears in Chaos.</span></li>
+                <li><time datetime="2026">2026</time> <span><span data-en="New publication. " data-zh="论文发表：">New publication. </span><cite lang="en">“Topological persistence pinpoints higher-order network vulnerabilities”</cite><span data-en=" appears in " data-zh="发表于 "> appears in </span><cite lang="en">Chaos</cite><span data-en="." data-zh="。">.</span></span></li>
             </ol>
         </section>
 
@@ -390,50 +532,50 @@
             <p data-en="Publication titles are shown in their original English." data-zh="论文标题保留英文原文。">Publication titles are shown in their original English.</p>
             <ol>
                 <li>
-                    <article>
+                    <article lang="en">
                         <h3>Topological persistence pinpoints higher-order network vulnerabilities</h3>
                         <p><strong>H. Xie*</strong>, B. Ding</p>
                         <p><em>Chaos: An Interdisciplinary Journal of Nonlinear Science</em>, 2026.</p>
-                        <p><a href="https://doi.org/10.1063/5.0293652" target="_blank" rel="noopener noreferrer" data-en="DOI" data-zh="DOI">DOI</a> · <a href="https://scholar.google.com/scholar?q=Topological+persistence+pinpoints+higher-order+network+vulnerabilities" target="_blank" rel="noopener noreferrer" data-en="Google Scholar" data-zh="Google Scholar">Google Scholar</a></p>
+                        <p><a href="https://doi.org/10.1063/5.0293652" target="_blank" rel="noopener noreferrer" aria-label="DOI for Topological persistence pinpoints higher-order network vulnerabilities (opens in a new tab)" data-en="DOI" data-zh="DOI" data-en-label="DOI for Topological persistence pinpoints higher-order network vulnerabilities (opens in a new tab)" data-zh-label="《Topological persistence pinpoints higher-order network vulnerabilities》的 DOI（在新标签页中打开）">DOI</a> · <a href="https://scholar.google.com/scholar?q=Topological+persistence+pinpoints+higher-order+network+vulnerabilities" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar results for Topological persistence pinpoints higher-order network vulnerabilities (opens in a new tab)" data-en="Google Scholar" data-zh="Google Scholar" data-en-label="Google Scholar results for Topological persistence pinpoints higher-order network vulnerabilities (opens in a new tab)" data-zh-label="在 Google Scholar 查看《Topological persistence pinpoints higher-order network vulnerabilities》（在新标签页中打开）">Google Scholar</a></p>
                     </article>
                 </li>
                 <li>
-                    <article>
+                    <article lang="en">
                         <h3>Decentralized autonomous organizations in e-commerce supply chains: A bayesian method to barrier identification and interrelationship mapping</h3>
                         <p><strong>H. Xie*</strong>, Y. P. Tsang</p>
                         <p><em>Electronic Commerce Research and Applications</em>, 2025.</p>
-                        <p><a href="https://doi.org/10.1016/j.elerap.2025.101533" target="_blank" rel="noopener noreferrer" data-en="DOI" data-zh="DOI">DOI</a> · <a href="https://scholar.google.com/scholar?q=Decentralized+autonomous+organizations+in+e-commerce+supply+chains" target="_blank" rel="noopener noreferrer" data-en="Google Scholar" data-zh="Google Scholar">Google Scholar</a></p>
+                        <p><a href="https://doi.org/10.1016/j.elerap.2025.101533" target="_blank" rel="noopener noreferrer" aria-label="DOI for Decentralized autonomous organizations in e-commerce supply chains (opens in a new tab)" data-en="DOI" data-zh="DOI" data-en-label="DOI for Decentralized autonomous organizations in e-commerce supply chains (opens in a new tab)" data-zh-label="《Decentralized autonomous organizations in e-commerce supply chains》的 DOI（在新标签页中打开）">DOI</a> · <a href="https://scholar.google.com/scholar?q=Decentralized+autonomous+organizations+in+e-commerce+supply+chains" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar results for Decentralized autonomous organizations in e-commerce supply chains (opens in a new tab)" data-en="Google Scholar" data-zh="Google Scholar" data-en-label="Google Scholar results for Decentralized autonomous organizations in e-commerce supply chains (opens in a new tab)" data-zh-label="在 Google Scholar 查看《Decentralized autonomous organizations in e-commerce supply chains》（在新标签页中打开）">Google Scholar</a></p>
                     </article>
                 </li>
                 <li>
-                    <article>
+                    <article lang="en">
                         <h3>Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis</h3>
                         <p><strong>H. Xie*</strong>, Y. Li, Y. Pu, C. Zhang, &amp; J. Huang</p>
                         <p><em>Journal of Air Transport Management</em>, 2024.</p>
-                        <p><a href="https://doi.org/10.1016/j.jairtraman.2024.102655" target="_blank" rel="noopener noreferrer" data-en="DOI" data-zh="DOI">DOI</a> · <a href="https://scholar.google.com/scholar?q=Evaluating+airline+service+quality+through+a+comprehensive+text-mining" target="_blank" rel="noopener noreferrer" data-en="Google Scholar" data-zh="Google Scholar">Google Scholar</a></p>
+                        <p><a href="https://doi.org/10.1016/j.jairtraman.2024.102655" target="_blank" rel="noopener noreferrer" aria-label="DOI for Evaluating airline service quality (opens in a new tab)" data-en="DOI" data-zh="DOI" data-en-label="DOI for Evaluating airline service quality (opens in a new tab)" data-zh-label="《Evaluating airline service quality》的 DOI（在新标签页中打开）">DOI</a> · <a href="https://scholar.google.com/scholar?q=Evaluating+airline+service+quality+through+a+comprehensive+text-mining" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar results for Evaluating airline service quality (opens in a new tab)" data-en="Google Scholar" data-zh="Google Scholar" data-en-label="Google Scholar results for Evaluating airline service quality (opens in a new tab)" data-zh-label="在 Google Scholar 查看《Evaluating airline service quality》（在新标签页中打开）">Google Scholar</a></p>
                     </article>
                 </li>
                 <li>
-                    <article>
+                    <article lang="en">
                         <h3>Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL-AISM approach</h3>
                         <p>Y. Li, Y. Tan, Y. Pu, Y. Zhu, &amp; <strong>H. Xie*</strong></p>
                         <p><em>Cleaner Logistics and Supply Chain</em>, 2023.</p>
-                        <p><a href="https://doi.org/10.1016/j.clscn.2023.100110" target="_blank" rel="noopener noreferrer" data-en="DOI" data-zh="DOI">DOI</a> · <a href="https://scholar.google.com/scholar?q=Exploring+the+drivers+of+green+supply+chain+management+in+the+Chinese+electronics+industry" target="_blank" rel="noopener noreferrer" data-en="Google Scholar" data-zh="Google Scholar">Google Scholar</a></p>
+                        <p><a href="https://doi.org/10.1016/j.clscn.2023.100110" target="_blank" rel="noopener noreferrer" aria-label="DOI for Exploring the drivers of green supply chain management (opens in a new tab)" data-en="DOI" data-zh="DOI" data-en-label="DOI for Exploring the drivers of green supply chain management (opens in a new tab)" data-zh-label="《Exploring the drivers of green supply chain management》的 DOI（在新标签页中打开）">DOI</a> · <a href="https://scholar.google.com/scholar?q=Exploring+the+drivers+of+green+supply+chain+management+in+the+Chinese+electronics+industry" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar results for Exploring the drivers of green supply chain management (opens in a new tab)" data-en="Google Scholar" data-zh="Google Scholar" data-en-label="Google Scholar results for Exploring the drivers of green supply chain management (opens in a new tab)" data-zh-label="在 Google Scholar 查看《Exploring the drivers of green supply chain management》（在新标签页中打开）">Google Scholar</a></p>
                     </article>
                 </li>
                 <li>
-                    <article>
+                    <article lang="en">
                         <h3>Classifying Drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction</h3>
                         <p>K. Yang, T. Liu, Z. Wang, …, <strong>H. Xie</strong>, …, K. Zhang</p>
-                        <p><em>iScience</em>, 2021.</p>
-                        <p><a href="https://doi.org/10.1016/j.isci.2021.104180" target="_blank" rel="noopener noreferrer" data-en="DOI" data-zh="DOI">DOI</a> · <a href="https://scholar.google.com/scholar?q=Classifying+Drosophila+olfactory+projection+neuron+boutons" target="_blank" rel="noopener noreferrer" data-en="Google Scholar" data-zh="Google Scholar">Google Scholar</a></p>
+                        <p><em>iScience</em>, 2022.</p>
+                        <p><a href="https://doi.org/10.1016/j.isci.2022.104180" target="_blank" rel="noopener noreferrer" aria-label="DOI for Classifying Drosophila olfactory projection neuron boutons (opens in a new tab)" data-en="DOI" data-zh="DOI" data-en-label="DOI for Classifying Drosophila olfactory projection neuron boutons (opens in a new tab)" data-zh-label="《Classifying Drosophila olfactory projection neuron boutons》的 DOI（在新标签页中打开）">DOI</a> · <a href="https://scholar.google.com/scholar?q=Classifying+Drosophila+olfactory+projection+neuron+boutons" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar results for Classifying Drosophila olfactory projection neuron boutons (opens in a new tab)" data-en="Google Scholar" data-zh="Google Scholar" data-en-label="Google Scholar results for Classifying Drosophila olfactory projection neuron boutons (opens in a new tab)" data-zh-label="在 Google Scholar 查看《Classifying Drosophila olfactory projection neuron boutons》（在新标签页中打开）">Google Scholar</a></p>
                     </article>
                 </li>
                 <li>
-                    <article>
+                    <article lang="en">
                         <h3>A Virtual Node-Based Zero-Shot Learning Framework for Link Prediction in Complex Networks</h3>
                         <p><strong>H. Xie*</strong>, Y. Pu, Y. Tan, &amp; W. Yan</p>
-                        <p><em>Under revision at Information Sciences</em></p>
+                        <p><em data-en="Under revision at Information Sciences" data-zh="正在 Information Sciences 修订" data-en-lang="en" data-zh-lang="zh-Hans">Under revision at Information Sciences</em></p>
                     </article>
                 </li>
             </ol>
@@ -444,7 +586,7 @@
         <section id="experience" aria-labelledby="experience-title">
             <h2 id="experience-title" data-en="Experience" data-zh="经历">Experience</h2>
             <ol>
-                <li><time datetime="2025">2025 — present</time> <span data-en="Research assistantship focused on data-driven decision making, logistics and supply chain management, and complex networks." data-zh="围绕数据驱动决策、物流与供应链管理以及复杂网络开展研究。">Research assistantship focused on data-driven decision making, logistics and supply chain management, and complex networks.</span></li>
+                <li><time datetime="2025">2025 — <span data-en="present" data-zh="至今">present</span></time> <span data-en="Research assistantship focused on data-driven decision making, logistics and supply chain management, and complex networks." data-zh="围绕数据驱动决策、物流与供应链管理以及复杂网络开展研究。">Research assistantship focused on data-driven decision making, logistics and supply chain management, and complex networks.</span></li>
             </ol>
         </section>
 
@@ -479,9 +621,9 @@
                 <dt data-en="Languages" data-zh="语言">Languages</dt>
                 <dd data-en="Mandarin (Native), Cantonese (Native), English (C1)" data-zh="普通话（母语）、粤语（母语）、英语（C1）">Mandarin (Native), Cantonese (Native), English (C1)</dd>
                 <dt data-en="Programming" data-zh="编程">Programming</dt>
-                <dd>Python, MATLAB, C, HTML</dd>
+                <dd lang="en">Python, MATLAB, C, HTML</dd>
                 <dt data-en="Tools" data-zh="工具">Tools</dt>
-                <dd>LaTeX, Microsoft Office</dd>
+                <dd lang="en">LaTeX, Microsoft Office</dd>
             </dl>
         </section>
     </main>
@@ -497,11 +639,17 @@
         (() => {
             const root = document.documentElement;
             const navigation = document.getElementById('section-nav');
+            const pageControls = document.getElementById('page-controls');
             const languageToggle = document.getElementById('language-toggle');
             const themeToggle = document.getElementById('theme-toggle');
+            const themeColor = document.getElementById('theme-color');
             const status = document.getElementById('control-status');
             const translatable = Array.from(document.querySelectorAll('[data-en][data-zh]'));
+            const relabelable = Array.from(document.querySelectorAll('[data-en-label][data-zh-label]'));
+            const languageSensitive = Array.from(document.querySelectorAll('[data-en-lang][data-zh-lang]'));
             let currentLanguage = 'en';
+            let hasThemeOverride = false;
+            let systemThemeQuery = null;
 
             function readPreference(key, fallback) {
                 try {
@@ -523,38 +671,54 @@
                 const isDark = root.dataset.theme === 'dark';
                 const isChinese = currentLanguage === 'zh';
                 themeToggle.textContent = isDark ? (isChinese ? '浅色' : 'Light') : (isChinese ? '深色' : 'Dark');
-                themeToggle.setAttribute('aria-pressed', String(isDark));
                 themeToggle.setAttribute('aria-label', isDark
                     ? (isChinese ? '切换浅色模式' : 'Switch to light mode')
                     : (isChinese ? '切换深色模式' : 'Switch to dark mode'));
             }
 
-            function setLanguage(language, announce = false) {
+            function updateNavigationOffset() {
+                root.style.setProperty('--nav-offset', `${navigation.getBoundingClientRect().height + 16}px`);
+            }
+
+            function setLanguage(language, announce = false, persist = false) {
                 currentLanguage = language === 'zh' ? 'zh' : 'en';
+                const isChinese = currentLanguage === 'zh';
                 translatable.forEach((element) => {
                     element.textContent = element.dataset[currentLanguage];
                 });
+                relabelable.forEach((element) => {
+                    element.setAttribute('aria-label', element.dataset[`${currentLanguage}Label`]);
+                    element.lang = isChinese ? 'zh-Hans' : 'en';
+                });
+                languageSensitive.forEach((element) => {
+                    element.lang = element.dataset[`${currentLanguage}Lang`];
+                });
 
-                const isChinese = currentLanguage === 'zh';
                 root.lang = isChinese ? 'zh-Hans' : 'en';
                 document.title = isChinese ? '谢昊天 — 运筹学与复杂系统' : 'Haotian Xie — Operations Research & Complex Systems';
                 navigation.setAttribute('aria-label', isChinese ? '主页栏目' : 'Homepage sections');
                 languageToggle.textContent = isChinese ? 'English' : '中文';
-                languageToggle.setAttribute('aria-pressed', String(isChinese));
                 languageToggle.setAttribute('aria-label', isChinese ? '切换为英文' : 'Switch to Chinese');
                 updateThemeControl();
-                writePreference('homepage-language', currentLanguage);
+                updateNavigationOffset();
+                if (persist) {
+                    writePreference('homepage-language', currentLanguage);
+                }
 
                 if (announce) {
                     status.textContent = isChinese ? '已切换为中文。' : 'English version selected.';
                 }
             }
 
-            function setTheme(theme, announce = false) {
+            function setTheme(theme, announce = false, persist = false) {
                 const isDark = theme === 'dark';
                 root.dataset.theme = isDark ? 'dark' : 'light';
+                themeColor?.setAttribute('content', isDark ? '#111827' : '#ffffff');
                 updateThemeControl();
-                writePreference('homepage-theme', isDark ? 'dark' : 'light');
+                if (persist) {
+                    hasThemeOverride = true;
+                    writePreference('homepage-theme', isDark ? 'dark' : 'light');
+                }
 
                 if (announce) {
                     status.textContent = isDark
@@ -565,18 +729,34 @@
 
             languageToggle.addEventListener('click', () => {
                 const nextLanguage = root.lang === 'zh-Hans' ? 'en' : 'zh';
-                setLanguage(nextLanguage, true);
+                setLanguage(nextLanguage, true, true);
             });
 
             themeToggle.addEventListener('click', () => {
                 const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-                setTheme(nextTheme, true);
+                setTheme(nextTheme, true, true);
             });
 
-            const preferredTheme = readPreference('homepage-theme', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            window.addEventListener('resize', updateNavigationOffset);
+
+            const storedTheme = readPreference('homepage-theme', null);
+            hasThemeOverride = storedTheme === 'dark' || storedTheme === 'light';
+            systemThemeQuery = typeof window.matchMedia === 'function'
+                ? window.matchMedia('(prefers-color-scheme: dark)')
+                : null;
+            const preferredTheme = hasThemeOverride
+                ? storedTheme
+                : (systemThemeQuery?.matches ? 'dark' : 'light');
             const preferredLanguage = readPreference('homepage-language', 'en');
             setTheme(preferredTheme);
             setLanguage(preferredLanguage);
+            pageControls.hidden = false;
+
+            systemThemeQuery?.addEventListener?.('change', (event) => {
+                if (!hasThemeOverride) {
+                    setTheme(event.matches ? 'dark' : 'light');
+                }
+            });
         })();
     </script>
 </body>

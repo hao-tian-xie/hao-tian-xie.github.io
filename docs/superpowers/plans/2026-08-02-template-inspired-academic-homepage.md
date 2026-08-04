@@ -1,5 +1,7 @@
 # Template-Inspired Academic Homepage Implementation Plan
 
+> **Status: superseded (2026-08-05).** This historical plan is retained for provenance and must not be executed against the current homepage.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** Rebuild `index.html` as a template-inspired, content-accurate academic homepage with polished, accessible interactions and no fictional template data.
