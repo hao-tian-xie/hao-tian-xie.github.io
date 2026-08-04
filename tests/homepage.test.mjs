@@ -38,7 +38,7 @@ test('preserves the complete scholarly record and academic profile', () => {
     'Evaluating airline service quality through a comprehensive text-mining',
     'Exploring the drivers of green supply chain management in the Chinese electronics industry',
     'Classifying Drosophila olfactory projection neuron boutons',
-    'A Virtual Node-Based Zero-Shot Learning Framework for Link Prediction in Complex Networks',
+    'A virtual node based zero-shot learning framework for link prediction in complex networks',
     'Tony Reynolds Academic Excellence Prize',
     'YUAN CHUAN Scholarship',
     'haotiantimxie@gmail.com',
@@ -54,12 +54,22 @@ test('preserves the complete scholarly record and academic profile', () => {
     '10.1016/j.jairtraman.2024.102655',
     '10.1016/j.clscn.2023.100110',
     '10.1016/j.isci.2022.104180',
+    '10.1016/j.ins.2026.123522',
   ]) {
     assert.ok(html.includes(doi), `missing DOI: ${doi}`);
   }
 
   assert.match(html, /<em>iScience<\/em>, 2022\./);
   assert.doesNotMatch(html, /10\.1016\/j\.isci\.2021\.104180|<em>iScience<\/em>, 2021\./);
+  assert.match(html, /Exploring the drivers of green supply chain management[^<]*GDEMATEL–AISM approach/);
+  assert.doesNotMatch(html, /GDEMATEL-AISM/);
+  assert.match(html, /<h3>A virtual node based zero-shot learning framework for link prediction in complex networks<\/h3>\s*<p><strong>H\. Xie\*<\/strong>, Y\. Pu, Y\. Tan, &amp; W\. Yan<\/p>/);
+  assert.match(html, /<em>Information Sciences<\/em>, 748 \(2026\), 123522\./);
+  assert.match(html, /href="https:\/\/doi\.org\/10\.1016\/j\.ins\.2026\.123522"/);
+  assert.match(html, /href="https:\/\/scholar\.google\.com\/scholar\?q=A\+virtual\+node\+based\+zero-shot\+learning\+framework\+for\+link\+prediction\+in\+complex\+networks"/);
+  assert.match(html, /data-en="New publications in " data-zh="论文发表：在 "/);
+  assert.match(html, /data-en="\." data-zh=" 发表新成果。"/);
+  assert.doesNotMatch(html, /Under revision at Information Sciences|正在 Information Sciences 修订/);
 });
 
 test('keeps the page simple while providing responsive bilingual theme controls', () => {
@@ -91,7 +101,11 @@ test('keeps the page simple while providing responsive bilingual theme controls'
 test('keeps keyboard, language, and control semantics unambiguous', () => {
   const skipIndex = html.indexOf('id="skip-link"');
   const navIndex = html.indexOf('<nav');
+  const controlsIndex = html.indexOf('id="page-controls"');
+  const emailLinkIndex = html.indexOf('<a href="mailto:');
   assert.ok(skipIndex > 0 && skipIndex < navIndex, 'skip link must be the first interactive page control');
+  assert.ok(navIndex < controlsIndex && controlsIndex < emailLinkIndex,
+    'visually top-aligned language and theme controls must precede lower header links in the focus order');
   assert.match(html, /<a id="skip-link" href="#main-content"[^>]*data-en="Skip to main content"[^>]*data-zh="跳至主要内容"/i);
   assert.match(html, /<main id="main-content" tabindex="-1">/i);
 
@@ -105,8 +119,6 @@ test('keeps keyboard, language, and control semantics unambiguous', () => {
   const publicationArticles = html.match(/<article lang="en">/g) ?? [];
   assert.equal(publicationArticles.length, 6, 'English scholarly records need a local language boundary in Chinese mode');
   assert.match(html, /data-en="present" data-zh="至今"/);
-  assert.match(html, /data-en="Under revision at Information Sciences" data-zh="正在 Information Sciences 修订"/);
-  assert.match(html, /data-en-lang="en" data-zh-lang="zh-Hans"/);
 
   const newTabLinks = (html.match(/<a\b[^>]*target="_blank"[^>]*>/g) ?? []);
   for (const link of newTabLinks) {
@@ -125,6 +137,8 @@ test('keeps narrow layouts readable, reachable, and touch-friendly', () => {
   assert.match(html, /function\s+updateNavigationOffset/);
   assert.match(html, /setProperty\(['"]--nav-offset['"]/);
   assert.match(html, /@media\s*\(max-width:\s*720px\)[\s\S]*?text-align:\s*start/i);
+  assert.match(html, /@media\s*\(max-width:\s*720px\)[\s\S]*?nav ul\s*\{[^}]*gap:\s*6px 9px/i,
+    'the 320px English navigation must fit in two rows');
 });
 
 test('keeps the document navigation in a simple header-to-footer order', () => {
@@ -198,6 +212,8 @@ test('publishes ten personal style studies alongside the complete homepage', () 
 
   for (const { file, html: variantHtml } of variantPages) {
     assert.match(variantHtml, /<meta name="robots" content="noindex, follow">/i, `${file} must not compete with the primary homepage in search`);
+    assert.match(variantHtml, /nav a\s*\{[^}]*display:\s*inline-flex[^}]*min-height:\s*32px/i,
+      `${file} navigation needs a consistent touch target`);
     for (const title of exactSelectedTitles) {
       assert.ok(variantHtml.includes(title), `${file} alters or omits the selected publication title: ${title}`);
     }

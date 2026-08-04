@@ -43,7 +43,6 @@ function runHomepage({ stored = {}, systemDark = false } = {}) {
   pageControls.hidden = true;
   const translatable = createElement({ en: 'About', zh: '关于' });
   const relabelable = createElement({ enLabel: 'English label', zhLabel: '中文标签' });
-  const languageSensitive = createElement({ enLang: 'en', zhLang: 'zh-Hans' });
   const elements = {
     'section-nav': navigation,
     'language-toggle': languageToggle,
@@ -70,13 +69,12 @@ function runHomepage({ stored = {}, systemDark = false } = {}) {
     querySelectorAll(selector) {
       if (selector === '[data-en][data-zh]') return [translatable];
       if (selector === '[data-en-label][data-zh-label]') return [relabelable];
-      if (selector === '[data-en-lang][data-zh-lang]') return [languageSensitive];
       return [];
     },
   };
 
   vm.runInNewContext(interactiveScript, { document, window });
-  return { languageSensitive, languageToggle, mediaListeners, mediaQuery, pageControls, relabelable, root, status, storage, themeToggle, translatable };
+  return { languageToggle, mediaListeners, mediaQuery, pageControls, relabelable, root, status, storage, themeToggle, translatable };
 }
 
 test('system theme stays system-controlled until the visitor explicitly chooses a theme', () => {
@@ -111,7 +109,6 @@ test('language switching keeps localized accessible names in the matching langua
   assert.equal(page.root.lang, 'zh-Hans');
   assert.equal(page.relabelable.lang, 'zh-Hans');
   assert.equal(page.relabelable.getAttribute('aria-label'), '中文标签');
-  assert.equal(page.languageSensitive.lang, 'zh-Hans');
 });
 
 test('the saved or system theme is applied in the document head before first paint', () => {
