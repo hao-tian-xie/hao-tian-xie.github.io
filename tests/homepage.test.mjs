@@ -4,15 +4,20 @@ import test from 'node:test';
 
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 
-test('uses the academic template information architecture without fictional template data', () => {
-  for (const sectionId of ['about', 'news', 'publications', 'experience', 'awards', 'skills']) {
+test('uses a plain semantic HTML document', () => {
+  for (const element of ['<header', '<nav', '<main', '<section', '<article', '<footer']) {
+    assert.ok(html.includes(element), `missing semantic element: ${element}`);
+  }
+
+  for (const sectionId of ['about', 'news', 'publications', 'experience', 'education', 'awards', 'skills']) {
     assert.match(html, new RegExp(`id="${sectionId}"`), `missing section: ${sectionId}`);
   }
 
   assert.match(html, /Haotian Xie/);
   assert.match(html, /谢昊天/);
+  assert.match(html, /Research Assistant/);
+  assert.match(html, /The Hong Kong Polytechnic University/);
   assert.doesNotMatch(html, /Alex Morgan|Northbridge Institute|RedNote|astronaut-btn|template-assets/);
-  assert.doesNotMatch(html, /id="language-toggle"|data-i18n=/);
 });
 
 test('preserves the complete scholarly record and academic profile', () => {
@@ -23,8 +28,6 @@ test('preserves the complete scholarly record and academic profile', () => {
     'Exploring the drivers of green supply chain management in the Chinese electronics industry',
     'Classifying Drosophila olfactory projection neuron boutons',
     'A Virtual Node-Based Zero-Shot Learning Framework for Link Prediction in Complex Networks',
-    'Research Assistant',
-    'The Hong Kong Polytechnic University',
     'Tony Reynolds Academic Excellence Prize',
     'YUAN CHUAN Scholarship',
     'haotiantimxie@gmail.com',
@@ -45,43 +48,22 @@ test('preserves the complete scholarly record and academic profile', () => {
   }
 });
 
-test('provides progressive publication filtering and author disclosure controls', () => {
-  assert.match(html, /id="publication-filter"/);
-  assert.match(html, /class="filter-button"[^>]*aria-pressed="true"/);
-  assert.match(html, /class="publication-card"[^>]*data-tags="[^"]+"/);
-  assert.match(html, /class="author-toggle"[^>]*aria-expanded="false"[^>]*aria-controls="[^"]+"/);
-  assert.match(html, /function applyPublicationFilter\(/);
-  assert.match(html, /function setAuthorExpanded\(/);
+test('does not include modular, card, responsive, or interactive UI code', () => {
+  assert.doesNotMatch(html, /<style\b|<script\b|<button\b|<div\b/i);
+  assert.doesNotMatch(html, /\bclass\s*=/i);
+  assert.doesNotMatch(html, /border\s*:|box-shadow\s*:|grid-template|display\s*:\s*(grid|flex)|transition\s*:|animation\s*:|@media\b|@keyframes\b/i);
+  assert.doesNotMatch(html, /IntersectionObserver|navigator\.clipboard|language-toggle|data-[a-z-]+=/i);
 });
 
-test('supports copy feedback, scroll spy, and accessible back-to-top behavior', () => {
-  assert.match(html, /id="email-copy"/);
-  assert.match(html, /id="bio-copy"/);
-  assert.match(html, /aria-live="polite"/);
-  assert.match(html, /id="back-to-top"/);
-  assert.match(html, /function copyText\(/);
-  assert.match(html, /function setActiveNavigation\(/);
-  assert.match(html, /new IntersectionObserver/);
-  assert.match(html, /link\.setAttribute\(['"]aria-current['"], ['"]page['"]\)/);
-  assert.match(html, /link\.removeAttribute\(['"]aria-current['"]\)/);
-  assert.match(html, /function keepLastSectionCurrentAtDocumentEnd\(/);
-  assert.match(html, /backToTop.focus()/);
-});
+test('keeps the document navigation in a simple header-to-footer order', () => {
+  const headerIndex = html.indexOf('<header');
+  const navIndex = html.indexOf('<nav');
+  const mainIndex = html.indexOf('<main');
+  const footerIndex = html.indexOf('<footer');
 
-test('keeps motion bounded and safe for keyboard and reduced-motion users', () => {
-  assert.match(html, /--ease-out:\s*cubic-bezier\(/);
-  assert.match(html, /:focus-visible\s*\{/);
-  assert.match(html, /@media \(hover: hover\) and \(pointer: fine\)/);
-  assert.match(html, /@media \(prefers-reduced-motion: reduce\)/);
-  assert.doesNotMatch(html, /transition:\s*all/);
-  assert.doesNotMatch(html, /ease-in/);
-  assert.doesNotMatch(html, /scale\(0\)/);
-});
-
-test('prevents narrow viewport overflow', () => {
-  assert.match(html, /overflow-x:\s*hidden/);
-  assert.match(html, /@media \(max-width:\s*720px\)/);
-  assert.match(html, /box-sizing:\s*border-box/);
+  assert.ok(headerIndex < navIndex, 'header must precede navigation');
+  assert.ok(navIndex < mainIndex, 'navigation must precede main content');
+  assert.ok(mainIndex < footerIndex, 'main content must precede footer');
 });
 
 test('secures every external new-tab link', () => {

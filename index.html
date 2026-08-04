@@ -1,1264 +1,165 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#f5f7fb">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Haotian Xie | Academic Homepage</title>
     <meta name="description" content="Academic homepage of Haotian Xie, Research Assistant at The Hong Kong Polytechnic University.">
-    <style>
-        :root {
-            --primary-blue: #1a73e8;
-            --hover-blue: #1557b0;
-            --ink: #152238;
-            --muted: #637083;
-            --soft-muted: #8b96a6;
-            --paper: #f5f7fb;
-            --surface: #ffffff;
-            --surface-blue: #edf4ff;
-            --line: #e2e8f0;
-            --line-strong: #cad6e4;
-            --shadow: 0 22px 70px rgba(30, 58, 95, 0.08);
-            --shadow-soft: 0 10px 30px rgba(30, 58, 95, 0.06);
-            --radius-large: 28px;
-            --radius-medium: 18px;
-            --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
-
-        html {
-            background: var(--paper);
-            scroll-behavior: smooth;
-            scroll-padding-top: 108px;
-            overflow-x: hidden;
-        }
-
-        body {
-            min-width: 0;
-            margin: 0;
-            background:
-                radial-gradient(circle at 82% -8%, rgba(26, 115, 232, 0.13), transparent 32rem),
-                linear-gradient(180deg, #f8faff 0%, var(--paper) 34rem);
-            color: var(--ink);
-            font-family: var(--font-stack);
-            font-size: 16px;
-            line-height: 1.65;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-
-        img {
-            display: block;
-            max-width: 100%;
-        }
-
-        a {
-            color: var(--primary-blue);
-            text-decoration: none;
-            transition: color 180ms var(--ease-out), background-color 180ms var(--ease-out), border-color 180ms var(--ease-out);
-        }
-
-        a:hover {
-            color: var(--hover-blue);
-        }
-
-        a:focus-visible,
-        button:focus-visible {
-            outline: 3px solid rgba(26, 115, 232, 0.38);
-            outline-offset: 4px;
-        }
-
-        button {
-            border: 0;
-            font: inherit;
-        }
-
-        .skip-link {
-            position: fixed;
-            top: 12px;
-            left: 12px;
-            z-index: 1000;
-            padding: 10px 14px;
-            border-radius: 10px;
-            background: var(--ink);
-            color: #fff;
-            transform: translateY(-160%);
-            transition: transform 180ms var(--ease-out);
-        }
-
-        .skip-link:focus {
-            transform: translateY(0);
-            color: #fff;
-        }
-
-        .shell {
-            width: min(1160px, calc(100% - 40px));
-            margin: 0 auto;
-        }
-
-        .site-header {
-            padding: 56px 0 26px;
-        }
-
-        .profile-card {
-            display: grid;
-            grid-template-columns: 168px minmax(0, 1fr) 220px;
-            gap: 34px;
-            align-items: center;
-            padding: 36px;
-            border: 1px solid rgba(202, 214, 228, 0.85);
-            border-radius: var(--radius-large);
-            background: rgba(255, 255, 255, 0.92);
-            box-shadow: var(--shadow);
-        }
-
-        .profile-portrait {
-            width: 168px;
-            height: 168px;
-            margin: 0;
-            overflow: hidden;
-            border: 6px solid #fff;
-            border-radius: 50%;
-            background: var(--surface-blue);
-            box-shadow: 0 12px 28px rgba(38, 84, 139, 0.16);
-        }
-
-        .profile-portrait img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .eyebrow,
-        .section-kicker {
-            margin: 0 0 8px;
-            color: var(--primary-blue);
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 0.13em;
-            line-height: 1.3;
-            text-transform: uppercase;
-        }
-
-        #page-title {
-            margin: 0;
-            color: var(--ink);
-            font-size: clamp(2.35rem, 5vw, 4.3rem);
-            font-weight: 800;
-            letter-spacing: -0.055em;
-            line-height: 0.98;
-        }
-
-        #page-title:focus {
-            outline: 3px solid rgba(26, 115, 232, 0.38);
-            outline-offset: 8px;
-        }
-
-        .name-cn {
-            display: inline-block;
-            margin-left: 10px;
-            color: var(--muted);
-            font-size: 0.42em;
-            font-weight: 600;
-            letter-spacing: 0;
-            vertical-align: middle;
-        }
-
-        .profile-role {
-            max-width: 680px;
-            margin: 16px 0 0;
-            color: var(--muted);
-            font-size: 1.06rem;
-            line-height: 1.55;
-        }
-
-        .profile-role strong {
-            color: var(--ink);
-        }
-
-        .profile-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 22px;
-        }
-
-        .button {
-            display: inline-flex;
-            min-height: 44px;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 9px 15px;
-            border: 1px solid var(--line-strong);
-            border-radius: 999px;
-            background: var(--surface);
-            color: var(--ink);
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 700;
-            line-height: 1;
-            text-align: center;
-            transition: transform 180ms var(--ease-out), color 180ms var(--ease-out), background-color 180ms var(--ease-out), border-color 180ms var(--ease-out), box-shadow 180ms var(--ease-out);
-        }
-
-        .button:hover {
-            border-color: var(--primary-blue);
-            color: var(--primary-blue);
-        }
-
-        .button:active {
-            transform: scale(0.97);
-        }
-
-        .button--solid {
-            border-color: var(--primary-blue);
-            background: var(--primary-blue);
-            color: #fff;
-            box-shadow: 0 8px 18px rgba(26, 115, 232, 0.2);
-        }
-
-        .button--solid:hover {
-            border-color: var(--hover-blue);
-            background: var(--hover-blue);
-            color: #fff;
-        }
-
-        .contact-line {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 18px 0 0;
-            color: var(--muted);
-            font-size: 0.92rem;
-        }
-
-        .contact-line a {
-            overflow-wrap: anywhere;
-        }
-
-        .profile-note {
-            min-height: 142px;
-            padding: 18px 0 18px 22px;
-            border-left: 1px solid var(--line-strong);
-        }
-
-        .profile-note strong {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--ink);
-            font-size: 0.76rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .profile-note p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 0.92rem;
-            line-height: 1.55;
-        }
-
-        .copy-status {
-            min-height: 1.5em;
-            margin: 9px 0 0;
-            color: var(--primary-blue);
-            font-size: 0.82rem;
-        }
-
-        .section-nav {
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            margin: 0 auto 20px;
-            border-top: 1px solid rgba(202, 214, 228, 0.82);
-            border-bottom: 1px solid rgba(202, 214, 228, 0.82);
-            background: rgba(245, 247, 251, 0.86);
-            backdrop-filter: blur(16px);
-        }
-
-        .section-nav-list {
-            display: flex;
-            gap: 26px;
-            align-items: center;
-            width: min(1160px, calc(100% - 40px));
-            min-height: 56px;
-            margin: 0 auto;
-            padding: 0;
-            overflow-x: auto;
-            list-style: none;
-            scrollbar-width: none;
-        }
-
-        .section-nav-list::-webkit-scrollbar {
-            display: none;
-        }
-
-        .section-nav-link {
-            position: relative;
-            display: inline-flex;
-            min-height: 56px;
-            align-items: center;
-            flex: 0 0 auto;
-            color: var(--muted);
-            font-size: 0.88rem;
-            font-weight: 750;
-            white-space: nowrap;
-        }
-
-        .section-nav-link::after {
-            position: absolute;
-            right: 0;
-            bottom: -1px;
-            left: 0;
-            height: 3px;
-            border-radius: 3px 3px 0 0;
-            background: var(--primary-blue);
-            content: "";
-            opacity: 0;
-            transform: scaleX(0.35);
-            transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out);
-        }
-
-        .section-nav-link:hover,
-        .section-nav-link.is-active {
-            color: var(--primary-blue);
-        }
-
-        .section-nav-link.is-active::after {
-            opacity: 1;
-            transform: scaleX(1);
-        }
-
-        main {
-            display: grid;
-            gap: 20px;
-        }
-
-        .page-section {
-            scroll-margin-top: 92px;
-            padding: 42px 46px;
-            border: 1px solid rgba(202, 214, 228, 0.86);
-            border-radius: var(--radius-large);
-            background: rgba(255, 255, 255, 0.94);
-            box-shadow: var(--shadow-soft);
-        }
-
-        .section-heading {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 28px;
-        }
-
-        .section-heading h2 {
-            margin: 0;
-            color: var(--ink);
-            font-size: clamp(1.65rem, 3vw, 2.25rem);
-            letter-spacing: -0.035em;
-            line-height: 1.1;
-        }
-
-        .section-heading p {
-            max-width: 520px;
-            margin: 0;
-            color: var(--muted);
-            font-size: 0.92rem;
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.65fr);
-            gap: 34px;
-        }
-
-        .about-copy p {
-            margin: 0 0 16px;
-            color: var(--muted);
-            font-size: 1.02rem;
-        }
-
-        .about-copy p:last-child {
-            margin-bottom: 0;
-        }
-
-        .highlight {
-            display: inline;
-            padding: 2px 6px;
-            border-radius: 6px;
-            background: var(--surface-blue);
-            color: var(--primary-blue);
-            font-weight: 750;
-        }
-
-        .fact-list {
-            display: grid;
-            gap: 12px;
-            margin: 0;
-        }
-
-        .fact {
-            padding: 14px 16px;
-            border-radius: var(--radius-medium);
-            background: var(--surface-blue);
-        }
-
-        .fact dt {
-            margin-bottom: 3px;
-            color: var(--soft-muted);
-            font-size: 0.72rem;
-            font-weight: 800;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .fact dd {
-            margin: 0;
-            color: var(--ink);
-            font-size: 0.92rem;
-            font-weight: 700;
-            line-height: 1.45;
-        }
-
-        .callout {
-            display: flex;
-            gap: 12px;
-            margin-top: 26px;
-            padding: 16px 18px;
-            border: 1px solid rgba(26, 115, 232, 0.2);
-            border-radius: var(--radius-medium);
-            background: linear-gradient(135deg, #f4f8ff, #fff);
-            color: var(--muted);
-            font-size: 0.94rem;
-        }
-
-        .callout strong {
-            color: var(--ink);
-        }
-
-        .callout-mark {
-            flex: 0 0 auto;
-            color: var(--primary-blue);
-            font-size: 1.1rem;
-            line-height: 1.3;
-        }
-
-        .news-list,
-        .timeline-list {
-            display: grid;
-            gap: 0;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .news-item,
-        .timeline-item {
-            display: grid;
-            grid-template-columns: 108px minmax(0, 1fr);
-            gap: 24px;
-            padding: 18px 0;
-            border-top: 1px solid var(--line);
-        }
-
-        .news-item:first-child,
-        .timeline-item:first-child {
-            padding-top: 0;
-            border-top: 0;
-        }
-
-        .news-date,
-        .timeline-date {
-            color: var(--primary-blue);
-            font-size: 0.8rem;
-            font-weight: 800;
-            letter-spacing: 0.06em;
-            line-height: 1.4;
-            text-transform: uppercase;
-        }
-
-        .news-item p,
-        .timeline-item p {
-            margin: 0;
-            color: var(--muted);
-        }
-
-        .news-item strong,
-        .timeline-item strong {
-            color: var(--ink);
-        }
-
-        .filter-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 24px;
-        }
-
-        .filter-button {
-            min-height: 38px;
-            padding: 7px 13px;
-            border: 1px solid var(--line-strong);
-            border-radius: 999px;
-            background: var(--surface);
-            color: var(--muted);
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 750;
-            transition: transform 180ms var(--ease-out), color 180ms var(--ease-out), background-color 180ms var(--ease-out), border-color 180ms var(--ease-out);
-        }
-
-        .filter-button:hover,
-        .filter-button[aria-pressed="true"] {
-            border-color: var(--primary-blue);
-            background: var(--surface-blue);
-            color: var(--primary-blue);
-        }
-
-        .filter-button:active {
-            transform: scale(0.97);
-        }
-
-        .publication-list {
-            display: grid;
-            gap: 0;
-        }
-
-        .publication-card {
-            padding: 25px 0 27px;
-            border-top: 1px solid var(--line);
-        }
-
-        .publication-card:first-child {
-            padding-top: 0;
-            border-top: 0;
-        }
-
-        .publication-card[hidden] {
-            display: none;
-        }
-
-        .publication-title {
-            margin: 0;
-            color: var(--ink);
-            font-size: 1.07rem;
-            font-weight: 780;
-            line-height: 1.45;
-        }
-
-        .publication-authors {
-            margin: 9px 0 3px;
-            color: var(--muted);
-            font-size: 0.92rem;
-        }
-
-        .publication-authors strong {
-            color: var(--ink);
-        }
-
-        .author-full[hidden] {
-            display: none;
-        }
-
-        .author-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            margin: 2px 0 9px;
-            padding: 0;
-            background: transparent;
-            color: var(--primary-blue);
-            cursor: pointer;
-            font-size: 0.78rem;
-            font-weight: 750;
-        }
-
-        .author-toggle .chevron {
-            display: inline-block;
-            transition: transform 180ms var(--ease-out);
-        }
-
-        .author-toggle[aria-expanded="true"] .chevron {
-            transform: rotate(180deg);
-        }
-
-        .publication-meta {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 7px 10px;
-            color: var(--muted);
-            font-size: 0.88rem;
-        }
-
-        .publication-meta em {
-            color: var(--ink);
-        }
-
-        .tag {
-            display: inline-flex;
-            min-height: 24px;
-            align-items: center;
-            padding: 3px 9px;
-            border: 1px solid var(--line);
-            border-radius: 999px;
-            background: #f8fafc;
-            color: var(--soft-muted);
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 0.04em;
-            line-height: 1;
-            text-transform: uppercase;
-        }
-
-        .publication-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 13px;
-        }
-
-        .text-link {
-            display: inline-flex;
-            min-height: 32px;
-            align-items: center;
-            padding: 5px 10px;
-            border: 1px solid var(--line-strong);
-            border-radius: 8px;
-            color: var(--primary-blue);
-            font-size: 0.78rem;
-            font-weight: 750;
-        }
-
-        .text-link:hover {
-            border-color: var(--primary-blue);
-            background: var(--surface-blue);
-        }
-
-        .timeline-item h3 {
-            margin: 0 0 4px;
-            color: var(--ink);
-            font-size: 1rem;
-            line-height: 1.4;
-        }
-
-        .timeline-item p + p {
-            margin-top: 5px;
-        }
-
-        .award-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .award-card {
-            min-height: 100%;
-            padding: 17px 18px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius-medium);
-            background: #fbfcfe;
-        }
-
-        .award-card strong {
-            display: block;
-            margin-bottom: 4px;
-            color: var(--ink);
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .award-card span {
-            color: var(--muted);
-            font-size: 0.82rem;
-        }
-
-        .skill-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 12px;
-            margin: 0;
-        }
-
-        .skill-card {
-            padding: 18px;
-            border-radius: var(--radius-medium);
-            background: var(--surface-blue);
-        }
-
-        .skill-card dt {
-            margin-bottom: 6px;
-            color: var(--primary-blue);
-            font-size: 0.72rem;
-            font-weight: 800;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .skill-card dd {
-            margin: 0;
-            color: var(--ink);
-            font-size: 0.9rem;
-            font-weight: 650;
-            line-height: 1.5;
-        }
-
-        .site-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 28px 0 46px;
-            color: var(--soft-muted);
-            font-size: 0.78rem;
-        }
-
-        .site-footer p {
-            margin: 0;
-        }
-
-        .back-to-top {
-            position: fixed;
-            right: 22px;
-            bottom: 22px;
-            z-index: 30;
-            width: 44px;
-            height: 44px;
-            border: 1px solid var(--line-strong);
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.92);
-            box-shadow: var(--shadow-soft);
-            color: var(--primary-blue);
-            cursor: pointer;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(12px);
-            transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out), background-color 180ms var(--ease-out);
-        }
-
-        .back-to-top[data-visible="true"] {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0);
-        }
-
-        .back-to-top:hover {
-            background: var(--surface-blue);
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-            .button--solid:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 12px 24px rgba(26, 115, 232, 0.25);
-            }
-
-            .publication-card {
-                transition: border-color 180ms var(--ease-out);
-            }
-        }
-
-        @media (max-width: 900px) {
-            .profile-card {
-                grid-template-columns: 136px minmax(0, 1fr);
-                gap: 26px;
-            }
-
-            .profile-portrait {
-                width: 136px;
-                height: 136px;
-            }
-
-            .profile-note {
-                grid-column: 1 / -1;
-                min-height: auto;
-                padding: 18px 0 0;
-                border-top: 1px solid var(--line-strong);
-                border-left: 0;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 720px) {
-            .shell,
-            .section-nav-list {
-                width: min(100% - 24px, 560px);
-            }
-
-            .site-header {
-                padding-top: 28px;
-            }
-
-            .profile-card {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 24px;
-                border-radius: 22px;
-            }
-
-            .profile-portrait {
-                width: 112px;
-                height: 112px;
-            }
-
-            .profile-note {
-                grid-column: auto;
-            }
-
-            .section-nav-list {
-                gap: 20px;
-            }
-
-            .page-section {
-                padding: 30px 22px;
-                border-radius: 22px;
-            }
-
-            .section-heading {
-                display: block;
-                margin-bottom: 22px;
-            }
-
-            .section-heading p {
-                margin-top: 10px;
-            }
-
-            .news-item,
-            .timeline-item {
-                grid-template-columns: 1fr;
-                gap: 5px;
-                padding: 16px 0;
-            }
-
-            .award-grid,
-            .skill-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .site-footer {
-                display: block;
-                padding-bottom: 32px;
-            }
-
-            .site-footer p + p {
-                margin-top: 6px;
-            }
-
-            .back-to-top {
-                right: 14px;
-                bottom: 14px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            html {
-                scroll-behavior: auto;
-            }
-
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                scroll-behavior: auto !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-    </style>
 </head>
 <body>
-    <a class="skip-link" href="#about">Skip to content</a>
-
-    <header class="site-header">
-        <div class="shell">
-            <div class="profile-card">
-                <figure class="profile-portrait">
-                    <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&amp;user=X42fddQAAAAJ&amp;citpid=1" alt="Portrait of Haotian Xie" width="168" height="168">
-                </figure>
-
-                <div class="profile-copy">
-                    <p class="eyebrow">Academic homepage · PolyU</p>
-                    <h1 id="page-title" tabindex="-1">Haotian Xie <span class="name-cn" lang="zh-Hans">谢昊天</span></h1>
-                    <p class="profile-role"><strong>Research Assistant</strong> · Department of Industrial and Systems Engineering · The Hong Kong Polytechnic University</p>
-                    <div class="profile-actions" aria-label="Profile actions">
-                        <a class="button button--solid" href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar <span aria-hidden="true">↗</span></a>
-                        <button class="button" id="email-copy" type="button" data-copy-value="haotiantimxie@gmail.com">Copy email</button>
-                        <button class="button" id="bio-copy" type="button" data-copy-target="#bio-text">Copy bio</button>
-                    </div>
-                    <p class="contact-line"><a href="mailto:haotiantimxie@gmail.com">haotiantimxie@gmail.com</a><span aria-hidden="true">·</span><span>Hong Kong, China</span></p>
-                    <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
-                </div>
-
-                <aside class="profile-note" aria-label="Current focus">
-                    <strong>Current focus</strong>
-                    <p>Data-driven decision making, logistics and supply chain management, and complex networks theory.</p>
-                </aside>
-            </div>
-        </div>
+    <header aria-labelledby="page-title">
+        <figure>
+            <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&amp;user=X42fddQAAAAJ&amp;citpid=1" alt="Portrait of Haotian Xie" width="160" height="160">
+        </figure>
+        <h1 id="page-title">Haotian Xie <span lang="zh-Hans">谢昊天</span></h1>
+        <p><strong>Research Assistant</strong><br>Department of Industrial and Systems Engineering<br>The Hong Kong Polytechnic University</p>
+        <address>
+            <a href="mailto:haotiantimxie@gmail.com">haotiantimxie@gmail.com</a><br>
+            Hong Kong, China
+        </address>
+        <p><a href="https://scholar.google.com/citations?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</a></p>
     </header>
 
-    <nav class="section-nav" aria-label="Section navigation">
-        <ul class="section-nav-list">
-            <li><a class="section-nav-link is-active" href="#about" aria-current="page">About</a></li>
-            <li><a class="section-nav-link" href="#news">News</a></li>
-            <li><a class="section-nav-link" href="#publications">Publications</a></li>
-            <li><a class="section-nav-link" href="#experience">Experience</a></li>
-            <li><a class="section-nav-link" href="#awards">Awards</a></li>
-            <li><a class="section-nav-link" href="#skills">Skills</a></li>
+    <nav aria-label="Homepage sections">
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#news">News</a></li>
+            <li><a href="#publications">Publications</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#awards">Awards</a></li>
+            <li><a href="#skills">Skills</a></li>
         </ul>
     </nav>
 
-    <main class="shell" id="content">
-        <section class="page-section" id="about" aria-labelledby="about-title">
-            <div class="section-heading">
-                <div>
-                    <p class="section-kicker">01 · About</p>
-                    <h2 id="about-title">Research at the edge of systems and decisions.</h2>
-                </div>
-                <p>Building useful models for complex, interconnected real-world systems.</p>
-            </div>
-
-            <div class="about-grid">
-                <div class="about-copy" id="bio-text">
-                    <p>I am a Research Assistant in the Department of Industrial and Systems Engineering at <strong>The Hong Kong Polytechnic University (PolyU)</strong>. I received my Master's degree from <strong>The University of Hong Kong (HKU)</strong> in 2025 and my Bachelor's degree from <strong>Beijing Normal University (BNU)</strong> in 2024.</p>
-                    <p>My work sits at the intersection of Operations Research and Complex Systems. I am especially interested in <span class="highlight">data-driven decision making</span>, <span class="highlight">logistics and supply chain management</span>, and <span class="highlight">complex networks theory</span>.</p>
-                </div>
-
-                <dl class="fact-list">
-                    <div class="fact">
-                        <dt>Seeking</dt>
-                        <dd>Ph.D. position · Fall 2026</dd>
-                    </div>
-                    <div class="fact">
-                        <dt>Based in</dt>
-                        <dd>Hong Kong, China</dd>
-                    </div>
-                    <div class="fact">
-                        <dt>Methods</dt>
-                        <dd>Mathematical modeling · Optimization</dd>
-                    </div>
-                </dl>
-            </div>
-
-            <div class="callout">
-                <span class="callout-mark" aria-hidden="true">↗</span>
-                <span><strong>Open to conversations.</strong> I am actively seeking a Ph.D. position starting in Fall 2026 and welcome academic collaborations. Please feel free to reach out by email.</span>
-            </div>
+    <main>
+        <section id="about" aria-labelledby="about-title">
+            <h2 id="about-title">About</h2>
+            <p>I am a Research Assistant in the Department of Industrial and Systems Engineering at <strong>The Hong Kong Polytechnic University (PolyU)</strong>. I received my Master's degree from <strong>The University of Hong Kong (HKU)</strong> in 2025 and my Bachelor's degree from <strong>Beijing Normal University (BNU)</strong> in 2024.</p>
+            <p>My research interests lie at the intersection of Operations Research and Complex Systems. I focus on data-driven decision making, logistics and supply chain management, and complex networks theory, with an emphasis on mathematical modeling and optimization for real-world transportation and supply chain systems.</p>
+            <p><strong>Open to conversations.</strong> I am actively seeking a Ph.D. position starting in Fall 2026 and welcome academic collaborations. Please feel free to reach out by email.</p>
         </section>
 
-        <section class="page-section" id="news" aria-labelledby="news-title">
-            <div class="section-heading">
-                <div>
-                    <p class="section-kicker">02 · News</p>
-                    <h2 id="news-title">A short research log.</h2>
-                </div>
-                <p>Selected milestones from study, research, and publication.</p>
-            </div>
+        <hr>
 
-            <ol class="news-list">
-                <li class="news-item">
-                    <time class="news-date" datetime="2026">2026</time>
-                    <p><strong>Ph.D. search.</strong> Exploring opportunities for a Fall 2026 start in operations research, complex systems, and supply chain analytics.</p>
+        <section id="news" aria-labelledby="news-title">
+            <h2 id="news-title">News</h2>
+            <ol>
+                <li><time datetime="2026">2026</time> — <strong>Ph.D. search.</strong> Exploring opportunities for a Fall 2026 start in operations research, complex systems, and supply chain analytics.</li>
+                <li><time datetime="2026">2026</time> — <strong>New publication.</strong> “Topological persistence pinpoints higher-order network vulnerabilities” appears in <em>Chaos</em>.</li>
+                <li><time datetime="2025">2025</time> — <strong>Joined PolyU.</strong> Began working as a Research Assistant in the Department of Industrial and Systems Engineering.</li>
+                <li><time datetime="2025">2025</time> — <strong>Completed HKU.</strong> Earned an MSc in Industrial Engineering and Logistics Management from The University of Hong Kong.</li>
+            </ol>
+        </section>
+
+        <hr>
+
+        <section id="publications" aria-labelledby="publications-title">
+            <h2 id="publications-title">Publications</h2>
+            <ol>
+                <li>
+                    <article>
+                        <h3>Topological persistence pinpoints higher-order network vulnerabilities</h3>
+                        <p><strong>H. Xie*</strong>, B. Ding</p>
+                        <p><em>Chaos: An Interdisciplinary Journal of Nonlinear Science</em>, 2026. JCR Q1, IF=3.2.</p>
+                        <p><a href="https://doi.org/10.1063/5.0293652" target="_blank" rel="noopener noreferrer">DOI</a> · <a href="https://scholar.google.com/scholar?q=Topological+persistence+pinpoints+higher-order+network+vulnerabilities" target="_blank" rel="noopener noreferrer">Google Scholar</a></p>
+                    </article>
                 </li>
-                <li class="news-item">
-                    <time class="news-date" datetime="2026">2026</time>
-                    <p><strong>New publication.</strong> “Topological persistence pinpoints higher-order network vulnerabilities” appears in <em>Chaos</em>.</p>
+                <li>
+                    <article>
+                        <h3>Decentralized autonomous organizations in e-commerce supply chains: A bayesian method to barrier identification and interrelationship mapping</h3>
+                        <p><strong>H. Xie*</strong>, Y. P. Tsang</p>
+                        <p><em>Electronic Commerce Research and Applications</em>, 2025. JCR Q1, IF=6.3.</p>
+                        <p><a href="https://doi.org/10.1016/j.elerap.2025.101533" target="_blank" rel="noopener noreferrer">DOI</a> · <a href="https://scholar.google.com/scholar?q=Decentralized+autonomous+organizations+in+e-commerce+supply+chains" target="_blank" rel="noopener noreferrer">Google Scholar</a></p>
+                    </article>
                 </li>
-                <li class="news-item">
-                    <time class="news-date" datetime="2025">2025</time>
-                    <p><strong>Joined PolyU.</strong> Began working as a Research Assistant in the Department of Industrial and Systems Engineering.</p>
+                <li>
+                    <article>
+                        <h3>Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis</h3>
+                        <p><strong>H. Xie*</strong>, Y. Li, Y. Pu, C. Zhang, &amp; J. Huang</p>
+                        <p><em>Journal of Air Transport Management</em>, 2024. JCR Q1, IF=4.5.</p>
+                        <p><a href="https://doi.org/10.1016/j.jairtraman.2024.102655" target="_blank" rel="noopener noreferrer">DOI</a> · <a href="https://scholar.google.com/scholar?q=Evaluating+airline+service+quality+through+a+comprehensive+text-mining" target="_blank" rel="noopener noreferrer">Google Scholar</a></p>
+                    </article>
                 </li>
-                <li class="news-item">
-                    <time class="news-date" datetime="2025">2025</time>
-                    <p><strong>Completed HKU.</strong> Earned an MSc in Industrial Engineering and Logistics Management from The University of Hong Kong.</p>
+                <li>
+                    <article>
+                        <h3>Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL-AISM approach</h3>
+                        <p>Y. Li, Y. Tan, Y. Pu, Y. Zhu, &amp; <strong>H. Xie*</strong></p>
+                        <p><em>Cleaner Logistics and Supply Chain</em>, 2023. JCR Q1, IF=6.9.</p>
+                        <p><a href="https://doi.org/10.1016/j.clscn.2023.100110" target="_blank" rel="noopener noreferrer">DOI</a> · <a href="https://scholar.google.com/scholar?q=Exploring+the+drivers+of+green+supply+chain+management+in+the+Chinese+electronics+industry" target="_blank" rel="noopener noreferrer">Google Scholar</a></p>
+                    </article>
+                </li>
+                <li>
+                    <article>
+                        <h3>Classifying Drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction</h3>
+                        <p>K. Yang, T. Liu, Z. Wang, …, <strong>H. Xie</strong>, …, K. Zhang</p>
+                        <p><em>iScience</em>, 2021. JCR Q1, IF=5.0.</p>
+                        <p><a href="https://doi.org/10.1016/j.isci.2021.104180" target="_blank" rel="noopener noreferrer">DOI</a> · <a href="https://scholar.google.com/scholar?q=Classifying+Drosophila+olfactory+projection+neuron+boutons" target="_blank" rel="noopener noreferrer">Google Scholar</a></p>
+                    </article>
+                </li>
+                <li>
+                    <article>
+                        <h3>A Virtual Node-Based Zero-Shot Learning Framework for Link Prediction in Complex Networks</h3>
+                        <p><strong>H. Xie*</strong>, Y. Pu, Y. Tan, &amp; W. Yan</p>
+                        <p><em>Under revision at Information Sciences</em></p>
+                    </article>
                 </li>
             </ol>
         </section>
 
-        <section class="page-section" id="publications" aria-labelledby="publications-title">
-            <div class="section-heading">
-                <div>
-                    <p class="section-kicker">03 · Publications</p>
-                    <h2 id="publications-title">Selected research.</h2>
-                </div>
-                <p>Peer-reviewed work across network science, transportation, and supply chain systems.</p>
-            </div>
+        <hr>
 
-            <div class="filter-bar" id="publication-filter" role="group" aria-label="Filter publications by topic">
-                <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All</button>
-                <button class="filter-button" type="button" data-filter="networks" aria-pressed="false">Complex networks</button>
-                <button class="filter-button" type="button" data-filter="supply-chain" aria-pressed="false">Supply chain</button>
-                <button class="filter-button" type="button" data-filter="transport" aria-pressed="false">Transport</button>
-                <button class="filter-button" type="button" data-filter="sustainability" aria-pressed="false">Sustainability</button>
-            </div>
-
-            <div class="publication-list">
-                <article class="publication-card" data-tags="networks">
-                    <h3 class="publication-title">Topological persistence pinpoints higher-order network vulnerabilities</h3>
-                    <p class="publication-authors"><strong>H. Xie*</strong>, B. Ding</p>
-                    <div class="publication-meta"><em>Chaos: An Interdisciplinary Journal of Nonlinear Science</em><span>2026</span><span class="tag">JCR Q1</span><span class="tag">IF=3.2</span></div>
-                    <div class="publication-links">
-                        <a class="text-link" href="https://doi.org/10.1063/5.0293652" target="_blank" rel="noopener noreferrer">DOI ↗</a>
-                        <a class="text-link" href="https://scholar.google.com/scholar?q=Topological+persistence+pinpoints+higher-order+network+vulnerabilities" target="_blank" rel="noopener noreferrer">Google Scholar ↗</a>
-                    </div>
-                </article>
-
-                <article class="publication-card" data-tags="networks supply-chain">
-                    <h3 class="publication-title">Decentralized autonomous organizations in e-commerce supply chains: A bayesian method to barrier identification and interrelationship mapping</h3>
-                    <p class="publication-authors"><strong>H. Xie*</strong>, Y. P. Tsang</p>
-                    <div class="publication-meta"><em>Electronic Commerce Research and Applications</em><span>2025</span><span class="tag">JCR Q1</span><span class="tag">IF=6.3</span></div>
-                    <div class="publication-links">
-                        <a class="text-link" href="https://doi.org/10.1016/j.elerap.2025.101533" target="_blank" rel="noopener noreferrer">DOI ↗</a>
-                        <a class="text-link" href="https://scholar.google.com/scholar?q=Decentralized+autonomous+organizations+in+e-commerce+supply+chains" target="_blank" rel="noopener noreferrer">Google Scholar ↗</a>
-                    </div>
-                </article>
-
-                <article class="publication-card" data-tags="transport">
-                    <h3 class="publication-title">Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis</h3>
-                    <p class="publication-authors"><strong>H. Xie*</strong>, Y. Li, Y. Pu, C. Zhang, &amp; J. Huang</p>
-                    <div class="publication-meta"><em>Journal of Air Transport Management</em><span>2024</span><span class="tag">JCR Q1</span><span class="tag">IF=4.5</span></div>
-                    <div class="publication-links">
-                        <a class="text-link" href="https://doi.org/10.1016/j.jairtraman.2024.102655" target="_blank" rel="noopener noreferrer">DOI ↗</a>
-                        <a class="text-link" href="https://scholar.google.com/scholar?q=Evaluating+airline+service+quality+through+a+comprehensive+text-mining" target="_blank" rel="noopener noreferrer">Google Scholar ↗</a>
-                    </div>
-                </article>
-
-                <article class="publication-card" data-tags="supply-chain sustainability">
-                    <h3 class="publication-title">Exploring the drivers of green supply chain management in the Chinese electronics industry: Evidence from a GDEMATEL-AISM approach</h3>
-                    <p class="publication-authors">Y. Li, Y. Tan, Y. Pu, Y. Zhu, &amp; <strong>H. Xie*</strong></p>
-                    <div class="publication-meta"><em>Cleaner Logistics and Supply Chain</em><span>2023</span><span class="tag">JCR Q1</span><span class="tag">IF=6.9</span></div>
-                    <div class="publication-links">
-                        <a class="text-link" href="https://doi.org/10.1016/j.clscn.2023.100110" target="_blank" rel="noopener noreferrer">DOI ↗</a>
-                        <a class="text-link" href="https://scholar.google.com/scholar?q=Exploring+the+drivers+of+green+supply+chain+management+in+the+Chinese+electronics+industry" target="_blank" rel="noopener noreferrer">Google Scholar ↗</a>
-                    </div>
-                </article>
-
-                <article class="publication-card" data-tags="networks">
-                    <h3 class="publication-title">Classifying Drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction</h3>
-                    <p class="publication-authors"><span class="author-short">K. Yang, T. Liu, Z. Wang, …, <strong>H. Xie</strong>, …, K. Zhang</span><span class="author-full" id="authors-drosophila" hidden>K. Yang, T. Liu, Z. Wang, and collaborators, including <strong>H. Xie</strong>, with K. Zhang</span></p>
-                    <button class="author-toggle" type="button" aria-expanded="false" aria-controls="authors-drosophila"><span class="chevron" aria-hidden="true">⌄</span> Show author context</button>
-                    <div class="publication-meta"><em>iScience</em><span>2021</span><span class="tag">JCR Q1</span><span class="tag">IF=5.0</span></div>
-                    <div class="publication-links">
-                        <a class="text-link" href="https://doi.org/10.1016/j.isci.2021.104180" target="_blank" rel="noopener noreferrer">DOI ↗</a>
-                        <a class="text-link" href="https://scholar.google.com/scholar?q=Classifying+Drosophila+olfactory+projection+neuron+boutons" target="_blank" rel="noopener noreferrer">Google Scholar ↗</a>
-                    </div>
-                </article>
-
-                <article class="publication-card" data-tags="networks" aria-label="Manuscript under revision">
-                    <h3 class="publication-title">A Virtual Node-Based Zero-Shot Learning Framework for Link Prediction in Complex Networks</h3>
-                    <p class="publication-authors"><strong>H. Xie*</strong>, Y. Pu, Y. Tan, &amp; W. Yan</p>
-                    <div class="publication-meta"><em>Under revision at Information Sciences</em></div>
-                </article>
-            </div>
-        </section>
-
-        <section class="page-section" id="experience" aria-labelledby="experience-title">
-            <div class="section-heading">
-                <div>
-                    <p class="section-kicker">04 · Experience</p>
-                    <h2 id="experience-title">A systems-minded path.</h2>
-                </div>
-                <p>Research, engineering, and formal training across Hong Kong and Beijing.</p>
-            </div>
-
-            <ol class="timeline-list">
-                <li class="timeline-item">
-                    <time class="timeline-date" datetime="2025">2025 — now</time>
-                    <div><h3>Research Assistant · The Hong Kong Polytechnic University</h3><p>Department of Industrial and Systems Engineering.</p><p>Working on data-driven decision making, logistics and supply chain management, and complex networks.</p></div>
-                </li>
-                <li class="timeline-item">
-                    <time class="timeline-date" datetime="2024">2024 — 2025</time>
-                    <div><h3>Master of Science · The University of Hong Kong</h3><p>Industrial Engineering and Logistics Management.</p></div>
-                </li>
-                <li class="timeline-item">
-                    <time class="timeline-date" datetime="2020">2020 — 2024</time>
-                    <div><h3>Undergraduate study · Beijing Normal University</h3><p>Bachelor of Science in Systems Science and Bachelor of Economics in Finance.</p></div>
-                </li>
+        <section id="experience" aria-labelledby="experience-title">
+            <h2 id="experience-title">Experience</h2>
+            <ol>
+                <li><time datetime="2025">2025 — present</time> — <strong>Research Assistant, The Hong Kong Polytechnic University.</strong> Department of Industrial and Systems Engineering; working on data-driven decision making, logistics and supply chain management, and complex networks.</li>
+                <li><time datetime="2024">2024 — 2025</time> — <strong>Master of Science, The University of Hong Kong.</strong> Industrial Engineering and Logistics Management.</li>
+                <li><time datetime="2020">2020 — 2024</time> — <strong>Undergraduate study, Beijing Normal University.</strong> Bachelor of Science in Systems Science and Bachelor of Economics in Finance.</li>
             </ol>
         </section>
 
-        <section class="page-section" id="awards" aria-labelledby="awards-title">
-            <div class="section-heading">
-                <div>
-                    <p class="section-kicker">05 · Awards</p>
-                    <h2 id="awards-title">Recognition along the way.</h2>
-                </div>
-            </div>
+        <hr>
 
-            <ul class="award-grid">
-                <li class="award-card"><strong>Tony Reynolds Academic Excellence Prize</strong><span>HKU · Top 5% · 2025</span></li>
-                <li class="award-card"><strong>Excellent Graduation Thesis</strong><span>HKU · 2025</span></li>
-                <li class="award-card"><strong>Excellent Graduation Thesis</strong><span>BNU · 2024</span></li>
-                <li class="award-card"><strong>YUAN CHUAN Scholarship</strong><span>BNU · Top 3% · 2023</span></li>
-                <li class="award-card"><strong>First Academic Scholarship</strong><span>BNU · Top 5% · 2023</span></li>
+        <section id="education" aria-labelledby="education-title">
+            <h2 id="education-title">Education</h2>
+            <ul>
+                <li><strong>The University of Hong Kong</strong> — Master of Science in Industrial Engineering and Logistics Management (2024 — 2025)</li>
+                <li><strong>Beijing Normal University</strong> — Bachelor of Science in Systems Science and Bachelor of Economics in Finance (2020 — 2024)</li>
             </ul>
         </section>
 
-        <section class="page-section" id="skills" aria-labelledby="skills-title">
-            <div class="section-heading">
-                <div>
-                    <p class="section-kicker">06 · Skills</p>
-                    <h2 id="skills-title">Tools for making ideas concrete.</h2>
-                </div>
-            </div>
+        <hr>
 
-            <dl class="skill-grid">
-                <div class="skill-card"><dt>Languages</dt><dd>Mandarin (Native), Cantonese (Native), English (C1)</dd></div>
-                <div class="skill-card"><dt>Programming</dt><dd>Python, MATLAB, C, HTML</dd></div>
-                <div class="skill-card"><dt>Tools</dt><dd>LaTeX, Microsoft Office</dd></div>
+        <section id="awards" aria-labelledby="awards-title">
+            <h2 id="awards-title">Awards</h2>
+            <ul>
+                <li>Tony Reynolds Academic Excellence Prize, HKU (Top 5%), 2025</li>
+                <li>Excellent Graduation Thesis, HKU, 2025</li>
+                <li>Excellent Graduation Thesis, BNU, 2024</li>
+                <li>YUAN CHUAN Scholarship, BNU (Top 3%), 2023</li>
+                <li>First Academic Scholarship, BNU (Top 5%), 2023</li>
+            </ul>
+        </section>
+
+        <hr>
+
+        <section id="skills" aria-labelledby="skills-title">
+            <h2 id="skills-title">Skills</h2>
+            <dl>
+                <dt>Languages</dt>
+                <dd>Mandarin (Native), Cantonese (Native), English (C1)</dd>
+                <dt>Programming</dt>
+                <dd>Python, MATLAB, C, HTML</dd>
+                <dt>Tools</dt>
+                <dd>LaTeX, Microsoft Office</dd>
             </dl>
         </section>
     </main>
 
-    <footer class="shell site-footer">
+    <footer>
+        <hr>
         <p>© 2026 Haotian Xie. All rights reserved.</p>
         <p>Last updated: August 2026.</p>
     </footer>
-
-    <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top" data-visible="false">↑</button>
-
-    <script>
-        (() => {
-            const navItems = Array.from(document.querySelectorAll('.section-nav-link'));
-            const sections = navItems
-                .map((link) => document.querySelector(link.hash))
-                .filter(Boolean);
-            const copyStatus = document.getElementById('copy-status');
-            const backToTop = document.getElementById('back-to-top');
-            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            function setActiveNavigation(sectionId) {
-                const targetHash = `#${sectionId}`;
-
-                navItems.forEach((link) => {
-                    const isActive = link.hash === targetHash;
-                    link.classList.toggle('is-active', isActive);
-
-                    if (isActive) {
-                        link.setAttribute('aria-current', 'page');
-                    } else {
-                        link.removeAttribute('aria-current');
-                    }
-                });
-            }
-
-            function setNavigationFromHash() {
-                const requestedId = window.location.hash.slice(1);
-                const matchingSection = sections.find((section) => section.id === requestedId);
-                if (matchingSection) {
-                    setActiveNavigation(matchingSection.id);
-                }
-            }
-
-            function keepLastSectionCurrentAtDocumentEnd() {
-                const isAtDocumentEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
-
-                if (isAtDocumentEnd && sections.length > 0) {
-                    setActiveNavigation(sections[sections.length - 1].id);
-                    return true;
-                }
-
-                return false;
-            }
-
-            function copyText(value, label) {
-                if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
-                    copyStatus.textContent = 'Copy is unavailable here; the text remains visible above.';
-                    return;
-                }
-
-                navigator.clipboard.writeText(value).then(() => {
-                    copyStatus.textContent = `${label} copied.`;
-                }).catch(() => {
-                    copyStatus.textContent = 'Copy was blocked; the text remains visible above.';
-                });
-            }
-
-            document.querySelectorAll('[data-copy-value], [data-copy-target]').forEach((button) => {
-                button.addEventListener('click', () => {
-                    const target = button.dataset.copyTarget ? document.querySelector(button.dataset.copyTarget) : null;
-                    const value = button.dataset.copyValue || target?.innerText.trim() || '';
-                    copyText(value, button.id === 'bio-copy' ? 'Bio' : 'Email');
-                });
-            });
-
-            function applyPublicationFilter(filter) {
-                document.querySelectorAll('.filter-button').forEach((button) => {
-                    button.setAttribute('aria-pressed', String(button.dataset.filter === filter));
-                });
-
-                document.querySelectorAll('.publication-card').forEach((card) => {
-                    const tags = card.dataset.tags?.split(' ') || [];
-                    card.hidden = filter !== 'all' && !tags.includes(filter);
-                });
-            }
-
-            document.querySelectorAll('.filter-button').forEach((button) => {
-                button.addEventListener('click', () => applyPublicationFilter(button.dataset.filter));
-            });
-
-            function setAuthorExpanded(toggle, expanded) {
-                const details = document.getElementById(toggle.getAttribute('aria-controls'));
-                if (!details) return;
-
-                toggle.setAttribute('aria-expanded', String(expanded));
-                details.hidden = !expanded;
-                toggle.querySelector('.chevron').textContent = expanded ? '⌃' : '⌄';
-                toggle.lastChild.textContent = expanded ? ' Hide author context' : ' Show author context';
-            }
-
-            document.querySelectorAll('.author-toggle').forEach((toggle) => {
-                toggle.addEventListener('click', () => {
-                    setAuthorExpanded(toggle, toggle.getAttribute('aria-expanded') !== 'true');
-                });
-            });
-
-            function updateBackToTop() {
-                backToTop.dataset.visible = String(window.scrollY > 520);
-            }
-
-            backToTop.addEventListener('click', () => {
-                backToTop.focus();
-                window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-                window.setTimeout(() => document.getElementById('page-title').focus(), reduceMotion ? 0 : 250);
-            });
-
-            setNavigationFromHash();
-            updateBackToTop();
-            window.addEventListener('hashchange', setNavigationFromHash);
-            window.addEventListener('scroll', () => {
-                updateBackToTop();
-                keepLastSectionCurrentAtDocumentEnd();
-            }, { passive: true });
-
-            if (sections.length > 0 && 'IntersectionObserver' in window) {
-                const sectionObserver = new IntersectionObserver((entries) => {
-                    if (keepLastSectionCurrentAtDocumentEnd()) return;
-
-                    const visibleSections = entries
-                        .filter((entry) => entry.isIntersecting)
-                        .sort((first, second) => first.boundingClientRect.top - second.boundingClientRect.top);
-
-                    if (visibleSections[0]) {
-                        setActiveNavigation(visibleSections[0].target.id);
-                    }
-                }, { rootMargin: '-20% 0px -65% 0px', threshold: 0 });
-
-                sections.forEach((section) => sectionObserver.observe(section));
-            }
-        })();
-    </script>
 </body>
 </html>
