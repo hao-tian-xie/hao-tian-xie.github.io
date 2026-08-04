@@ -48,14 +48,25 @@ test('preserves the complete scholarly record and academic profile', () => {
   }
 });
 
-test('uses only minimal document-level presentation without modular UI code', () => {
+test('keeps the page simple while providing responsive bilingual theme controls', () => {
   assert.match(html, /<style\b/i);
   assert.match(html, /body\s*\{/i);
-  assert.doesNotMatch(html, /<script\b|<button\b|<div\b/i);
+  assert.match(html, /<button[^>]+id="language-toggle"/i);
+  assert.match(html, /<button[^>]+id="theme-toggle"/i);
+  assert.match(html, /id="control-status"[^>]+aria-live="polite"/i);
+  assert.match(html, /data-en="[^"]+"\s+data-zh="[^"]+"/i);
+  assert.match(html, /@media\s*\(max-width:\s*720px\)/i);
+  assert.match(html, /width:\s*min\(960px,\s*calc\(100%\s*-\s*2rem\)\)/i);
+  assert.match(html, /html\[data-theme="dark"\]/i);
+  assert.match(html, /localStorage/);
+  assert.match(html, /prefers-color-scheme:\s*dark/);
+  assert.match(html, /function\s+setLanguage/);
+  assert.match(html, /function\s+setTheme/);
+
+  assert.doesNotMatch(html, /<img\b|<div\b/i);
   assert.doesNotMatch(html, /\bclass\s*=/i);
-  assert.doesNotMatch(html, /box-shadow\s*:|border-radius\s+(?!50%)/i);
-  assert.doesNotMatch(html, /grid-template|display\s*:\s*(grid|flex)|transition\s*:|animation\s*:|@media\b|@keyframes\b/i);
-  assert.doesNotMatch(html, /IntersectionObserver|navigator\.clipboard|language-toggle|data-[a-z-]+=/i);
+  assert.doesNotMatch(html, /box-shadow\s*:|grid-template|display\s*:\s*grid|transition\s*:|animation\s*:|@keyframes\b/i);
+  assert.doesNotMatch(html, /IntersectionObserver|navigator\.clipboard|\bcard\b/i);
 });
 
 test('keeps the document navigation in a simple header-to-footer order', () => {
