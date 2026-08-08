@@ -250,7 +250,7 @@ links.forEach(link => {
     e.preventDefault();
     const page = link.dataset.page;
     if (!page) return;
-    const newHash = page === 'about' ? '' : page;
+    const newHash = page === 'home' ? '' : page;
     if (location.hash.slice(1) !== newHash) {
       location.hash = newHash || '#';
     }
@@ -262,7 +262,7 @@ links.forEach(link => {
 // Hash navigation (back/forward only — skip if triggered by click)
 let lastLoadedPage = null;
 window.addEventListener('hashchange', () => {
-  const page = location.hash ? location.hash.slice(1) : 'about';
+  const page = location.hash ? location.hash.slice(1) : 'home';
   if (page === lastLoadedPage) return;
   setActiveLink(page);
   loadPage(page);
@@ -347,7 +347,7 @@ window.addEventListener('hashchange', () => {
 })();
 
 // Initial load
-const initialPage = location.hash ? location.hash.slice(1) : 'about';
+const initialPage = location.hash ? location.hash.slice(1) : 'home';
 setActiveLink(initialPage);
 loadPage(initialPage);
 
