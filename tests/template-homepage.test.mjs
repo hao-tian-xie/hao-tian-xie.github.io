@@ -28,8 +28,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=23"/);
-  assert.match(homepage, /<script src="script\.js\?v=23"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=24"/);
+  assert.match(homepage, /<script src="script\.js\?v=24"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -43,7 +43,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '23';/);
+  assert.match(script, /const pageVersion = '24';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -127,7 +127,23 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((publications.match(/class="publication"/g) ?? []).length, 7);
   assert.equal((publications.match(/data-selected="true"/g) ?? []).length, 3);
   assert.match(publications, /PREPRINT ARTICLES/);
-  assert.match(publications, /Forecasting Return Time of Extreme Precipitation by Large Deviation Theory/);
+  const sentenceCasePublicationTitles = [
+    'Forecasting return time of extreme precipitation by large deviation theory',
+    'Topological persistence pinpoints higher-order network vulnerabilities',
+    'A virtual node based zero-shot learning framework for link prediction in complex networks',
+    'Decentralized autonomous organizations in e-commerce supply chains: a bayesian method to barrier identification and interrelationship mapping',
+    'Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis',
+    'Exploring the drivers of green supply chain management in the chinese electronics industry: evidence from a gdematel–aism approach',
+    'Classifying drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction'
+  ];
+  for (const title of sentenceCasePublicationTitles) {
+    assert.ok(publications.includes(title), `publications should use sentence case: ${title}`);
+    assert.ok(zhPublications.includes(title), `Chinese publications should use sentence case: ${title}`);
+  }
+  assert.doesNotMatch(publications, /Forecasting Return Time of Extreme Precipitation by Large Deviation Theory/);
+  assert.doesNotMatch(publications, /: A bayesian method/);
+  assert.doesNotMatch(publications, /: Evidence from a GDEMATEL–AISM approach/);
+  assert.doesNotMatch(publications, /Classifying Drosophila olfactory projection neuron boutons/);
   assert.match(publications, /Xie, H\., Liu, H\., Fan, J\., &amp; Tang, Y\.\*/);
   assert.match(publications, /Topological persistence pinpoints higher-order network vulnerabilities/);
   assert.match(publications, /A virtual node based zero-shot learning framework for link prediction in complex networks/);
@@ -235,7 +251,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((selectedPublications.match(/class="publication"/g) ?? []).length, 3);
   assert.match(selectedPublications, /Topological persistence pinpoints higher-order network vulnerabilities/);
   assert.match(selectedPublications, /A virtual node based zero-shot learning framework for link prediction in complex networks/);
-  assert.match(selectedPublications, /Decentralized autonomous organizations in e-commerce supply chains/);
+  assert.match(selectedPublications, /Decentralized autonomous organizations in e-commerce supply chains: a bayesian method to barrier identification and interrelationship mapping/);
   assert.match(style, /\.selected-publications\s*\{[\s\S]*?margin-top:\s*2rem;/);
   assert.doesNotMatch(site, /Your Name|your@email\.com|Your Paper Title|Research Lab|University of XX|Advisor Name/);
   assert.doesNotMatch(site, /—/);
