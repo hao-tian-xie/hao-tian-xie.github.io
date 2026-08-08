@@ -21,8 +21,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=15"/);
-  assert.match(homepage, /<script src="script\.js\?v=15"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=16"/);
+  assert.match(homepage, /<script src="script\.js\?v=16"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -31,7 +31,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /pages\/\$\{page\}\.html/);
-  assert.match(script, /const pageVersion = '15';/);
+  assert.match(script, /const pageVersion = '16';/);
   assert.match(script, /const pageSources = page === 'home'/);
   assert.match(script, /`pages\/home\.html\?v=\$\{pageVersion\}`, `pages\/about\.html\?v=\$\{pageVersion\}`, `pages\/selected-publications\.html\?v=\$\{pageVersion\}`/);
   assert.match(script, /if \(page === 'publications' \|\| page === 'home'\)/);
@@ -103,6 +103,11 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(publications, /Topological persistence pinpoints higher-order network vulnerabilities/);
   assert.match(publications, /A virtual node based zero-shot learning framework for link prediction in complex networks/);
   assert.match(publications, /10\.1016\/j\.ins\.2026\.123522/);
+  assert.equal((publications.match(/src="asset\/publications\/[^\"]+\.png"/g) ?? []).length, 7);
+  assert.equal((selectedPublications.match(/src="asset\/publications\/[^\"]+\.png"/g) ?? []).length, 3);
+  assert.equal((publications.match(/width="960" height="540"/g) ?? []).length, 7);
+  assert.equal((selectedPublications.match(/width="960" height="540"/g) ?? []).length, 3);
+  assert.doesNotMatch(site, /asset\/placeholder\.svg/);
   assert.match(misc, /The University of Hong Kong/);
   assert.match(misc, /Beijing Normal University/);
   assert.match(misc, /Department of Data and Systems Engineering \(DASE\)/);
