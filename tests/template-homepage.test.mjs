@@ -28,8 +28,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=33"/);
-  assert.match(homepage, /<script src="script\.js\?v=33"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=34"/);
+  assert.match(homepage, /<script src="script\.js\?v=34"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -43,7 +43,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '33';/);
+  assert.match(script, /const pageVersion = '34';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -128,16 +128,20 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   const contactPosition = about.indexOf('If you share similar interests');
   assert.ok(introPosition >= 0 && introPosition < workingPosition && workingPosition < phdPosition && phdPosition < contactPosition);
   assert.match(publications, /data-year="2026"/);
-  assert.equal((publications.match(/class="publication"/g) ?? []).length, 7);
+  assert.equal((publications.match(/class="publication"/g) ?? []).length, 9);
   assert.equal((publications.match(/data-selected="true"/g) ?? []).length, 3);
+  assert.equal((publications.match(/data-selected="false"/g) ?? []).length, 3);
   assert.match(publications, /PREPRINT ARTICLES/);
+  assert.match(publications, /CONFERENCE PAPERS/);
   const sentenceCasePublicationTitles = [
     'Forecasting return time of extreme precipitation by large deviation theory',
+    'BEXTools-ESGPath: A text-mining-based ESG report analyser for advancing supply chain sustainability',
     'Topological persistence pinpoints higher-order network vulnerabilities',
     'A virtual node based zero-shot learning framework for link prediction in complex networks',
     'Decentralized autonomous organizations in e-commerce supply chains: a bayesian method to barrier identification and interrelationship mapping',
     'Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis',
     'Exploring the drivers of green supply chain management in the chinese electronics industry: evidence from a gdematel–aism approach',
+    'AISM: A novel method for node importance ranking in complex network',
     'Classifying drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction'
   ];
   for (const title of sentenceCasePublicationTitles) {
@@ -153,13 +157,20 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(publications, /Topological persistence pinpoints higher-order network vulnerabilities/);
   assert.match(publications, /A virtual node based zero-shot learning framework for link prediction in complex networks/);
   assert.match(publications, /10\.1016\/j\.ins\.2026\.123522/);
+  assert.match(publications, /<p class="publication-label">CONFERENCE PAPERS<\/p>[\s\S]*?<h4>BEXTools-ESGPath: A text-mining-based ESG report analyser for advancing supply chain sustainability<\/h4>[\s\S]*?<p><strong>H\. Xie<\/strong>, G\. Yim, Y\. P\. Tsang\*, C\. K\. M\. Lee, &amp; C\. H\. Wu<\/p>[\s\S]*?ICDSM 2026, The International Conference on Decision Science &amp; Management, Hong Kong/);
+  assert.match(publications, /<h4>AISM: A novel method for node importance ranking in complex network<\/h4>[\s\S]*?<p><strong>H\. Xie\*<\/strong>, C\. Zhang<\/p>[\s\S]*?12th International Conference on Complex Networks and their Applications, 28–30 November 2023, Menton, France/);
+  const firstConference = publications.slice(publications.indexOf('BEXTools-ESGPath'), publications.indexOf('Topological persistence'));
+  const secondConference = publications.slice(publications.indexOf('AISM: A novel method'), publications.indexOf('Classifying drosophila'));
+  assert.doesNotMatch(firstConference, /<img\b/);
+  assert.doesNotMatch(secondConference, /<img\b/);
+  assert.doesNotMatch(selectedPublications, /BEXTools-ESGPath|AISM: A novel method/);
   assert.equal((publications.match(/src="asset\/publications\/[^\"]+\.png\?v=28"/g) ?? []).length, 7);
   assert.doesNotMatch(style, /\.pub-image\s*\{[\s\S]*?filter:\s*grayscale/);
   assert.doesNotMatch(style, /\.pub-image:hover\s*\{[\s\S]*?filter:\s*grayscale/);
   assert.equal((selectedPublications.match(/src="asset\/publications\/[^\"]+\.png\?v=28"/g) ?? []).length, 3);
-  assert.equal((publications.match(/class="cite-link"/g) ?? []).length, 7);
+  assert.equal((publications.match(/class="cite-link"/g) ?? []).length, 9);
   assert.equal((selectedPublications.match(/class="cite-link"/g) ?? []).length, 3);
-  assert.equal((publications.match(/>\[Cite \(APA\)\]<\/button>/g) ?? []).length, 7);
+  assert.equal((publications.match(/>\[Cite \(APA\)\]<\/button>/g) ?? []).length, 9);
   assert.equal((selectedPublications.match(/>\[Cite \(APA\)\]<\/button>/g) ?? []).length, 3);
   assert.equal((publications.match(/width="960" height="540"/g) ?? []).length, 7);
   assert.equal((selectedPublications.match(/width="960" height="540"/g) ?? []).length, 3);
@@ -303,6 +314,9 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(zhPublications, />精选论文<\/button>/);
   assert.match(zhPublications, />全部论文<\/button>/);
   assert.match(zhPublications, /预印本/);
+  assert.match(zhPublications, /会议论文/);
+  assert.match(zhPublications, /BEXTools-ESGPath: A text-mining-based ESG report analyser for advancing supply chain sustainability/);
+  assert.match(zhPublications, /AISM: A novel method for node importance ranking in complex network/);
   assert.match(zhPublications, /Chaos: An Interdisciplinary Journal of Nonlinear Science, 2026<\/span><\/em>\s*<span class="journal-metrics">（JCR Q1；IF 3\.3）<\/span>/);
   assert.match(zhPublications, /Information Sciences, 748 \(2026\), 123522<\/span><\/em>\s*<span class="journal-metrics">（JCR Q1；IF 6\.0）<\/span>/);
   assert.match(zhPublications, /Electronic Commerce Research and Applications, 2025<\/span><\/em>\s*<span class="journal-metrics">（JCR Q1；IF 6\.8）<\/span>/);
@@ -313,6 +327,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.doesNotMatch(publications, /Xie, H\., Liu, H\., Fan, J\., &amp; Tang, Y\.\* \(2026\)/);
   assert.doesNotMatch(zhPublications, /Xie, H\., Liu, H\., Fan, J\., &amp; Tang, Y\.\* \(2026\)/);
   assert.equal((zhPublications.match(/class="publication"/g) ?? []).length, (publications.match(/class="publication"/g) ?? []).length);
+  assert.equal((zhPublications.match(/class="cite-link"/g) ?? []).length, 9);
   assert.equal((zhPublications.match(/src="asset\/publications\/[^\"]+\.png\?v=28"/g) ?? []).length, (publications.match(/src="asset\/publications\/[^\"]+\.png\?v=28"/g) ?? []).length);
   assert.equal((zhSelectedPublications.match(/class="publication"/g) ?? []).length, (selectedPublications.match(/class="publication"/g) ?? []).length);
   assert.equal((zhPublications.match(/class="cite-link"/g) ?? []).length, (zhPublications.match(/class="publication"/g) ?? []).length);
