@@ -216,6 +216,10 @@ a:active {
   text-decoration: underline;
 }
 
+.page-home .about-title {
+  display: none;
+}
+
 .about-grid {
   display: grid;
   grid-template-columns: 3fr 2fr;
@@ -235,7 +239,7 @@ a:active {
 .about-panel > p:first-child { margin-top: 0; }
 
 /* Research interests */
-.interests-list { margin: 1.5rem 0; }
+.interests-list { margin: 0.8rem 0; }
 .interests-list ol { padding-left: 1.2rem; margin: 0; }
 
 .interests-list li {
@@ -253,8 +257,9 @@ a:active {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  margin-bottom: 0.6rem;
-  padding: 0.15rem 0;
+  line-height: 1.2;
+  margin-bottom: 0;
+  padding: 0;
 }
 
 .interest::before {

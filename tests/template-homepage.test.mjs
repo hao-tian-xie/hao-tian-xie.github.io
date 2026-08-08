@@ -77,5 +77,11 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(misc, /Tony Reynolds Academic Excellence Prize/);
   assert.match(misc, /Mandarin \(Native\), Cantonese \(Native\), English \(C1\)/);
   assert.match(home, /The Hong Kong Polytechnic University/);
+  assert.doesNotMatch(home, /Research focus: optimization, networks, and data-driven decisions\./);
+  assert.doesNotMatch(home, /My research connects Operations Research with Complex Systems\. I use data, mathematical models, and optimization to support better decisions in logistics, supply chains, transportation, and networked systems\./);
+  assert.match(about, /<h3 class="about-title">About Me<\/h3>/);
+  assert.match(style, /\.page-home \.about-title\s*\{\s*display:\s*none;\s*\}/);
+  assert.match(style, /\.interests-list\s*\{\s*margin:\s*0\.8rem 0;\s*\}/);
+  assert.match(style, /\.interest\s*\{[\s\S]*?line-height:\s*1\.2;[\s\S]*?margin-bottom:\s*0;[\s\S]*?padding:\s*0;/);
   assert.doesNotMatch(site, /Your Name|your@email\.com|Your Paper Title|Research Lab|University of XX|Advisor Name/);
 });
