@@ -365,13 +365,7 @@ a:active {
   max-width: 400px;
   height: auto;
   border-radius: 0;
-  filter: grayscale(100%);
-  transition: filter 0.3s ease;
   cursor: zoom-in;
-}
-
-.pub-image:hover {
-  filter: grayscale(0%);
 }
 
 .publication h4 {
