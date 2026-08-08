@@ -21,8 +21,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=11"/);
-  assert.match(homepage, /<script src="script\.js\?v=11"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=12"/);
+  assert.match(homepage, /<script src="script\.js\?v=12"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -30,7 +30,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /data-page="misc"/);
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.match(script, /pages\/\$\{page\}\.html/);
-  assert.match(script, /const pageVersion = '11';/);
+  assert.match(script, /const pageVersion = '12';/);
   assert.match(script, /const pageSources = page === 'home'/);
   assert.match(script, /`pages\/home\.html\?v=\$\{pageVersion\}`, `pages\/about\.html\?v=\$\{pageVersion\}`, `pages\/selected-publications\.html\?v=\$\{pageVersion\}`/);
   assert.match(script, /if \(page === 'publications' \|\| page === 'home'\)/);
@@ -49,7 +49,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(about, /Data-driven decision making/);
   assert.match(about, /Logistics and supply chain management/);
   assert.match(about, /Complex networks theory/);
-  assert.match(about, /I will join PolyU ISE as a Ph\.D\. student in Spring 2027\./);
+  assert.match(about, /Starting Spring 2027, I will join the Department of Industrial and Systems Engineering at The Hong Kong Polytechnic University as a Ph\.D\. student\./);
   assert.match(about, /class="about-grid"/);
   assert.match(about, /class="about-panel about-intro"/);
   assert.match(about, /class="about-panel about-interests"/);
@@ -75,7 +75,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.about-grid\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
   const introPosition = about.indexOf('I am a Research Associate');
   const workingPosition = about.indexOf('I am working on:');
-  const phdPosition = about.indexOf('I will join PolyU ISE');
+  const phdPosition = about.indexOf('Starting Spring 2027');
   const contactPosition = about.indexOf('If you share similar interests');
   assert.ok(introPosition >= 0 && introPosition < workingPosition && workingPosition < phdPosition && phdPosition < contactPosition);
   assert.match(publications, /data-year="2026"/);
