@@ -402,6 +402,18 @@ a:active {
   margin-bottom: 0.2rem;
 }
 
+.metrics-note {
+  color: var(--swatch-4);
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+  margin-bottom: 0.8rem;
+}
+
+.journal-metrics {
+  color: var(--swatch-4);
+  font-size: 0.9em;
+}
+
 .publication, .teaching, .project {
   margin-bottom: 0.8rem;
   padding-bottom: 0.8rem;

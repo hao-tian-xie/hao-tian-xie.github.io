@@ -2,7 +2,7 @@
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
-const pageVersion = '21';
+const pageVersion = '22';
 const languageStorageKey = 'site-language';
 
 const uiText = {
