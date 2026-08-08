@@ -36,6 +36,14 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(about, /Logistics and supply chain management/);
   assert.match(about, /Complex networks theory/);
   assert.match(about, /Ph\.D\. position starting in Fall 2026/);
+  assert.doesNotMatch(about, /Using data, mathematical models, and optimization to support better decisions\./);
+  assert.doesNotMatch(about, /Applications across logistics, supply chains, transportation, and networked systems\./);
+  assert.doesNotMatch(about, /Research connecting Operations Research with Complex Systems\./);
+  assert.doesNotMatch(about, /class="interest-body"/);
+  const introPosition = about.indexOf('I am a Research Assistant');
+  const phdPosition = about.indexOf('I am actively seeking');
+  const workingPosition = about.indexOf('I am working on:');
+  assert.ok(introPosition >= 0 && introPosition < phdPosition && phdPosition < workingPosition);
   assert.match(publications, /data-year="2026"/);
   assert.equal((publications.match(/class="publication"/g) ?? []).length, 6);
   assert.match(publications, /Topological persistence pinpoints higher-order network vulnerabilities/);
