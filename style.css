@@ -318,6 +318,17 @@ a:active {
   text-decoration-thickness: 1px;
 }
 
+.publication-list + .publication-list { margin-top: 2.5rem; }
+
+.publication-list-title {
+  margin: 1.5rem 0 0.5rem;
+  color: var(--swatch-4);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .year-section {
   display: grid;
   grid-template-columns: 70px 1fr;

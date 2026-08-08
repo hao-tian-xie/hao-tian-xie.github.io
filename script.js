@@ -2,7 +2,7 @@
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
-const pageVersion = '34';
+const pageVersion = '35';
 const languageStorageKey = 'site-language';
 
 const uiText = {
@@ -191,11 +191,11 @@ async function loadPage(page) {
   }
 }
 
-function groupPublicationsByYear() {
-  const pubs = Array.from(content.querySelectorAll('.publication'));
+function groupPublicationList(container) {
+  const pubs = Array.from(container.children)
+    .filter(child => child.classList.contains('publication'));
   if (!pubs.length) return;
 
-  const container = pubs[0].parentNode;
   const placeholder = document.createElement('div');
   container.insertBefore(placeholder, pubs[0]);
 
@@ -235,6 +235,17 @@ function groupPublicationsByYear() {
   });
 
   container.removeChild(placeholder);
+}
+
+function groupPublicationsByYear() {
+  const publicationLists = Array.from(content.querySelectorAll('[data-publication-list]'));
+  if (publicationLists.length) {
+    publicationLists.forEach(groupPublicationList);
+    return;
+  }
+
+  const firstPublication = content.querySelector('.publication');
+  if (firstPublication) groupPublicationList(firstPublication.parentNode);
 }
 
 let galleryTimer = null;
@@ -307,8 +318,19 @@ function initPubTabs() {
     const pubs = content.querySelectorAll('.publication');
     pubs.forEach(pub => {
       const isSelected = pub.dataset.selected === 'true';
-      pub.style.display = (filter === 'all' || isSelected) ? '' : 'none';
+      const publicationList = pub.closest('[data-publication-list]');
+      const isConference = publicationList?.dataset.publicationList === 'conference';
+      const isVisible = filter === 'conference'
+        ? isConference
+        : !isConference && (filter === 'all' || isSelected);
+      pub.style.display = isVisible ? '' : 'none';
       pub.classList.remove('pub-last-visible');
+    });
+
+    content.querySelectorAll('[data-publication-list]').forEach(publicationList => {
+      const hasVisiblePublication = Array.from(publicationList.querySelectorAll('.publication'))
+        .some(pub => pub.style.display !== 'none');
+      publicationList.style.display = hasVisiblePublication ? '' : 'none';
     });
 
     let firstVisibleSection = null;
