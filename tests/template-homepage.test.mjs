@@ -28,8 +28,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=25"/);
-  assert.match(homepage, /<script src="script\.js\?v=25"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=26"/);
+  assert.match(homepage, /<script src="script\.js\?v=26"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -43,7 +43,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '25';/);
+  assert.match(script, /const pageVersion = '26';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -156,8 +156,9 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((publications.match(/width="960" height="540"/g) ?? []).length, 7);
   assert.equal((selectedPublications.match(/width="960" height="540"/g) ?? []).length, 3);
   assert.match(style, /\.journal-metrics\s*\{[\s\S]*?color:\s*var\(--swatch-4\)/);
-  assert.match(publications, /Journal metrics are from the 2026 JCR release \(2025 data\)\./);
-  assert.match(selectedPublications, /Journal metrics are from the 2026 JCR release \(2025 data\)\./);
+  assert.doesNotMatch(site, /metrics-note|JCR release|JCR 版本/);
+  assert.doesNotMatch(publications, /not a JCR-indexed journal/);
+  assert.doesNotMatch(zhPublications, /非 JCR 收录期刊/);
   assert.match(publications, /Chaos: An Interdisciplinary Journal of Nonlinear Science, 2026<\/span><\/em>\s*<span class="journal-metrics">\(JCR Q1; IF 3\.3\)<\/span>/);
   assert.match(publications, /Information Sciences, 748 \(2026\), 123522<\/span><\/em>\s*<span class="journal-metrics">\(JCR Q1; IF 6\.0\)<\/span>/);
   assert.match(publications, /Electronic Commerce Research and Applications, 2025<\/span><\/em>\s*<span class="journal-metrics">\(JCR Q1; IF 6\.8\)<\/span>/);
@@ -194,7 +195,6 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(misc, /Reviewer, Operations Research Forum/);
   assert.match(misc, /Reviewer, Discover Analytics/);
   assert.match(misc, /Reviewer, Discover Applied Sciences/);
-  assert.match(misc, /Journal metrics below are from the 2026 JCR release \(2025 data\)\./);
   const reviewerJournals = [
     'Reviewer, Chaos: An Interdisciplinary Journal of Nonlinear Science',
     'Reviewer, Clean Technologies and Environmental Policy',
@@ -214,15 +214,15 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(misc, /Reviewer, Chaos: An Interdisciplinary Journal of Nonlinear Science <span class="journal-metrics">\(JCR Q1; IF 3\.3\)<\/span>/);
   assert.match(misc, /Reviewer, Clean Technologies and Environmental Policy <span class="journal-metrics">\(JCR Q2; IF 5\.1\)<\/span>/);
   assert.match(misc, /Reviewer, Cognitive Computation <span class="journal-metrics">\(JCR Q1; IF 7\.4\)<\/span>/);
-  assert.match(misc, /Reviewer, Discover Analytics <span class="journal-metrics">\(JCR Q: N\/A; IF: N\/A\)<\/span>/);
   assert.match(misc, /Reviewer, Discover Applied Sciences <span class="journal-metrics">\(JCR Q1; IF 3\.8\)<\/span>/);
-  assert.match(misc, /Reviewer, Humanities &amp; Social Sciences Communications <span class="journal-metrics">\(JCR Q: N\/A; IF: 4\.8\)<\/span>/);
   assert.match(misc, /Reviewer, Information Processing &amp; Management <span class="journal-metrics">\(JCR Q1; IF 8\.1\)<\/span>/);
   assert.match(misc, /Reviewer, Journal of Air Transport Management <span class="journal-metrics">\(JCR Q2; IF 4\.6\)<\/span>/);
-  assert.match(misc, /Reviewer, Journal of Ambient Intelligence and Humanized Computing <span class="journal-metrics">\(JCR Q: N\/A; IF: N\/A\)<\/span>/);
-  assert.match(misc, /Reviewer, Operations Research Forum <span class="journal-metrics">\(JCR Q: N\/A; IF: N\/A\)<\/span>/);
-  assert.match(misc, /Reviewer, Quality &amp; Quantity <span class="journal-metrics">\(JCR Q: N\/A; IF: N\/A\)<\/span>/);
   assert.match(misc, /Reviewer, Scientific Reports <span class="journal-metrics">\(JCR Q1; IF 4\.9\)<\/span>/);
+  assert.doesNotMatch(misc, /Reviewer, Discover Analytics <span class="journal-metrics">/);
+  assert.doesNotMatch(misc, /Reviewer, Humanities &amp; Social Sciences Communications <span class="journal-metrics">/);
+  assert.doesNotMatch(misc, /Reviewer, Journal of Ambient Intelligence and Humanized Computing <span class="journal-metrics">/);
+  assert.doesNotMatch(misc, /Reviewer, Operations Research Forum <span class="journal-metrics">/);
+  assert.doesNotMatch(misc, /Reviewer, Quality &amp; Quantity <span class="journal-metrics">/);
   assert.match(misc, /<strong>Best Industry &amp; Impact Paper Award<\/strong>, 2026 ICDSM, 2026/);
   assert.match(misc, /<strong>99 Yuan Chuan Scholarship<\/strong>, BNU, 2023/);
   assert.doesNotMatch(misc, /Top \d+%/);
@@ -280,8 +280,6 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(zhPublications, />精选论文<\/button>/);
   assert.match(zhPublications, />全部论文<\/button>/);
   assert.match(zhPublications, /预印本/);
-  assert.match(zhPublications, /以下期刊指标采用 2026 年发布的 JCR 版本（基于 2025 年数据）/);
-  assert.match(zhSelectedPublications, /以下期刊指标采用 2026 年发布的 JCR 版本（基于 2025 年数据）/);
   assert.match(zhPublications, /Chaos: An Interdisciplinary Journal of Nonlinear Science, 2026<\/span><\/em>\s*<span class="journal-metrics">（JCR Q1；IF 3\.3）<\/span>/);
   assert.match(zhPublications, /Information Sciences, 748 \(2026\), 123522<\/span><\/em>\s*<span class="journal-metrics">（JCR Q1；IF 6\.0）<\/span>/);
   assert.match(zhPublications, /Electronic Commerce Research and Applications, 2025<\/span><\/em>\s*<span class="journal-metrics">（JCR Q1；IF 6\.8）<\/span>/);
@@ -301,7 +299,6 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(zhMisc, /2026\.7 - 至今/);
   assert.match(zhMisc, /数据与系统工程学系（DASE）/);
   assert.match(zhMisc, /Best Industry &amp; Impact Paper Award/);
-  assert.match(zhMisc, /以下期刊指标采用 2026 年发布的 JCR 版本（基于 2025 年数据）/);
   assert.match(zhMisc, /<strong>99 Yuan Chuan Scholarship<\/strong>，北京师范大学，2023/);
   assert.doesNotMatch(chineseSite, /PREPRINT ARTICLES|About Me|Full List|Misc\./);
 });
