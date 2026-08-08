@@ -1,8 +1,8 @@
-// script.js — Cargo-style SPA
+// script.js - Cargo-style SPA
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
-const pageVersion = '6';
+const pageVersion = '7';
 
 function setActiveLink(page) {
   links.forEach(link => {
@@ -64,8 +64,8 @@ async function loadPage(page) {
     // Update page title
     const pageTitles = { about: 'About', publications: 'Publications', misc: 'Miscellaneous', home: 'Home' };
     document.title = pageTitles[page]
-      ? `${pageTitles[page]} — Haotian Xie`
-      : 'Haotian Xie — Operations Research & Complex Systems';
+      ? `${pageTitles[page]} - Haotian Xie`
+      : 'Haotian Xie - Operations Research & Complex Systems';
 
     // Animate in
     content.classList.remove('fading-out');
@@ -231,7 +231,7 @@ function initPubTabs() {
   applyFilter(activeTab ? activeTab.dataset.filter : 'selected');
 }
 
-// Scroll reveal — Cargo-style scale-in
+// Scroll reveal - Cargo-style scale-in
 function initScrollReveal() {
   const targets = content.querySelectorAll('.year-section, .publication');
   if (!targets.length) return;
@@ -268,7 +268,7 @@ links.forEach(link => {
   });
 });
 
-// Hash navigation (back/forward only — skip if triggered by click)
+// Hash navigation (back/forward only - skip if triggered by click)
 let lastLoadedPage = null;
 window.addEventListener('hashchange', () => {
   const page = location.hash ? location.hash.slice(1) : 'home';

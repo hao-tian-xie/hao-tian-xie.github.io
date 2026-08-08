@@ -1,4 +1,4 @@
-/* style.css — 1:1 Cargo template replica */
+/* style.css - 1:1 Cargo template replica */
 
 /* ─── Font: Inter as Diatype substitute (loaded via <link> in HTML) ─── */
 
@@ -118,7 +118,7 @@ main {
   line-height: 1.1;
 }
 
-/* Sidebar info links — stacked, bold, like Cargo's "Information / Email / Instagram" */
+/* Sidebar info links - stacked, bold, like Cargo's "Information / Email / Instagram" */
 .sidebar-info {
   display: flex;
   flex-direction: column;
@@ -138,7 +138,7 @@ main {
   opacity: 0.7;
 }
 
-/* Navigation — numbered index like Cargo */
+/* Navigation - numbered index like Cargo */
 .nav-index {
   margin: 0;
   padding: 0 0 0 2.5em;
@@ -202,7 +202,7 @@ h3 + p {
 h4 + ul { margin-top: 0; }
 h4 + p { margin-top: 0; }
 
-/* ─── Links — Cargo-style (no underline, opacity on active) ─── */
+/* --- Links - Cargo-style (no underline, opacity on active) --- */
 a {
   color: var(--swatch-1);
   text-decoration: none;

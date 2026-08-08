@@ -21,8 +21,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=6"/);
-  assert.match(homepage, /<script src="script\.js\?v=6"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=7"/);
+  assert.match(homepage, /<script src="script\.js\?v=7"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -30,7 +30,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /data-page="misc"/);
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.match(script, /pages\/\$\{page\}\.html/);
-  assert.match(script, /const pageVersion = '6';/);
+  assert.match(script, /const pageVersion = '7';/);
   assert.match(script, /const pageSources = page === 'home'/);
   assert.match(script, /`pages\/home\.html\?v=\$\{pageVersion\}`, `pages\/about\.html\?v=\$\{pageVersion\}`, `pages\/selected-publications\.html\?v=\$\{pageVersion\}`/);
   assert.match(script, /if \(page === 'publications' \|\| page === 'home'\)/);
@@ -88,6 +88,9 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(publications, /10\.1016\/j\.ins\.2026\.123522/);
   assert.match(misc, /The University of Hong Kong/);
   assert.match(misc, /Beijing Normal University/);
+  assert.match(misc, /2025\.4 - 2026\.6[\s\S]*?<strong>Research Assistant<\/strong>[\s\S]*?The Hong Kong Polytechnic University/);
+  assert.match(misc, /2026\.7 - present[\s\S]*?<strong>Research Associate<\/strong>[\s\S]*?The Hong Kong Polytechnic University/);
+  assert.doesNotMatch(misc, /2025 — Present/);
   assert.match(misc, /Tony Reynolds Academic Excellence Prize/);
   assert.match(misc, /Mandarin \(Native\), Cantonese \(Native\), English \(C1\)/);
   assert.match(home, /The Hong Kong Polytechnic University/);
@@ -112,4 +115,5 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(selectedPublications, /Decentralized autonomous organizations in e-commerce supply chains/);
   assert.match(style, /\.selected-publications\s*\{[\s\S]*?margin-top:\s*2rem;/);
   assert.doesNotMatch(site, /Your Name|your@email\.com|Your Paper Title|Research Lab|University of XX|Advisor Name/);
+  assert.doesNotMatch(site, /—/);
 });
