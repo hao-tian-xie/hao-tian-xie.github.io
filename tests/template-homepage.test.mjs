@@ -27,7 +27,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(script, /groupPublicationsByYear/);
   assert.match(script, /initPubTabs/);
   assert.match(style, /\.sidebar\s*\{[\s\S]*?width:\s*45%;[\s\S]*?max-width:\s*500px;[\s\S]*?position:\s*fixed[\s\S]*?left:\s*0/);
-  assert.match(style, /main\s*\{[\s\S]*?margin-left:\s*10%[\s\S]*?max-width:\s*90%/);
+  assert.match(style, /main\s*\{[\s\S]*?margin-left:\s*20%[\s\S]*?max-width:\s*80%/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?main\s*\{[\s\S]*?margin-left:\s*0[\s\S]*?max-width:\s*100%/);
   assert.match(homepage, /Haotian Xie/);
   assert.match(homepage, /haotiantimxie@gmail\.com/);
