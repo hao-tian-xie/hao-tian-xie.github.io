@@ -2,7 +2,7 @@
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
-const pageVersion = '14';
+const pageVersion = '15';
 
 function setActiveLink(page) {
   links.forEach(link => {
