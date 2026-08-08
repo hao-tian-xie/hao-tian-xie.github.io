@@ -28,8 +28,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=20"/);
-  assert.match(homepage, /<script src="script\.js\?v=20"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=21"/);
+  assert.match(homepage, /<script src="script\.js\?v=21"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -43,7 +43,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '20';/);
+  assert.match(script, /const pageVersion = '21';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -166,6 +166,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(misc, /Reviewer, Discover Analytics/);
   assert.match(misc, /Reviewer, Discover Applied Sciences/);
   assert.match(misc, /<strong>Best Industry &amp; Impact Paper Award<\/strong>, 2026 ICDSM, 2026/);
+  assert.match(misc, /<strong>99 Yuan Chuan Scholarship<\/strong>, BNU, 2023/);
   assert.doesNotMatch(misc, /Top \d+%/);
   assert.doesNotMatch(misc, /<h4>Skills<\/h4>|<dt>Languages<\/dt>/);
   assert.match(misc, /Tony Reynolds Academic Excellence Prize/);
@@ -232,5 +233,6 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(zhMisc, /2026\.7 - 至今/);
   assert.match(zhMisc, /数据与系统工程学系（DASE）/);
   assert.match(zhMisc, /Best Industry &amp; Impact Paper Award/);
+  assert.match(zhMisc, /<strong>99 Yuan Chuan Scholarship<\/strong>，北京师范大学，2023/);
   assert.doesNotMatch(chineseSite, /PREPRINT ARTICLES|About Me|Full List|Misc\./);
 });
