@@ -2,7 +2,7 @@
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
-const pageVersion = '32';
+const pageVersion = '33';
 const languageStorageKey = 'site-language';
 
 const uiText = {
@@ -10,10 +10,13 @@ const uiText = {
     skip: 'Skip to content',
     menu: 'Menu',
     close: 'Close',
+    email: 'Email',
+    scholar: 'Google Scholar',
+    linkedin: 'LinkedIn',
     'nav-about': 'About Me',
     'nav-publications': 'Publications',
     'nav-misc': 'Misc.',
-    language: '中文/English',
+    language: 'Eng / 中',
     switchLanguage: 'Switch to Chinese',
     top: 'Top',
     'easter-egg': 'Operations Research & Complex Systems',
@@ -30,10 +33,13 @@ const uiText = {
     skip: '跳转到主要内容',
     menu: '菜单',
     close: '关闭',
+    email: '电子邮件',
+    scholar: '谷歌学术',
+    linkedin: '领英',
     'nav-about': '关于我',
-    'nav-publications': '论文发表',
+    'nav-publications': '学术出版物列表',
     'nav-misc': '其他',
-    language: '中文/English',
+    language: 'Eng / 中',
     switchLanguage: '切换至英文',
     top: '回到顶部',
     'easter-egg': '运筹学与复杂系统',
@@ -165,7 +171,7 @@ async function loadPage(page) {
 
     // Update page title
     const pageTitles = currentLanguage === 'zh'
-      ? { about: '关于我', publications: '论文发表', misc: '其他', home: '主页' }
+      ? { about: '关于我', publications: '学术出版物列表', misc: '其他', home: '主页' }
       : { about: 'About', publications: 'Publications', misc: 'Miscellaneous', home: 'Home' };
     document.title = pageTitles[page]
       ? `${pageTitles[page]} - Haotian Xie`
