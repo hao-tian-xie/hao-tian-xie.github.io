@@ -2,7 +2,98 @@
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
-const pageVersion = '16';
+const pageVersion = '17';
+const languageStorageKey = 'site-language';
+
+const uiText = {
+  en: {
+    skip: 'Skip to content',
+    menu: 'Menu',
+    close: 'Close',
+    'nav-about': 'About Me',
+    'nav-publications': 'Publications',
+    'nav-misc': 'Misc.',
+    language: '中文',
+    switchLanguage: 'Switch to Chinese',
+    top: 'Top',
+    'easter-egg': 'Operations Research & Complex Systems',
+    imagePreview: 'Image preview',
+    closeImage: 'Close image preview',
+    loadError: 'Error loading page. Please try again.'
+  },
+  zh: {
+    skip: '跳转到主要内容',
+    menu: '菜单',
+    close: '关闭',
+    'nav-about': '关于我',
+    'nav-publications': '发表论文',
+    'nav-misc': '其他',
+    language: 'English',
+    switchLanguage: '切换至英文',
+    top: '回到顶部',
+    'easter-egg': '运筹学与复杂系统',
+    imagePreview: '图片预览',
+    closeImage: '关闭图片预览',
+    loadError: '页面加载失败，请稍后重试。'
+  }
+};
+
+let currentLanguage = 'en';
+try {
+  currentLanguage = localStorage.getItem(languageStorageKey) === 'zh' ? 'zh' : 'en';
+} catch {
+  currentLanguage = 'en';
+}
+
+function updateMenuButtonLabel() {
+  const menuButton = document.getElementById('menu-toggle');
+  if (!menuButton) return;
+  const text = uiText[currentLanguage];
+  const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
+  menuButton.textContent = isOpen ? text.close : text.menu;
+  menuButton.setAttribute('aria-label', isOpen ? text.close : text.menu);
+}
+
+function updateInterfaceText() {
+  const text = uiText[currentLanguage];
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    const translation = text[element.dataset.i18n];
+    if (translation) element.textContent = translation;
+  });
+
+  const languageToggle = document.getElementById('language-toggle');
+  if (languageToggle) {
+    languageToggle.textContent = text.language;
+    languageToggle.setAttribute('aria-label', text.switchLanguage);
+  }
+
+  const modal = document.getElementById('image-modal');
+  if (modal) modal.setAttribute('aria-label', text.imagePreview);
+
+  const modalClose = document.getElementById('modal-close');
+  if (modalClose) modalClose.setAttribute('aria-label', text.closeImage);
+
+  updateMenuButtonLabel();
+}
+
+function setLanguage(language) {
+  const nextLanguage = language === 'zh' ? 'zh' : 'en';
+  if (nextLanguage === currentLanguage) return;
+
+  currentLanguage = nextLanguage;
+  try {
+    localStorage.setItem(languageStorageKey, currentLanguage);
+  } catch {
+    // The site still works when storage is unavailable.
+  }
+
+  document.documentElement.lang = currentLanguage === 'zh' ? 'zh-CN' : 'en';
+  updateInterfaceText();
+
+  const page = lastLoadedPage || initialPage;
+  setActiveLink(page);
+  loadPage(page);
+}
 
 function setActiveLink(page) {
   links.forEach(link => {
@@ -20,9 +111,10 @@ async function loadPage(page) {
   lastLoadedPage = page;
   document.body.classList.toggle('page-home', page === 'home');
   try {
+    const pageRoot = currentLanguage === 'zh' ? 'pages/zh' : 'pages';
     const pageSources = page === 'home'
-      ? [`pages/home.html?v=${pageVersion}`, `pages/about.html?v=${pageVersion}`, `pages/selected-publications.html?v=${pageVersion}`]
-      : [`pages/${page}.html?v=${pageVersion}`];
+      ? [`${pageRoot}/home.html?v=${pageVersion}`, `${pageRoot}/about.html?v=${pageVersion}`, `${pageRoot}/selected-publications.html?v=${pageVersion}`]
+      : [`${pageRoot}/${page}.html?v=${pageVersion}`];
     const responses = await Promise.all(pageSources.map(source => fetch(source)));
     const failedResponse = responses.find(response => !response.ok);
     if (failedResponse) throw new Error(`HTTP error! status: ${failedResponse.status}`);
@@ -62,7 +154,9 @@ async function loadPage(page) {
     });
 
     // Update page title
-    const pageTitles = { about: 'About', publications: 'Publications', misc: 'Miscellaneous', home: 'Home' };
+    const pageTitles = currentLanguage === 'zh'
+      ? { about: '关于我', publications: '发表论文', misc: '其他', home: '主页' }
+      : { about: 'About', publications: 'Publications', misc: 'Miscellaneous', home: 'Home' };
     document.title = pageTitles[page]
       ? `${pageTitles[page]} - Haotian Xie`
       : 'Haotian Xie - Operations Research & Complex Systems';
@@ -77,7 +171,7 @@ async function loadPage(page) {
 
   } catch (error) {
     console.error('Error loading page:', error);
-    content.innerHTML = '<p>Error loading page. Please try again.</p>';
+    content.innerHTML = `<p>${uiText[currentLanguage].loadError}</p>`;
   }
 }
 
@@ -290,7 +384,7 @@ window.addEventListener('hashchange', () => {
     lastFocused = document.activeElement;
     modal.classList.add('active');
     modalImg.src = img.src;
-    modalImg.alt = img.alt || 'Publication figure';
+    modalImg.alt = img.alt || uiText[currentLanguage].imagePreview;
     document.body.style.overflow = 'hidden';
     modal.focus();
   }
@@ -330,8 +424,8 @@ window.addEventListener('hashchange', () => {
 
   function setMenuState(open) {
     sidebar.classList.toggle('menu-open', open);
-    btn.textContent = open ? 'Close' : 'Menu';
     btn.setAttribute('aria-expanded', open);
+    updateMenuButtonLabel();
   }
 
   btn.addEventListener('click', () => {
@@ -346,6 +440,16 @@ window.addEventListener('hashchange', () => {
   });
 })();
 
+// Language switcher
+(function initLanguageSwitcher() {
+  const toggle = document.getElementById('language-toggle');
+  if (!toggle) return;
+
+  toggle.addEventListener('click', () => {
+    setLanguage(currentLanguage === 'en' ? 'zh' : 'en');
+  });
+})();
+
 // Mobile bottom bar
 (function initMobileFooter() {
   document.querySelectorAll('#btn-top, #btn-top-right').forEach(btn => {
@@ -357,6 +461,8 @@ window.addEventListener('hashchange', () => {
 
 // Initial load
 const initialPage = location.hash ? location.hash.slice(1) : 'home';
+document.documentElement.lang = currentLanguage === 'zh' ? 'zh-CN' : 'en';
+updateInterfaceText();
 setActiveLink(initialPage);
 loadPage(initialPage);
 

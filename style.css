@@ -85,6 +85,11 @@ body {
   pointer-events: auto;
 }
 
+.sidebar .language-switcher,
+.language-switcher button {
+  pointer-events: auto;
+}
+
 /* Push main content to the right of the fixed sidebar */
 main {
   margin-left: 20%;
@@ -583,11 +588,38 @@ a:active {
   line-height: 1.2;
 }
 
-/* Sidebar footer pinned to bottom */
-.site-footer--sidebar {
+/* Sidebar language switcher and footer pinned to bottom */
+.sidebar-bottom {
   position: absolute;
   bottom: 0;
   left: 0;
+}
+
+.language-switcher {
+  padding: 0 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.language-switcher button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--swatch-1);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.1;
+  cursor: pointer;
+}
+
+.language-switcher button:hover,
+.language-switcher button:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.site-footer--sidebar {
+  position: static;
 }
 
 /* ─── Page Transitions ─── */
@@ -746,6 +778,20 @@ a:active {
 
   .site-footer--sidebar {
     display: none;
+  }
+
+  .sidebar-bottom {
+    position: static;
+    margin-top: 1.5rem;
+  }
+
+  .language-switcher {
+    padding: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .language-switcher button {
+    min-height: 44px;
   }
 
   .container {

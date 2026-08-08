@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
-const [homepage, script, style, about, publications, misc, home, selectedPublications] = await Promise.all([
+const [homepage, script, style, about, publications, misc, home, selectedPublications, zhAbout, zhPublications, zhMisc, zhHome, zhSelectedPublications] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../script.js', import.meta.url), 'utf8'),
   readFile(new URL('../style.css', import.meta.url), 'utf8'),
@@ -11,9 +11,16 @@ const [homepage, script, style, about, publications, misc, home, selectedPublica
   readFile(new URL('../pages/misc.html', import.meta.url), 'utf8'),
   readFile(new URL('../pages/home.html', import.meta.url), 'utf8'),
   readFile(new URL('../pages/selected-publications.html', import.meta.url), 'utf8').catch(() => ''),
+  readFile(new URL('../pages/zh/about.html', import.meta.url), 'utf8').catch(() => ''),
+  readFile(new URL('../pages/zh/publications.html', import.meta.url), 'utf8').catch(() => ''),
+  readFile(new URL('../pages/zh/misc.html', import.meta.url), 'utf8').catch(() => ''),
+  readFile(new URL('../pages/zh/home.html', import.meta.url), 'utf8').catch(() => ''),
+  readFile(new URL('../pages/zh/selected-publications.html', import.meta.url), 'utf8').catch(() => ''),
 ]);
 
-const site = [homepage, script, style, about, publications, misc, home, selectedPublications].join('\n');
+const chineseSite = [zhAbout, zhPublications, zhMisc, zhHome, zhSelectedPublications].join('\n');
+const englishSite = [homepage, script, style, about, publications, misc, home, selectedPublications].join('\n');
+const site = [englishSite, chineseSite].join('\n');
 
 test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', () => {
   assert.match(homepage, /class="sidebar"/);
@@ -21,19 +28,30 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=16"/);
-  assert.match(homepage, /<script src="script\.js\?v=16"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=17"/);
+  assert.match(homepage, /<script src="script\.js\?v=17"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
   assert.match(homepage, /data-page="publications"/);
   assert.match(homepage, /data-page="misc"/);
+  assert.match(homepage, /class="language-switcher"/);
+  assert.match(homepage, /class="language-switcher"[\s\S]*id="language-toggle"[\s\S]*>中文<\/button>[\s\S]*<footer class="site-footer site-footer--sidebar">/);
+  assert.match(homepage, /data-i18n="nav-about"/);
+  assert.match(homepage, /data-i18n="nav-publications"/);
+  assert.match(homepage, /data-i18n="nav-misc"/);
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
-  assert.match(script, /pages\/\$\{page\}\.html/);
-  assert.match(script, /const pageVersion = '16';/);
+  assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
+  assert.match(script, /const pageVersion = '17';/);
+  assert.match(script, /let currentLanguage/);
+  assert.match(script, /localStorage/);
+  assert.match(script, /pages\/zh/);
+  assert.match(script, /language-toggle/);
+  assert.match(script, /setLanguage/);
+  assert.match(script, /document\.documentElement\.lang/);
   assert.match(script, /const pageSources = page === 'home'/);
-  assert.match(script, /`pages\/home\.html\?v=\$\{pageVersion\}`, `pages\/about\.html\?v=\$\{pageVersion\}`, `pages\/selected-publications\.html\?v=\$\{pageVersion\}`/);
+  assert.match(script, /`\$\{pageRoot\}\/home\.html\?v=\$\{pageVersion\}`, `\$\{pageRoot\}\/about\.html\?v=\$\{pageVersion\}`, `\$\{pageRoot\}\/selected-publications\.html\?v=\$\{pageVersion\}`/);
   assert.match(script, /if \(page === 'publications' \|\| page === 'home'\)/);
   assert.match(script, /const newHash = page === 'home' \? '' : page;/);
   assert.match(script, /const page = location\.hash \? location\.hash\.slice\(1\) : 'home';/);
@@ -89,6 +107,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(style, /\.about-phd\s*\{[\s\S]*?grid-area:\s*phd/);
   assert.match(style, /\.about-contact\s*\{[\s\S]*?grid-area:\s*contact/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.about-grid\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
+  assert.match(style, /\.language-switcher button\s*\{[\s\S]*?font-family:\s*inherit;[\s\S]*?font-size:\s*1rem;[\s\S]*?font-weight:\s*500;/);
+  assert.match(style, /\.sidebar-bottom\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?bottom:\s*0;[\s\S]*?left:\s*0;/);
   const introPosition = about.indexOf('I am a Research Associate');
   const workingPosition = about.indexOf('I am working on:');
   const phdPosition = about.indexOf('Starting Spring 2027');
@@ -143,7 +163,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(home, /Department of Industrial and Systems Engineering \(ISE\)/);
   assert.match(about, /I am a Research Associate/);
   assert.match(homepage, /a Research Associate at The Hong Kong Polytechnic University/);
-  assert.equal((site.match(/Research Assistant/g) ?? []).length, 1);
+  assert.equal((englishSite.match(/Research Assistant/g) ?? []).length, 1);
   assert.doesNotMatch(home, /Research focus: optimization, networks, and data-driven decisions\./);
   assert.doesNotMatch(home, /My research connects Operations Research with Complex Systems\. I use data, mathematical models, and optimization to support better decisions in logistics, supply chains, transportation, and networked systems\./);
   assert.match(about, /<h3 class="about-title">About Me<\/h3>/);
@@ -166,4 +186,37 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(style, /\.selected-publications\s*\{[\s\S]*?margin-top:\s*2rem;/);
   assert.doesNotMatch(site, /Your Name|your@email\.com|Your Paper Title|Research Lab|University of XX|Advisor Name/);
   assert.doesNotMatch(site, /—/);
+
+  assert.match(zhHome, /谢昊天 Haotian Xie/);
+  assert.match(zhHome, /Research Associate（研究助理）/);
+  assert.match(zhHome, /香港理工大学/);
+  assert.match(zhAbout, /<h3 class="about-title">关于我<\/h3>/);
+  assert.match(zhAbout, /运筹学与复杂系统/);
+  assert.match(zhAbout, /工业及系统工程学系（ISE）/);
+  assert.match(zhAbout, /数据与系统工程学系（DASE）/);
+  assert.match(zhAbout, /系统科学/);
+  assert.match(zhAbout, /金融学/);
+  assert.match(zhAbout, /2027 年春季/);
+  assert.match(zhAbout, /class="about-panel about-intro"/);
+  assert.match(zhAbout, /class="about-panel about-interests"/);
+  assert.match(zhAbout, /class="about-panel about-phd"/);
+  assert.match(zhAbout, /class="about-panel about-contact"/);
+  assert.equal((zhAbout.match(/class="about-panel about-/g) ?? []).length, (about.match(/class="about-panel about-/g) ?? []).length);
+  assert.doesNotMatch(zhAbout, /About Me|I am working on|If you share similar interests/);
+  assert.match(zhPublications, /<h3>论文发表<\/h3>/);
+  assert.match(zhPublications, /\* 表示通讯作者。/);
+  assert.match(zhPublications, />精选<\/button>/);
+  assert.match(zhPublications, />完整列表<\/button>/);
+  assert.match(zhPublications, /预印本/);
+  assert.equal((zhPublications.match(/class="publication"/g) ?? []).length, (publications.match(/class="publication"/g) ?? []).length);
+  assert.equal((zhPublications.match(/src="asset\/publications\/[^\"]+\.png"/g) ?? []).length, (publications.match(/src="asset\/publications\/[^\"]+\.png"/g) ?? []).length);
+  assert.equal((zhSelectedPublications.match(/class="publication"/g) ?? []).length, (selectedPublications.match(/class="publication"/g) ?? []).length);
+  assert.match(zhMisc, /<h3>其他<\/h3>/);
+  assert.match(zhMisc, /教育经历/);
+  assert.match(zhMisc, /荣誉与奖项/);
+  assert.match(zhMisc, /同行评审经历/);
+  assert.match(zhMisc, /2026\.7 - 至今/);
+  assert.match(zhMisc, /数据与系统工程学系（DASE）/);
+  assert.match(zhMisc, /Best Industry &amp; Impact Paper Award/);
+  assert.doesNotMatch(chineseSite, /PREPRINT ARTICLES|About Me|Full List|Misc\./);
 });
