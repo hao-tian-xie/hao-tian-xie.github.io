@@ -2,7 +2,7 @@
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
-const pageVersion = '30';
+const pageVersion = '31';
 const languageStorageKey = 'site-language';
 
 const uiText = {
@@ -457,7 +457,7 @@ async function copyCitation(button) {
 
   clearTimeout(button.citeResetTimer);
   button.citeResetTimer = setTimeout(() => {
-    button.textContent = '[cite]';
+    button.textContent = '[Cite (APA)]';
     button.setAttribute('aria-label', uiText[currentLanguage].citeLabel);
   }, 1500);
 }

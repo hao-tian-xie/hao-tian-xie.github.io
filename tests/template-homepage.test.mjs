@@ -28,8 +28,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=30"/);
-  assert.match(homepage, /<script src="script\.js\?v=30"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=31"/);
+  assert.match(homepage, /<script src="script\.js\?v=31"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -43,7 +43,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '30';/);
+  assert.match(script, /const pageVersion = '31';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -156,6 +156,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((selectedPublications.match(/src="asset\/publications\/[^\"]+\.png\?v=28"/g) ?? []).length, 3);
   assert.equal((publications.match(/class="cite-link"/g) ?? []).length, 7);
   assert.equal((selectedPublications.match(/class="cite-link"/g) ?? []).length, 3);
+  assert.equal((publications.match(/>\[Cite \(APA\)\]<\/button>/g) ?? []).length, 7);
+  assert.equal((selectedPublications.match(/>\[Cite \(APA\)\]<\/button>/g) ?? []).length, 3);
   assert.equal((publications.match(/width="960" height="540"/g) ?? []).length, 7);
   assert.equal((selectedPublications.match(/width="960" height="540"/g) ?? []).length, 3);
   assert.match(style, /\.journal-metrics\s*\{[\s\S]*?color:\s*var\(--swatch-4\)/);
@@ -164,6 +166,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(script, /copyCitation/);
   assert.match(script, /cite-link/);
   assert.match(script, /citeCopied/);
+  assert.match(script, /button\.textContent = '\[Cite \(APA\)\]';/);
   assert.doesNotMatch(site, /metrics-note|JCR release|JCR 版本/);
   assert.doesNotMatch(publications, /not a JCR-indexed journal/);
   assert.doesNotMatch(zhPublications, /非 JCR 收录期刊/);
@@ -303,6 +306,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((zhSelectedPublications.match(/class="publication"/g) ?? []).length, (selectedPublications.match(/class="publication"/g) ?? []).length);
   assert.equal((zhPublications.match(/class="cite-link"/g) ?? []).length, (zhPublications.match(/class="publication"/g) ?? []).length);
   assert.equal((zhSelectedPublications.match(/class="cite-link"/g) ?? []).length, (selectedPublications.match(/class="cite-link"/g) ?? []).length);
+  assert.equal((zhPublications.match(/>\[Cite \(APA\)\]<\/button>/g) ?? []).length, (zhPublications.match(/class="publication"/g) ?? []).length);
+  assert.equal((zhSelectedPublications.match(/>\[Cite \(APA\)\]<\/button>/g) ?? []).length, (zhSelectedPublications.match(/class="publication"/g) ?? []).length);
   assert.match(zhMisc, /<h3>其他<\/h3>/);
   assert.match(zhMisc, /教育背景/);
   assert.match(zhMisc, /荣誉与奖项/);
