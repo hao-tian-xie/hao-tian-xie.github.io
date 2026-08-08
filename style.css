@@ -379,6 +379,14 @@ a:active {
   color: var(--swatch-4);
 }
 
+.publication-label {
+  margin-top: 0;
+  margin-bottom: 0.3rem;
+  color: var(--swatch-4);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
 .publication a {
   color: var(--swatch-1);
   text-decoration: none;

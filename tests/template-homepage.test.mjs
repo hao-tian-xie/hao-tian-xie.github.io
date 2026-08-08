@@ -21,8 +21,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=5"/);
-  assert.match(homepage, /<script src="script\.js\?v=5"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=6"/);
+  assert.match(homepage, /<script src="script\.js\?v=6"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -30,7 +30,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /data-page="misc"/);
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.match(script, /pages\/\$\{page\}\.html/);
-  assert.match(script, /const pageVersion = '5';/);
+  assert.match(script, /const pageVersion = '6';/);
   assert.match(script, /const pageSources = page === 'home'/);
   assert.match(script, /`pages\/home\.html\?v=\$\{pageVersion\}`, `pages\/about\.html\?v=\$\{pageVersion\}`, `pages\/selected-publications\.html\?v=\$\{pageVersion\}`/);
   assert.match(script, /if \(page === 'publications' \|\| page === 'home'\)/);
@@ -78,7 +78,11 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   const contactPosition = about.indexOf('If you share similar interests');
   assert.ok(introPosition >= 0 && introPosition < workingPosition && workingPosition < phdPosition && phdPosition < contactPosition);
   assert.match(publications, /data-year="2026"/);
-  assert.equal((publications.match(/class="publication"/g) ?? []).length, 6);
+  assert.equal((publications.match(/class="publication"/g) ?? []).length, 7);
+  assert.equal((publications.match(/data-selected="true"/g) ?? []).length, 3);
+  assert.match(publications, /PREPRINT ARTICLES/);
+  assert.match(publications, /Forecasting Return Time of Extreme Precipitation by Large Deviation Theory/);
+  assert.match(publications, /Xie, H\., Liu, H\., Fan, J\., &amp; Tang, Y\.\* \(2026\)/);
   assert.match(publications, /Topological persistence pinpoints higher-order network vulnerabilities/);
   assert.match(publications, /A virtual node based zero-shot learning framework for link prediction in complex networks/);
   assert.match(publications, /10\.1016\/j\.ins\.2026\.123522/);
