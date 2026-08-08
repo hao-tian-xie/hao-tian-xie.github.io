@@ -19,9 +19,14 @@ async function loadPage(page) {
   lastLoadedPage = page;
   document.body.classList.toggle('page-home', page === 'home');
   try {
-    const response = await fetch(`pages/${page}.html`);
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    const html = await response.text();
+    const pageSources = page === 'home'
+      ? ['pages/home.html', 'pages/about.html']
+      : [`pages/${page}.html`];
+    const responses = await Promise.all(pageSources.map(source => fetch(source)));
+    const failedResponse = responses.find(response => !response.ok);
+    if (failedResponse) throw new Error(`HTTP error! status: ${failedResponse.status}`);
+    const htmlParts = await Promise.all(responses.map(response => response.text()));
+    const html = htmlParts.join('\n');
 
     // Animate out
     content.classList.add('fading-out');

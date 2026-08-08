@@ -26,6 +26,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /data-page="publications"/);
   assert.match(homepage, /data-page="misc"/);
   assert.match(script, /pages\/\$\{page\}\.html/);
+  assert.match(script, /const pageSources = page === 'home'/);
+  assert.match(script, /'pages\/home\.html', 'pages\/about\.html'/);
   assert.match(script, /const newHash = page === 'home' \? '' : page;/);
   assert.match(script, /const page = location\.hash \? location\.hash\.slice\(1\) : 'home';/);
   assert.match(script, /const initialPage = location\.hash \? location\.hash\.slice\(1\) : 'home';/);
