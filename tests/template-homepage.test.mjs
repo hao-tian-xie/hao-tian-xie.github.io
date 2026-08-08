@@ -21,15 +21,16 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=4"/);
-  assert.match(homepage, /<script src="script\.js\?v=4"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=5"/);
+  assert.match(homepage, /<script src="script\.js\?v=5"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
   assert.match(homepage, /data-page="publications"/);
   assert.match(homepage, /data-page="misc"/);
+  assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.match(script, /pages\/\$\{page\}\.html/);
-  assert.match(script, /const pageVersion = '4';/);
+  assert.match(script, /const pageVersion = '5';/);
   assert.match(script, /const pageSources = page === 'home'/);
   assert.match(script, /`pages\/home\.html\?v=\$\{pageVersion\}`, `pages\/about\.html\?v=\$\{pageVersion\}`, `pages\/selected-publications\.html\?v=\$\{pageVersion\}`/);
   assert.match(script, /if \(page === 'publications' \|\| page === 'home'\)/);
@@ -53,7 +54,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(about, /class="about-panel about-interests"/);
   assert.match(about, /class="about-panel about-phd"/);
   assert.match(about, /class="about-panel about-contact"/);
-  assert.match(about, /<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/?" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
+  assert.doesNotMatch(about, /LinkedIn/);
   assert.doesNotMatch(about, /news-section|<h3>News<\/h3>/);
   assert.doesNotMatch(style, /\.news-section|\.news-list/);
   assert.doesNotMatch(script, /\.news-section/);
