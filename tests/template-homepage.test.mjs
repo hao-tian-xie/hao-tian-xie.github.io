@@ -28,8 +28,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=26"/);
-  assert.match(homepage, /<script src="script\.js\?v=26"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=27"/);
+  assert.match(homepage, /<script src="script\.js\?v=27"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -43,7 +43,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '26';/);
+  assert.match(script, /const pageVersion = '27';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -141,10 +141,11 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
     assert.ok(publications.includes(title), `publications should use sentence case: ${title}`);
     assert.ok(zhPublications.includes(title), `Chinese publications should use sentence case: ${title}`);
   }
-  assert.doesNotMatch(publications, /Forecasting Return Time of Extreme Precipitation by Large Deviation Theory/);
-  assert.doesNotMatch(publications, /: A bayesian method/);
-  assert.doesNotMatch(publications, /: Evidence from a GDEMATEL–AISM approach/);
-  assert.doesNotMatch(publications, /Classifying Drosophila olfactory projection neuron boutons/);
+  const publicationDisplay = publications.replace(/ data-citation="[^"]*"/g, '');
+  assert.doesNotMatch(publicationDisplay, /Forecasting Return Time of Extreme Precipitation by Large Deviation Theory/);
+  assert.doesNotMatch(publicationDisplay, /: A bayesian method/);
+  assert.doesNotMatch(publicationDisplay, /: Evidence from a GDEMATEL–AISM approach/);
+  assert.doesNotMatch(publicationDisplay, /Classifying Drosophila olfactory projection neuron boutons/);
   assert.match(publications, /Xie, H\., Liu, H\., Fan, J\., &amp; Tang, Y\.\*/);
   assert.match(publications, /Topological persistence pinpoints higher-order network vulnerabilities/);
   assert.match(publications, /A virtual node based zero-shot learning framework for link prediction in complex networks/);
@@ -153,9 +154,16 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.doesNotMatch(style, /\.pub-image\s*\{[\s\S]*?filter:\s*grayscale/);
   assert.doesNotMatch(style, /\.pub-image:hover\s*\{[\s\S]*?filter:\s*grayscale/);
   assert.equal((selectedPublications.match(/src="asset\/publications\/[^\"]+\.png"/g) ?? []).length, 3);
+  assert.equal((publications.match(/class="cite-link"/g) ?? []).length, 7);
+  assert.equal((selectedPublications.match(/class="cite-link"/g) ?? []).length, 3);
   assert.equal((publications.match(/width="960" height="540"/g) ?? []).length, 7);
   assert.equal((selectedPublications.match(/width="960" height="540"/g) ?? []).length, 3);
   assert.match(style, /\.journal-metrics\s*\{[\s\S]*?color:\s*var\(--swatch-4\)/);
+  assert.match(style, /\.cite-link\s*\{[\s\S]*?cursor:\s*pointer;/);
+  assert.match(script, /navigator\.clipboard\.writeText/);
+  assert.match(script, /copyCitation/);
+  assert.match(script, /cite-link/);
+  assert.match(script, /citeCopied/);
   assert.doesNotMatch(site, /metrics-note|JCR release|JCR 版本/);
   assert.doesNotMatch(publications, /not a JCR-indexed journal/);
   assert.doesNotMatch(zhPublications, /非 JCR 收录期刊/);
@@ -168,6 +176,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(selectedPublications, /Chaos: An Interdisciplinary Journal of Nonlinear Science, 2026<\/span><\/em>\s*<span class="journal-metrics">\(JCR Q1; IF 3\.3\)<\/span>/);
   assert.match(selectedPublications, /Information Sciences, 748 \(2026\), 123522<\/span><\/em>\s*<span class="journal-metrics">\(JCR Q1; IF 6\.0\)<\/span>/);
   assert.match(selectedPublications, /Electronic Commerce Research and Applications, 2025<\/span><\/em>\s*<span class="journal-metrics">\(JCR Q1; IF 6\.8\)<\/span>/);
+  assert.match(publications, /data-citation="Xie, H\., Liu, H\., Fan, J\., &amp; Tang, Y\. \(2026\)\.[^"]+arXiv\. https:\/\/doi\.org\/10\.48550\/arXiv\.2604\.10890"/);
+  assert.match(publications, /data-citation="Xie, H\., &amp; Ding, B\. \(2026\)\.[^"]+Chaos: An Interdisciplinary Journal of Nonlinear Science, 36\(1\), 013116\./);
   assert.doesNotMatch(site, /asset\/placeholder\.svg/);
   assert.match(misc, /The University of Hong Kong/);
   assert.match(misc, /Beijing Normal University/);
@@ -292,6 +302,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((zhPublications.match(/class="publication"/g) ?? []).length, (publications.match(/class="publication"/g) ?? []).length);
   assert.equal((zhPublications.match(/src="asset\/publications\/[^\"]+\.png"/g) ?? []).length, (publications.match(/src="asset\/publications\/[^\"]+\.png"/g) ?? []).length);
   assert.equal((zhSelectedPublications.match(/class="publication"/g) ?? []).length, (selectedPublications.match(/class="publication"/g) ?? []).length);
+  assert.equal((zhPublications.match(/class="cite-link"/g) ?? []).length, (zhPublications.match(/class="publication"/g) ?? []).length);
+  assert.equal((zhSelectedPublications.match(/class="cite-link"/g) ?? []).length, (selectedPublications.match(/class="cite-link"/g) ?? []).length);
   assert.match(zhMisc, /<h3>其他<\/h3>/);
   assert.match(zhMisc, /教育背景/);
   assert.match(zhMisc, /荣誉与奖项/);

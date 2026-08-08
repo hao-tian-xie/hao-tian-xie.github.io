@@ -396,6 +396,22 @@ a:active {
   text-decoration: underline;
 }
 
+.publication .cite-link {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: var(--swatch-1);
+  cursor: pointer;
+  font: inherit;
+  line-height: inherit;
+  margin-right: 0.8rem;
+  padding: 0;
+}
+
+.publication .cite-link:hover {
+  text-decoration: underline;
+}
+
 .publication p {
   line-height: 1.2;
   margin-top: 0.2rem;
@@ -874,6 +890,15 @@ a:active {
   }
 
   .publication a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.45rem 0.25rem;
+    margin-right: 0.4rem;
+    touch-action: manipulation;
+  }
+
+  .publication .cite-link {
     display: inline-flex;
     align-items: center;
     min-height: 44px;

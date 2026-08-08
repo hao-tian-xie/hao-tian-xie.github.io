@@ -2,7 +2,7 @@
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
-const pageVersion = '26';
+const pageVersion = '27';
 const languageStorageKey = 'site-language';
 
 const uiText = {
@@ -19,6 +19,11 @@ const uiText = {
     'easter-egg': 'Operations Research & Complex Systems',
     imagePreview: 'Image preview',
     closeImage: 'Close image preview',
+    citeLabel: 'Copy APA citation',
+    citeCopied: 'Citation copied',
+    citeFailed: 'Unable to copy citation',
+    citeCopiedLabel: '[copied]',
+    citeFailedLabel: '[copy failed]',
     loadError: 'Error loading page. Please try again.'
   },
   zh: {
@@ -34,6 +39,11 @@ const uiText = {
     'easter-egg': '运筹学与复杂系统',
     imagePreview: '图片预览',
     closeImage: '关闭图片预览',
+    citeLabel: '复制 APA 引用',
+    citeCopied: '引用已复制',
+    citeFailed: '复制引用失败',
+    citeCopiedLabel: '[已复制]',
+    citeFailedLabel: '[复制失败]',
     loadError: '页面加载失败，请稍后重试。'
   }
 };
@@ -415,6 +425,49 @@ window.addEventListener('hashchange', () => {
     if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
   });
 })();
+
+// Copy publication citations
+async function copyCitation(button) {
+  const citation = button.dataset.citation;
+  if (!citation) return;
+
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(citation);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = citation;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      const copied = document.execCommand('copy');
+      textarea.remove();
+      if (!copied) throw new Error('Clipboard copy was rejected');
+    }
+
+    button.textContent = uiText[currentLanguage].citeCopiedLabel;
+    button.setAttribute('aria-label', uiText[currentLanguage].citeCopied);
+  } catch (error) {
+    console.error('Error copying citation:', error);
+    button.textContent = uiText[currentLanguage].citeFailedLabel;
+    button.setAttribute('aria-label', uiText[currentLanguage].citeFailed);
+  }
+
+  clearTimeout(button.citeResetTimer);
+  button.citeResetTimer = setTimeout(() => {
+    button.textContent = '[cite]';
+    button.setAttribute('aria-label', uiText[currentLanguage].citeLabel);
+  }, 1500);
+}
+
+document.addEventListener('click', event => {
+  const citeButton = event.target.closest('.cite-link');
+  if (!citeButton) return;
+  event.preventDefault();
+  copyCitation(citeButton);
+});
 
 // Mobile menu toggle
 (function initMobileMenu() {
