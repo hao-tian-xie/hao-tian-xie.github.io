@@ -20,10 +20,14 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
+  assert.match(homepage, /class="mobile-header-name" href="#about" data-page="about"/);
+  assert.match(homepage, /<h1><a href="#about" data-page="about">/);
   assert.match(homepage, /data-page="about"/);
   assert.match(homepage, /data-page="publications"/);
   assert.match(homepage, /data-page="misc"/);
   assert.match(script, /pages\/\$\{page\}\.html/);
+  assert.match(script, /const page = location\.hash \? location\.hash\.slice\(1\) : 'about';/);
+  assert.match(script, /const initialPage = location\.hash \? location\.hash\.slice\(1\) : 'about';/);
   assert.match(script, /groupPublicationsByYear/);
   assert.match(script, /initPubTabs/);
   assert.match(style, /\.sidebar\s*\{[\s\S]*?width:\s*45%;[\s\S]*?max-width:\s*500px;[\s\S]*?position:\s*fixed[\s\S]*?left:\s*0/);
