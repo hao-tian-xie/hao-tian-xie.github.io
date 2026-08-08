@@ -28,8 +28,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=29"/);
-  assert.match(homepage, /<script src="script\.js\?v=29"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=30"/);
+  assert.match(homepage, /<script src="script\.js\?v=30"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="about"/);
   assert.match(homepage, /<h1><a href="#" data-page="about">/);
   assert.match(homepage, /data-page="about"/);
@@ -43,7 +43,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '29';/);
+  assert.match(script, /const pageVersion = '30';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -181,6 +181,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.doesNotMatch(site, /asset\/placeholder\.svg/);
   assert.match(misc, /2025\.4 - 2026\.6[\s\S]*?<strong>Research Assistant<\/strong>[\s\S]*?ISE, PolyU/);
   assert.match(misc, /2026\.7 - present[\s\S]*?<strong>Research Associate<\/strong>[\s\S]*?ISE, PolyU/);
+  assert.ok(misc.indexOf('2026.7 - present') < misc.indexOf('2025.4 - 2026.6'));
   assert.match(misc, /2024\.9 - 2025\.11[\s\S]*?<strong>Master of Science in Industrial Engineering and Logistics Management<\/strong>[\s\S]*?DASE, HKU/);
   assert.match(misc, /2020\.9 - 2024\.6[\s\S]*?<strong>Bachelor of Science in Systems Science<\/strong>[\s\S]*?BNU/);
   assert.match(misc, /2020\.9 - 2024\.6[\s\S]*?<strong>Bachelor of Economics in Finance<\/strong>[\s\S]*?BNU/);
@@ -310,6 +311,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(zhMisc, /ISE，PolyU/);
   assert.match(zhMisc, /DASE，HKU/);
   assert.match(zhMisc, /BNU/);
+  assert.ok(zhMisc.indexOf('2026.7 - 至今') < zhMisc.indexOf('2025.4 - 2026.6'));
   assert.doesNotMatch(zhMisc, /香港理工大学|香港大学|北京师范大学|工业及系统工程学系|数据与系统工程学系/);
   assert.match(zhMisc, /Best Industry &amp; Impact Paper Award/);
   assert.match(zhMisc, /<strong>99 Yuan Chuan Scholarship<\/strong>，BNU，2023/);
