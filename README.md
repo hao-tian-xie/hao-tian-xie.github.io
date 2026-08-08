@@ -8,8 +8,9 @@ The site uses the structure and layout of [SimpleAcademicHomepage](https://githu
 
 - `index.html` — site shell, metadata, sidebar, navigation, and mobile controls
 - `pages/home.html` — home summary
-- `pages/about.html` — biography, research interests, and news
+- `pages/about.html` — biography, research interests, and contact information
 - `pages/publications.html` — publications and links
+- `pages/selected-publications.html` — selected publications shown below the homepage content
 - `pages/misc.html` — experience, education, awards, and skills
 - `style.css` — template styling
 - `script.js` — template navigation and interactions

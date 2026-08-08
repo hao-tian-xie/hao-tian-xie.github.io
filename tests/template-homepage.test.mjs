@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
-const [homepage, script, style, about, publications, misc, home] = await Promise.all([
+const [homepage, script, style, about, publications, misc, home, selectedPublications] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../script.js', import.meta.url), 'utf8'),
   readFile(new URL('../style.css', import.meta.url), 'utf8'),
@@ -10,9 +10,10 @@ const [homepage, script, style, about, publications, misc, home] = await Promise
   readFile(new URL('../pages/publications.html', import.meta.url), 'utf8'),
   readFile(new URL('../pages/misc.html', import.meta.url), 'utf8'),
   readFile(new URL('../pages/home.html', import.meta.url), 'utf8'),
+  readFile(new URL('../pages/selected-publications.html', import.meta.url), 'utf8').catch(() => ''),
 ]);
 
-const site = [homepage, script, style, about, publications, misc, home].join('\n');
+const site = [homepage, script, style, about, publications, misc, home, selectedPublications].join('\n');
 
 test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', () => {
   assert.match(homepage, /class="sidebar"/);
@@ -27,7 +28,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /data-page="misc"/);
   assert.match(script, /pages\/\$\{page\}\.html/);
   assert.match(script, /const pageSources = page === 'home'/);
-  assert.match(script, /'pages\/home\.html', 'pages\/about\.html'/);
+  assert.match(script, /'pages\/home\.html', 'pages\/about\.html', 'pages\/selected-publications\.html'/);
+  assert.match(script, /if \(page === 'publications' \|\| page === 'home'\)/);
   assert.match(script, /const newHash = page === 'home' \? '' : page;/);
   assert.match(script, /const page = location\.hash \? location\.hash\.slice\(1\) : 'home';/);
   assert.match(script, /const initialPage = location\.hash \? location\.hash\.slice\(1\) : 'home';/);
@@ -48,6 +50,10 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(about, /class="about-panel about-interests"/);
   assert.match(about, /class="about-panel about-phd"/);
   assert.match(about, /class="about-panel about-contact"/);
+  assert.match(about, /<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/?" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
+  assert.doesNotMatch(about, /news-section|<h3>News<\/h3>/);
+  assert.doesNotMatch(style, /\.news-section|\.news-list/);
+  assert.doesNotMatch(script, /\.news-section/);
   assert.doesNotMatch(about, /Using data, mathematical models, and optimization to support better decisions\./);
   assert.doesNotMatch(about, /Applications across logistics, supply chains, transportation, and networked systems\./);
   assert.doesNotMatch(about, /Research connecting Operations Research with Complex Systems\./);
@@ -83,5 +89,12 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(style, /\.page-home \.about-title\s*\{\s*display:\s*none;\s*\}/);
   assert.match(style, /\.interests-list\s*\{\s*margin:\s*0\.8rem 0;\s*\}/);
   assert.match(style, /\.interest\s*\{[\s\S]*?line-height:\s*1\.2;[\s\S]*?margin-bottom:\s*0;[\s\S]*?padding:\s*0;/);
+  assert.match(selectedPublications, /class="selected-publications"/);
+  assert.match(selectedPublications, /<h3>Selected Publications<\/h3>/);
+  assert.equal((selectedPublications.match(/class="publication"/g) ?? []).length, 3);
+  assert.match(selectedPublications, /Topological persistence pinpoints higher-order network vulnerabilities/);
+  assert.match(selectedPublications, /A virtual node based zero-shot learning framework for link prediction in complex networks/);
+  assert.match(selectedPublications, /Decentralized autonomous organizations in e-commerce supply chains/);
+  assert.match(style, /\.selected-publications\s*\{[\s\S]*?margin-top:\s*2rem;/);
   assert.doesNotMatch(site, /Your Name|your@email\.com|Your Paper Title|Research Lab|University of XX|Advisor Name/);
 });

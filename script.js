@@ -20,7 +20,7 @@ async function loadPage(page) {
   document.body.classList.toggle('page-home', page === 'home');
   try {
     const pageSources = page === 'home'
-      ? ['pages/home.html', 'pages/about.html']
+      ? ['pages/home.html', 'pages/about.html', 'pages/selected-publications.html']
       : [`pages/${page}.html`];
     const responses = await Promise.all(pageSources.map(source => fetch(source)));
     const failedResponse = responses.find(response => !response.ok);
@@ -37,8 +37,11 @@ async function loadPage(page) {
     window.scrollTo(0, 0);
 
     // Publications year grouping
-    if (page === 'publications') {
+    if (page === 'publications' || page === 'home') {
       groupPublicationsByYear();
+    }
+
+    if (page === 'publications') {
       initPubTabs();
     }
 
@@ -229,7 +232,7 @@ function initPubTabs() {
 
 // Scroll reveal — Cargo-style scale-in
 function initScrollReveal() {
-  const targets = content.querySelectorAll('.year-section, .publication, .news-section');
+  const targets = content.querySelectorAll('.year-section, .publication');
   if (!targets.length) return;
 
   const observer = new IntersectionObserver((entries) => {

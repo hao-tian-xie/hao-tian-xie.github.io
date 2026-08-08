@@ -277,6 +277,8 @@ a:active {
 }
 
 /* ─── Publications ─── */
+.selected-publications { margin-top: 2rem; }
+
 .pub-tabs {
   display: flex;
   gap: 1.5rem;
@@ -401,37 +403,6 @@ a:active {
 .publication ul li { margin-bottom: 0.15rem; }
 
 .teaching, .project { margin-bottom: 1.5rem; }
-
-/* ─── News ─── */
-.news-section { margin-top: 2rem; }
-.news-section h3 { margin-top: 0; }
-
-.news-list {
-  border-top: 1px solid var(--border);
-  padding: 0.6rem 0;
-  max-height: 220px;
-  overflow: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--swatch-5) transparent;
-}
-
-.news-list ul {
-  margin: 0;
-  padding-left: 1.2rem;
-  list-style: disc;
-}
-
-.news-list li {
-  margin-bottom: 0.25rem;
-  line-height: 1.4;
-  color: var(--swatch-1);
-}
-
-.news-list::-webkit-scrollbar { width: 6px; }
-.news-list::-webkit-scrollbar-thumb {
-  background-color: var(--swatch-5);
-  border-radius: 999px;
-}
 
 /* ─── Home page ─── */
 .inline-cite {
