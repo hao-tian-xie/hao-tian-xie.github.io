@@ -28,8 +28,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=27"/);
-  assert.match(homepage, /<script src="script\.js\?v=27"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=28"/);
+  assert.match(homepage, /<script src="script\.js\?v=28"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -43,7 +43,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '27';/);
+  assert.match(script, /const pageVersion = '28';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -150,10 +150,10 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(publications, /Topological persistence pinpoints higher-order network vulnerabilities/);
   assert.match(publications, /A virtual node based zero-shot learning framework for link prediction in complex networks/);
   assert.match(publications, /10\.1016\/j\.ins\.2026\.123522/);
-  assert.equal((publications.match(/src="asset\/publications\/[^\"]+\.png"/g) ?? []).length, 7);
+  assert.equal((publications.match(/src="asset\/publications\/[^\"]+\.png\?v=28"/g) ?? []).length, 7);
   assert.doesNotMatch(style, /\.pub-image\s*\{[\s\S]*?filter:\s*grayscale/);
   assert.doesNotMatch(style, /\.pub-image:hover\s*\{[\s\S]*?filter:\s*grayscale/);
-  assert.equal((selectedPublications.match(/src="asset\/publications\/[^\"]+\.png"/g) ?? []).length, 3);
+  assert.equal((selectedPublications.match(/src="asset\/publications\/[^\"]+\.png\?v=28"/g) ?? []).length, 3);
   assert.equal((publications.match(/class="cite-link"/g) ?? []).length, 7);
   assert.equal((selectedPublications.match(/class="cite-link"/g) ?? []).length, 3);
   assert.equal((publications.match(/width="960" height="540"/g) ?? []).length, 7);
@@ -300,7 +300,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.doesNotMatch(publications, /Xie, H\., Liu, H\., Fan, J\., &amp; Tang, Y\.\* \(2026\)/);
   assert.doesNotMatch(zhPublications, /Xie, H\., Liu, H\., Fan, J\., &amp; Tang, Y\.\* \(2026\)/);
   assert.equal((zhPublications.match(/class="publication"/g) ?? []).length, (publications.match(/class="publication"/g) ?? []).length);
-  assert.equal((zhPublications.match(/src="asset\/publications\/[^\"]+\.png"/g) ?? []).length, (publications.match(/src="asset\/publications\/[^\"]+\.png"/g) ?? []).length);
+  assert.equal((zhPublications.match(/src="asset\/publications\/[^\"]+\.png\?v=28"/g) ?? []).length, (publications.match(/src="asset\/publications\/[^\"]+\.png\?v=28"/g) ?? []).length);
   assert.equal((zhSelectedPublications.match(/class="publication"/g) ?? []).length, (selectedPublications.match(/class="publication"/g) ?? []).length);
   assert.equal((zhPublications.match(/class="cite-link"/g) ?? []).length, (zhPublications.match(/class="publication"/g) ?? []).length);
   assert.equal((zhSelectedPublications.match(/class="cite-link"/g) ?? []).length, (selectedPublications.match(/class="cite-link"/g) ?? []).length);
