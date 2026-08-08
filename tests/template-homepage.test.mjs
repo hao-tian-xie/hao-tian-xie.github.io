@@ -28,10 +28,10 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=28"/);
-  assert.match(homepage, /<script src="script\.js\?v=28"><\/script>/);
-  assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
-  assert.match(homepage, /<h1><a href="#" data-page="home">/);
+  assert.match(homepage, /href="style\.css\?v=29"/);
+  assert.match(homepage, /<script src="script\.js\?v=29"><\/script>/);
+  assert.match(homepage, /class="mobile-header-name" href="#" data-page="about"/);
+  assert.match(homepage, /<h1><a href="#" data-page="about">/);
   assert.match(homepage, /data-page="about"/);
   assert.match(homepage, /data-page="publications"/);
   assert.match(homepage, /data-page="misc"/);
@@ -43,7 +43,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '28';/);
+  assert.match(script, /const pageVersion = '29';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -56,9 +56,9 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(script, /const pageSources = page === 'home'/);
   assert.match(script, /`\$\{pageRoot\}\/home\.html\?v=\$\{pageVersion\}`, `\$\{pageRoot\}\/about\.html\?v=\$\{pageVersion\}`, `\$\{pageRoot\}\/selected-publications\.html\?v=\$\{pageVersion\}`/);
   assert.match(script, /if \(page === 'publications' \|\| page === 'home'\)/);
-  assert.match(script, /const newHash = page === 'home' \? '' : page;/);
-  assert.match(script, /const page = location\.hash \? location\.hash\.slice\(1\) : 'home';/);
-  assert.match(script, /const initialPage = location\.hash \? location\.hash\.slice\(1\) : 'home';/);
+  assert.match(script, /const newHash = page === 'about' \? '' : page;/);
+  assert.match(script, /const page = location\.hash\.slice\(1\) \|\| 'about';/);
+  assert.match(script, /const initialPage = location\.hash\.slice\(1\) \|\| 'about';/);
   assert.match(script, /groupPublicationsByYear/);
   assert.match(script, /initPubTabs/);
   assert.match(style, /\.sidebar\s*\{[\s\S]*?width:\s*45%;[\s\S]*?max-width:\s*500px;[\s\S]*?position:\s*fixed[\s\S]*?left:\s*0/);

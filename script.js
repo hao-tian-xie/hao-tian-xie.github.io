@@ -2,7 +2,7 @@
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
-const pageVersion = '28';
+const pageVersion = '29';
 const languageStorageKey = 'site-language';
 
 const uiText = {
@@ -363,7 +363,7 @@ links.forEach(link => {
     e.preventDefault();
     const page = link.dataset.page;
     if (!page) return;
-    const newHash = page === 'home' ? '' : page;
+    const newHash = page === 'about' ? '' : page;
     if (location.hash.slice(1) !== newHash) {
       location.hash = newHash || '#';
     }
@@ -375,7 +375,7 @@ links.forEach(link => {
 // Hash navigation (back/forward only - skip if triggered by click)
 let lastLoadedPage = null;
 window.addEventListener('hashchange', () => {
-  const page = location.hash ? location.hash.slice(1) : 'home';
+  const page = location.hash.slice(1) || 'about';
   if (page === lastLoadedPage) return;
   setActiveLink(page);
   loadPage(page);
@@ -522,7 +522,7 @@ document.addEventListener('click', event => {
 })();
 
 // Initial load
-const initialPage = location.hash ? location.hash.slice(1) : 'home';
+const initialPage = location.hash.slice(1) || 'about';
 document.documentElement.lang = currentLanguage === 'zh' ? 'zh-CN' : 'en';
 updateInterfaceText();
 setActiveLink(initialPage);
