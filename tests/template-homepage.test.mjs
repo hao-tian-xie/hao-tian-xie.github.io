@@ -2,16 +2,17 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
-const [homepage, script, about, publications, misc, home] = await Promise.all([
+const [homepage, script, style, about, publications, misc, home] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../script.js', import.meta.url), 'utf8'),
+  readFile(new URL('../style.css', import.meta.url), 'utf8'),
   readFile(new URL('../pages/about.html', import.meta.url), 'utf8'),
   readFile(new URL('../pages/publications.html', import.meta.url), 'utf8'),
   readFile(new URL('../pages/misc.html', import.meta.url), 'utf8'),
   readFile(new URL('../pages/home.html', import.meta.url), 'utf8'),
 ]);
 
-const site = [homepage, script, about, publications, misc, home].join('\n');
+const site = [homepage, script, style, about, publications, misc, home].join('\n');
 
 test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', () => {
   assert.match(homepage, /class="sidebar"/);
@@ -25,6 +26,9 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(script, /pages\/\$\{page\}\.html/);
   assert.match(script, /groupPublicationsByYear/);
   assert.match(script, /initPubTabs/);
+  assert.match(style, /\.sidebar\s*\{[\s\S]*?position:\s*fixed[\s\S]*?left:\s*0/);
+  assert.match(style, /main\s*\{[\s\S]*?margin-left:\s*43%[\s\S]*?max-width:\s*57%/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?main\s*\{[\s\S]*?margin-left:\s*0[\s\S]*?max-width:\s*100%/);
   assert.match(homepage, /Haotian Xie/);
   assert.match(homepage, /haotiantimxie@gmail\.com/);
   assert.match(about, /Operations Research/);
