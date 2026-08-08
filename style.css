@@ -81,9 +81,9 @@ body {
 
 /* Push main content to the right of the fixed sidebar */
 main {
-  margin-left: 29%;
+  margin-left: 10%;
   padding: 0.5rem 1rem 1rem;
-  max-width: 71%;
+  max-width: 90%;
 }
 
 .sidebar-header {
