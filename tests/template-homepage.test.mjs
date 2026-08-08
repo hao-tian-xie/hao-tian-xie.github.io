@@ -21,8 +21,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=12"/);
-  assert.match(homepage, /<script src="script\.js\?v=12"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=13"/);
+  assert.match(homepage, /<script src="script\.js\?v=13"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -30,7 +30,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /data-page="misc"/);
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer">LinkedIn<\/a>/);
   assert.match(script, /pages\/\$\{page\}\.html/);
-  assert.match(script, /const pageVersion = '12';/);
+  assert.match(script, /const pageVersion = '13';/);
   assert.match(script, /const pageSources = page === 'home'/);
   assert.match(script, /`pages\/home\.html\?v=\$\{pageVersion\}`, `pages\/about\.html\?v=\$\{pageVersion\}`, `pages\/selected-publications\.html\?v=\$\{pageVersion\}`/);
   assert.match(script, /if \(page === 'publications' \|\| page === 'home'\)/);
@@ -46,6 +46,18 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /haotiantimxie@gmail\.com/);
   assert.match(about, /Operations Research/);
   assert.match(about, /<strong>Operations Research with Complex Systems<\/strong>/);
+  assert.match(about, /<a href="https:\/\/www\.polyu\.edu\.hk\/ise\/"[^>]*>Department of Industrial and Systems Engineering<\/a>/);
+  assert.match(about, /<a href="https:\/\/www\.polyu\.edu\.hk\/"[^>]*>The Hong Kong Polytechnic University<\/a>/);
+  assert.match(about, /Dr\. <a href="https:\/\/research\.polyu\.edu\.hk\/en\/persons\/yung-po-tsang\/"[^>]*>Paul Tsang<\/a>/);
+  assert.match(about, /M\.Sc\. in Industrial Engineering and Logistics Management/);
+  assert.match(about, /<a href="https:\/\/www\.dase\.hku\.hk\/"[^>]*>Department of Data and Systems Engineering<\/a>/);
+  assert.match(about, /<a href="https:\/\/www\.hku\.hk\/"[^>]*>The University of Hong Kong<\/a>/);
+  assert.match(about, /Prof\. <a href="https:\/\/www\.dase\.hku\.hk\/people\/j-y-li"[^>]*>Jiayang Li<\/a>/);
+  assert.match(about, /B\.Sc\. in Systems Science/);
+  assert.match(about, /B\.Ec\. in Finance/);
+  assert.match(about, /<a href="https:\/\/sss\.bnu\.edu\.cn\/en\/"[^>]*>School of Systems Science<\/a>/);
+  assert.match(about, /<a href="https:\/\/www\.bnu\.edu\.cn\/"[^>]*>Beijing Normal University<\/a>/);
+  assert.match(about, /Prof\. <a href="https:\/\/sss\.bnu\.edu\.cn\/en\/Faculty\/Professor\/1fb42055bc1e42ca8e13c27e378e2d82\.htm"[^>]*>Zengru Di<\/a>/);
   assert.match(about, /Data-driven decision making/);
   assert.match(about, /Logistics and supply chain management/);
   assert.match(about, /Complex networks theory/);
