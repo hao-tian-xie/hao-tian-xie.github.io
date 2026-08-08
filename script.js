@@ -2,6 +2,7 @@
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
+const pageVersion = '3';
 
 function setActiveLink(page) {
   links.forEach(link => {
@@ -20,8 +21,8 @@ async function loadPage(page) {
   document.body.classList.toggle('page-home', page === 'home');
   try {
     const pageSources = page === 'home'
-      ? ['pages/home.html', 'pages/about.html', 'pages/selected-publications.html']
-      : [`pages/${page}.html`];
+      ? [`pages/home.html?v=${pageVersion}`, `pages/about.html?v=${pageVersion}`, `pages/selected-publications.html?v=${pageVersion}`]
+      : [`pages/${page}.html?v=${pageVersion}`];
     const responses = await Promise.all(pageSources.map(source => fetch(source)));
     const failedResponse = responses.find(response => !response.ok);
     if (failedResponse) throw new Error(`HTTP error! status: ${failedResponse.status}`);

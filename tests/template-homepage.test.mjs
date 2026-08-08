@@ -21,14 +21,17 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
+  assert.match(homepage, /href="style\.css\?v=3"/);
+  assert.match(homepage, /<script src="script\.js\?v=3"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
   assert.match(homepage, /data-page="publications"/);
   assert.match(homepage, /data-page="misc"/);
   assert.match(script, /pages\/\$\{page\}\.html/);
+  assert.match(script, /const pageVersion = '3';/);
   assert.match(script, /const pageSources = page === 'home'/);
-  assert.match(script, /'pages\/home\.html', 'pages\/about\.html', 'pages\/selected-publications\.html'/);
+  assert.match(script, /`pages\/home\.html\?v=\$\{pageVersion\}`, `pages\/about\.html\?v=\$\{pageVersion\}`, `pages\/selected-publications\.html\?v=\$\{pageVersion\}`/);
   assert.match(script, /if \(page === 'publications' \|\| page === 'home'\)/);
   assert.match(script, /const newHash = page === 'home' \? '' : page;/);
   assert.match(script, /const page = location\.hash \? location\.hash\.slice\(1\) : 'home';/);
