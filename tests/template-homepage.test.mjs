@@ -30,8 +30,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /id="content"/);
   assert.match(homepage, /href="style\.css\?v=30"/);
   assert.match(homepage, /<script src="script\.js\?v=30"><\/script>/);
-  assert.match(homepage, /class="mobile-header-name" href="#" data-page="about"/);
-  assert.match(homepage, /<h1><a href="#" data-page="about">/);
+  assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
+  assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
   assert.match(homepage, /data-page="publications"/);
   assert.match(homepage, /data-page="misc"/);
@@ -56,9 +56,9 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(script, /const pageSources = page === 'home'/);
   assert.match(script, /`\$\{pageRoot\}\/home\.html\?v=\$\{pageVersion\}`, `\$\{pageRoot\}\/about\.html\?v=\$\{pageVersion\}`, `\$\{pageRoot\}\/selected-publications\.html\?v=\$\{pageVersion\}`/);
   assert.match(script, /if \(page === 'publications' \|\| page === 'home'\)/);
-  assert.match(script, /const newHash = page === 'about' \? '' : page;/);
-  assert.match(script, /const page = location\.hash\.slice\(1\) \|\| 'about';/);
-  assert.match(script, /const initialPage = location\.hash\.slice\(1\) \|\| 'about';/);
+  assert.match(script, /const newHash = page === 'home' \? '' : page;/);
+  assert.match(script, /const page = location\.hash\.slice\(1\) \|\| 'home';/);
+  assert.match(script, /const initialPage = location\.hash\.slice\(1\) \|\| 'home';/);
   assert.match(script, /groupPublicationsByYear/);
   assert.match(script, /initPubTabs/);
   assert.match(style, /\.sidebar\s*\{[\s\S]*?width:\s*45%;[\s\S]*?max-width:\s*500px;[\s\S]*?position:\s*fixed[\s\S]*?left:\s*0/);
