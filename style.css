@@ -693,6 +693,10 @@ a:active {
     right: 0;
     z-index: 400;
     padding: 0.1rem 1rem 0.4rem;
+    padding-top: max(0.1rem, env(safe-area-inset-top));
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    min-height: 3.2rem;
     background: var(--bg);
   }
 
@@ -700,8 +704,8 @@ a:active {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 1rem;
-    right: 1rem;
+    left: max(1rem, env(safe-area-inset-left));
+    right: max(1rem, env(safe-area-inset-right));
     height: 1px;
     background: var(--swatch-1);
   }
@@ -724,6 +728,7 @@ a:active {
     padding: 0.5rem 0;
     min-height: 44px;
     min-width: 44px;
+    touch-action: manipulation;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -736,7 +741,9 @@ a:active {
   /* Increase touch targets for sidebar links */
   .sidebar-info a {
     padding: 0.35rem 0;
-    display: block;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
   }
 
   .nav-index li {
@@ -745,7 +752,10 @@ a:active {
 
   .nav-index a {
     padding: 0.3rem 0;
-    display: inline-block;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    touch-action: manipulation;
   }
 
   /* Sidebar becomes fullscreen overlay */
@@ -759,8 +769,12 @@ a:active {
     max-width: none;
     min-width: auto;
     height: 100vh;
+    min-height: 100dvh;
     z-index: 300;
     padding: 3.8rem 1rem 1rem;
+    padding-top: calc(3.8rem + env(safe-area-inset-top));
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
     background: var(--bg);
     overflow-y: auto;
     pointer-events: auto;
@@ -801,7 +815,9 @@ a:active {
   main {
     margin-left: 0;
     padding: 1rem;
-    padding-top: 3.8rem;
+    padding-top: calc(3.8rem + env(safe-area-inset-top));
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
     max-width: 100%;
   }
 
@@ -819,9 +835,15 @@ a:active {
   .pub-tabs {
     gap: 1.2rem;
     margin: 0.5rem 0 1.5rem;
+    flex-wrap: wrap;
   }
 
-  .pub-tab { font-size: 0.9rem; }
+  .pub-tab {
+    font-size: 0.9rem;
+    min-height: 44px;
+    padding: 0.55rem 0.2rem;
+    touch-action: manipulation;
+  }
 
   .year-section {
     display: flex;
@@ -836,7 +858,15 @@ a:active {
 
   .publication {
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1rem;
+    overflow-wrap: anywhere;
+  }
+
+  .publication h4,
+  .publication p,
+  .about-panel,
+  .about-panel a {
+    overflow-wrap: anywhere;
   }
 
   .pub-image {
@@ -845,8 +875,12 @@ a:active {
   }
 
   .publication a {
-    display: inline-block;
-    padding: 0.25rem 0;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.45rem 0.25rem;
+    margin-right: 0.4rem;
+    touch-action: manipulation;
   }
 
   .home-figure {
@@ -877,7 +911,7 @@ a:active {
   }
 
   main {
-    padding-bottom: 4rem;
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom));
   }
 
   /* Fixed bottom bar */
@@ -890,7 +924,7 @@ a:active {
     left: 0;
     right: 0;
     z-index: 200;
-    padding: 0.2rem 1rem;
+    padding: 0.2rem max(1rem, env(safe-area-inset-right)) 0.2rem max(1rem, env(safe-area-inset-left));
     padding-bottom: calc(0.2rem + env(safe-area-inset-bottom));
     background: var(--bg);
   }
@@ -901,8 +935,8 @@ a:active {
     content: '';
     position: absolute;
     top: 0;
-    left: 1rem;
-    right: 1rem;
+    left: max(1rem, env(safe-area-inset-left));
+    right: max(1rem, env(safe-area-inset-right));
     height: 1px;
     background: var(--swatch-1);
   }
@@ -916,7 +950,9 @@ a:active {
     border: none;
     cursor: pointer;
     padding: 0.15rem 0;
-    min-height: 36px;
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
     display: flex;
     align-items: center;
   }

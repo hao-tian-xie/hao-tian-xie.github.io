@@ -2,7 +2,7 @@
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
-const pageVersion = '17';
+const pageVersion = '18';
 const languageStorageKey = 'site-language';
 
 const uiText = {
@@ -443,10 +443,19 @@ window.addEventListener('hashchange', () => {
 // Language switcher
 (function initLanguageSwitcher() {
   const toggle = document.getElementById('language-toggle');
+  const sidebar = document.querySelector('.sidebar');
+  const menuToggle = document.getElementById('menu-toggle');
   if (!toggle) return;
 
   toggle.addEventListener('click', () => {
     setLanguage(currentLanguage === 'en' ? 'zh' : 'en');
+
+    if (sidebar?.classList.contains('menu-open') && menuToggle) {
+      sidebar.classList.remove('menu-open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      updateMenuButtonLabel();
+      menuToggle.focus();
+    }
   });
 })();
 
