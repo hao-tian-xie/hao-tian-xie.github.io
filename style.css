@@ -232,77 +232,25 @@ a:active {
 }
 
 .interest {
-  margin-bottom: 0.6rem;
-}
-
-.interest > summary {
-  list-style: none;
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  margin-bottom: 0.6rem;
   padding: 0.15rem 0;
-  user-select: none;
 }
 
-.interest > summary::-webkit-details-marker { display: none; }
-
-.interest > summary::before {
+.interest::before {
   content: '▶';
   color: var(--swatch-4);
   font-size: 0.7rem;
   line-height: 1;
-  transition: transform 0.2s ease;
   display: inline-block;
+  pointer-events: none;
 }
 
-.interest[open] > summary::before {
-  transform: rotate(90deg);
-}
-
-.interest:hover > summary strong { color: var(--swatch-2); }
-
-.interest-body {
-  padding: 0.4rem 0 0.4rem 1.3rem;
-}
-
-.interest-q {
-  margin: 0 0 0.5rem 0;
-  color: var(--swatch-3);
-  font-size: 0.95rem;
-  line-height: 1.45;
-}
-
-.interest-works {
-  list-style: disc;
-  padding-left: 1.2rem;
-  margin: 0;
-  color: var(--swatch-3);
-  font-size: 0.95rem;
-}
-
-.interest-works li {
-  margin-bottom: 0.35rem;
-  line-height: 1.45;
-}
-
-.interest-works a {
-  color: var(--swatch-2);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 1px;
-}
-
-.interest-works a:hover { color: var(--highlight); }
-
-.interest-works:empty::before {
-  content: '— Coming soon —';
-  display: block;
-  color: var(--swatch-5);
-  font-size: 0.85rem;
-  font-style: italic;
-  list-style: none;
-  margin-left: -1.2rem;
+.interest strong {
+  color: var(--swatch-1);
+  font-weight: 600;
 }
 
 /* ─── Publications ─── */

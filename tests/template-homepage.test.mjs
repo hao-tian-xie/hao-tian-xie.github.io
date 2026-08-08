@@ -40,6 +40,10 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.doesNotMatch(about, /Applications across logistics, supply chains, transportation, and networked systems\./);
   assert.doesNotMatch(about, /Research connecting Operations Research with Complex Systems\./);
   assert.doesNotMatch(about, /class="interest-body"/);
+  assert.doesNotMatch(about, /<details\b|<summary\b/);
+  assert.equal((about.match(/class="interest"/g) ?? []).length, 3);
+  assert.match(style, /\.interest::before\s*\{[\s\S]*?content:\s*'▶';[\s\S]*?pointer-events:\s*none;/);
+  assert.doesNotMatch(style, /\.interest\s*>\s*summary|\.interest\[open\]/);
   const introPosition = about.indexOf('I am a Research Assistant');
   const phdPosition = about.indexOf('I am actively seeking');
   const workingPosition = about.indexOf('I am working on:');
