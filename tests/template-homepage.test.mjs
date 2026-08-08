@@ -44,7 +44,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(about, /Data-driven decision making/);
   assert.match(about, /Logistics and supply chain management/);
   assert.match(about, /Complex networks theory/);
-  assert.match(about, /I am actively seeking a Ph\.D\. position starting in Fall 2026 and welcome academic collaborations\./);
+  assert.match(about, /I will join PolyU ISE as a Ph\.D\. student in Spring 2027\./);
   assert.match(about, /class="about-grid"/);
   assert.match(about, /class="about-panel about-intro"/);
   assert.match(about, /class="about-panel about-interests"/);
@@ -70,7 +70,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.about-grid\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
   const introPosition = about.indexOf('I am a Research Assistant');
   const workingPosition = about.indexOf('I am working on:');
-  const phdPosition = about.indexOf('I am actively seeking');
+  const phdPosition = about.indexOf('I will join PolyU ISE');
   const contactPosition = about.indexOf('If you share similar interests');
   assert.ok(introPosition >= 0 && introPosition < workingPosition && workingPosition < phdPosition && phdPosition < contactPosition);
   assert.match(publications, /data-year="2026"/);
@@ -89,6 +89,11 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(style, /\.page-home \.about-title\s*\{\s*display:\s*none;\s*\}/);
   assert.match(style, /\.interests-list\s*\{\s*margin:\s*0\.8rem 0;\s*\}/);
   assert.match(style, /\.interest\s*\{[\s\S]*?line-height:\s*1\.2;[\s\S]*?margin-bottom:\s*0;[\s\S]*?padding:\s*0;/);
+  assert.match(style, /\.sidebar\s*\{[\s\S]*?pointer-events:\s*none;/);
+  assert.match(style, /\.sidebar a,\s*\.sidebar #easter-egg\s*\{[\s\S]*?pointer-events:\s*auto;/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.sidebar\s*\{[\s\S]*?pointer-events:\s*auto;/);
+  assert.match(publications, /<p>“\*”是通讯作者。<\/p>/);
+  assert.match(selectedPublications, /<p>“\*”是通讯作者。<\/p>/);
   assert.match(selectedPublications, /class="selected-publications"/);
   assert.match(selectedPublications, /<h3>Selected Publications<\/h3>/);
   assert.equal((selectedPublications.match(/class="publication"/g) ?? []).length, 3);

@@ -77,6 +77,12 @@ body {
   height: 100vh;
   overflow-y: auto;
   flex-shrink: 0;
+  pointer-events: none;
+}
+
+.sidebar a,
+.sidebar #easter-egg {
+  pointer-events: auto;
 }
 
 /* Push main content to the right of the fixed sidebar */
@@ -717,6 +723,7 @@ a:active {
     padding: 3.8rem 1rem 1rem;
     background: var(--bg);
     overflow-y: auto;
+    pointer-events: auto;
     transform: translateY(-100%);
     transition: transform 0.3s ease;
   }
