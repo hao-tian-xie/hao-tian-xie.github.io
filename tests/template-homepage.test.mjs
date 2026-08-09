@@ -147,8 +147,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((homepage.match(/id="btn-top"/g) ?? []).length, 1);
   assert.doesNotMatch(homepage, /id="btn-top-right"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=51"/);
-  assert.match(homepage, /<script src="script\.js\?v=51"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=52"/);
+  assert.match(homepage, /<script src="script\.js\?v=52"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -162,7 +162,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '51';/);
+  assert.match(script, /const pageVersion = '52';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -532,12 +532,13 @@ test('moves experience and education into about with updated academic copy', () 
   assert.doesNotMatch(misc, /<h4>Experience<\/h4>|<h4>Education<\/h4>/);
   assert.doesNotMatch(zhMisc, /<h4>工作经历<\/h4>|<h4>教育背景<\/h4>/);
   assert.match(style, /\.about-background\s*\{/);
-  assert.match(style, /\.about-background\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/);
-  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.about-background\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
-  assert.ok(about.indexOf('<div class="about-background">') > about.indexOf('</div>\n\n  <div class="about-background">'));
-  assert.match(homepage, /href="style\.css\?v=51"/);
-  assert.match(homepage, /<script src="script\.js\?v=51"><\/script>/);
-  assert.match(script, /const pageVersion = '51';/);
+  assert.match(style, /\.about-background\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
+  assert.doesNotMatch(style, /\.about-background\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/);
+  const aboutGridEnd = about.indexOf('\n  </div>\n\n  <div class="about-background">');
+  assert.ok(aboutGridEnd > about.indexOf('<div class="about-grid">'));
+  assert.match(homepage, /href="style\.css\?v=52"/);
+  assert.match(homepage, /<script src="script\.js\?v=52"><\/script>/);
+  assert.match(script, /const pageVersion = '52';/);
 });
 
 test('preprint exposes DOI and Google Scholar links in both languages', () => {
