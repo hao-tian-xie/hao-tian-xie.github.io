@@ -144,7 +144,8 @@ test('responsive utility controls share one conditional top action and mobile la
   assert.match(style, /\.mobile-footer-btn\[hidden\]\s*\{\s*display:\s*none/);
   assert.match(style, /\.mobile-language-toggle\s*\{[\s\S]*?display:\s*none/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?justify-content:\s*flex-end/);
-  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?right:\s*max\(1rem,\s*env\(safe-area-inset-right\)\)/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?left:\s*0;[\s\S]*?right:\s*0;[\s\S]*?width:\s*100%;/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?padding-left:\s*max\(1rem,\s*env\(safe-area-inset-left\)\)[\s\S]*?padding-right:\s*max\(1rem,\s*env\(safe-area-inset-right\)\)/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-language-toggle\s*\{[\s\S]*?margin-left:\s*0/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.sidebar \.language-switcher\s*\{[\s\S]*?display:\s*none/);
 });
@@ -157,8 +158,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((homepage.match(/id="btn-top"/g) ?? []).length, 1);
   assert.doesNotMatch(homepage, /id="btn-top-right"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=44"/);
-  assert.match(homepage, /<script src="script\.js\?v=44"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=45"/);
+  assert.match(homepage, /<script src="script\.js\?v=45"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -172,7 +173,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '44';/);
+  assert.match(script, /const pageVersion = '45';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -294,7 +295,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.doesNotMatch(publicationDisplay, /: A bayesian method/);
   assert.doesNotMatch(publicationDisplay, /: Evidence from a GDEMATEL–AISM approach/);
   assert.doesNotMatch(publicationDisplay, /Classifying Drosophila olfactory projection neuron boutons/);
-  assert.match(publications, /<p><strong>Xie, H\.<\/strong>, Liu, H\., Fan, J\., &amp; Tang, Y\.\*<\/p>/);
+  assert.match(publications, /<p><strong>H\. Xie<\/strong>, H\. Liu, J\. Fan, &amp; Y\. Tang\*<\/p>/);
   assert.match(publications, /Topological persistence pinpoints higher-order network vulnerabilities/);
   assert.match(publications, /A virtual node based zero-shot learning framework for link prediction in complex networks/);
   assert.match(publications, /10\.1016\/j\.ins\.2026\.123522/);
@@ -489,7 +490,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(zhPublications, /Journal of Air Transport Management, 2024<\/span><\/em>\s*<span class="journal-metrics">（JCR Q2；IF 4\.6）<\/span>/);
   assert.match(zhPublications, /Cleaner Logistics and Supply Chain, 2023<\/span><\/em>\s*<span class="journal-metrics">（JCR Q1；IF 6\.6）<\/span>/);
   assert.match(zhPublications, /iScience, 2022<\/span><\/em>\s*<span class="journal-metrics">（JCR Q1；IF 4\.5）<\/span>/);
-  assert.match(zhPublications, /<p><strong>Xie, H\.<\/strong>, Liu, H\., Fan, J\., &amp; Tang, Y\.\*<\/p>/);
+  assert.match(zhPublications, /<p><strong>H\. Xie<\/strong>, H\. Liu, J\. Fan, &amp; Y\. Tang\*<\/p>/);
   assert.doesNotMatch(publications, /Xie, H\., Liu, H\., Fan, J\., &amp; Tang, Y\.\* \(2026\)/);
   assert.doesNotMatch(zhPublications, /Xie, H\., Liu, H\., Fan, J\., &amp; Tang, Y\.\* \(2026\)/);
   assert.equal((zhPublications.match(/class="publication"/g) ?? []).length, (publications.match(/class="publication"/g) ?? []).length);
@@ -525,20 +526,20 @@ test('moves experience and education into about with updated academic copy', () 
   assert.match(about, /<h4>Education<\/h4>[\s\S]*?Master of Science in Industrial Engineering and Logistics Management[\s\S]*?Jiayang Li[\s\S]*?Bachelor of Science in[\s\S]*?Systems Science[\s\S]*?Zengru Di[\s\S]*?Bachelor of Economics in[\s\S]*?Finance[\s\S]*?Lei Chen/);
   assert.doesNotMatch(about, /completed an M\.Sc\./);
   assert.match(about, /obtained an M\.Sc\.\(Eng\)/);
-  assert.match(about, /In addition, I obtained a B\.Sc\. in[\s\S]*Systems Science[\s\S]*a B\.Ec\. in[\s\S]*Finance[\s\S]*Zengru Di[\s\S]*Lei Chen/);
+  assert.doesNotMatch(about, /In addition, I obtained a B\.Sc\./);
   assert.match(about, /1030da90293e4df386079cdb673f6619\.htm/);
   assert.match(zhAbout, /class="about-background"/);
   assert.match(zhAbout, /获得了工学硕士学位/);
-  assert.match(zhAbout, /此外，我还在[\s\S]*系统科学<\/a>理学学士学位[\s\S]*金融学<\/a>经济学学士学位[\s\S]*狄增如教授[\s\S]*陈蕾教授/);
+  assert.doesNotMatch(zhAbout, /此外，我还在/);
   assert.doesNotMatch(zhAbout, /完成了/);
   assert.match(zhAbout, /师从[\s\S]*狄增如教授[\s\S]*陈蕾教授/);
   assert.match(zhAbout, /1030da90293e4df386079cdb673f6619\.htm/);
   assert.doesNotMatch(misc, /<h4>Experience<\/h4>|<h4>Education<\/h4>/);
   assert.doesNotMatch(zhMisc, /<h4>工作经历<\/h4>|<h4>教育背景<\/h4>/);
   assert.match(style, /\.about-background\s*\{/);
-  assert.match(homepage, /href="style\.css\?v=44"/);
-  assert.match(homepage, /<script src="script\.js\?v=44"><\/script>/);
-  assert.match(script, /const pageVersion = '44';/);
+  assert.match(homepage, /href="style\.css\?v=45"/);
+  assert.match(homepage, /<script src="script\.js\?v=45"><\/script>/);
+  assert.match(script, /const pageVersion = '45';/);
 });
 
 test('preprint exposes DOI and Google Scholar links in both languages', () => {

@@ -1251,11 +1251,14 @@ a:active {
     align-items: center;
     position: fixed;
     bottom: 0;
-    left: auto;
-    right: max(1rem, env(safe-area-inset-right));
+    left: 0;
+    right: 0;
+    width: 100%;
     z-index: 200;
     gap: 0.4rem;
     padding: 0.2rem 0;
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
     padding-bottom: calc(0.2rem + env(safe-area-inset-bottom));
     background: var(--bg);
     pointer-events: auto;
