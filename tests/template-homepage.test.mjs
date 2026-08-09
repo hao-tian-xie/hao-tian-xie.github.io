@@ -147,8 +147,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((homepage.match(/id="btn-top"/g) ?? []).length, 1);
   assert.doesNotMatch(homepage, /id="btn-top-right"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=50"/);
-  assert.match(homepage, /<script src="script\.js\?v=50"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=51"/);
+  assert.match(homepage, /<script src="script\.js\?v=51"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -162,7 +162,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '50';/);
+  assert.match(script, /const pageVersion = '51';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -211,7 +211,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(about, /<a href="https:\/\/www\.polyu\.edu\.hk\/ise\/"[^>]*>Department of Industrial and Systems Engineering \(ISE\)<\/a>/);
   assert.match(about, /<a href="https:\/\/www\.polyu\.edu\.hk\/"[^>]*>The Hong Kong Polytechnic University \(PolyU\)<\/a>/);
   assert.match(about, /Dr\. <a href="https:\/\/research\.polyu\.edu\.hk\/en\/persons\/yung-po-tsang\/"[^>]*>Paul Tsang<\/a>/);
-  assert.match(about, /obtained an M\.Sc\.\(Eng\) from/);
+  assert.match(about, /obtained a M\.Sc\. \(Eng\.\) from/);
   assert.match(about, /<a href="https:\/\/www\.hku\.hk\/"[^>]*>The University of Hong Kong \(HKU\)<\/a>/);
   assert.match(about, /B\.Sc\. and a B\.Ec\. from/);
   assert.match(about, /<a href="https:\/\/sss\.bnu\.edu\.cn\/en\/"[^>]*>Systems Science<\/a>/);
@@ -221,8 +221,12 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(about, /Prof\. <a href="https:\/\/bibs\.bnu\.edu\.cn\/teachers\/qzjs\/zg\/1030da90293e4df386079cdb673f6619\.htm"[^>]*>Lei Chen<\/a>/);
   assert.match(about, /Data-driven decision making/);
   assert.match(about, /Logistics and supply chain management/);
-  assert.match(about, /Complex networks theory/);
-  assert.match(about, /Starting Spring 2027, I will join the .*ISE.* at .*PolyU.* as a Ph\.D\. student\./);
+  assert.match(about, /Complex network theory/);
+  assert.match(about, /Starting in Spring 2027, I will join the .*ISE.* at .*PolyU.* as a Ph\.D\. student\./);
+  assert.doesNotMatch(about, /obtained an M\.Sc\.\(Eng\)/);
+  assert.doesNotMatch(about, /I am working on:/);
+  assert.doesNotMatch(about, /Complex networks theory/);
+  assert.doesNotMatch(about, /Starting Spring 2027/);
   assert.match(about, /class="about-grid"/);
   assert.match(about, /class="about-panel about-intro"/);
   assert.match(about, /class="about-panel about-interests"/);
@@ -251,8 +255,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(style, /\.language-switcher button\s*\{[\s\S]*?font-family:\s*inherit;[\s\S]*?font-size:\s*1rem;[\s\S]*?font-weight:\s*500;/);
   assert.match(style, /\.sidebar-bottom\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?bottom:\s*0;[\s\S]*?left:\s*0;/);
   const introPosition = about.indexOf('I am a Research Associate');
-  const workingPosition = about.indexOf('I am working on:');
-  const phdPosition = about.indexOf('Starting Spring 2027');
+  const workingPosition = about.indexOf('My current research focuses on:');
+  const phdPosition = about.indexOf('Starting in Spring 2027');
   const contactPosition = about.indexOf('If you share similar interests');
   assert.ok(introPosition >= 0 && introPosition < workingPosition && workingPosition < phdPosition && phdPosition < contactPosition);
   assert.match(publications, /data-year="2026"/);
@@ -260,6 +264,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((publications.match(/data-selected="true"/g) ?? []).length, 3);
   assert.equal((publications.match(/data-selected="false"/g) ?? []).length, 3);
   assert.match(publications, /PREPRINT ARTICLES/);
+  assert.match(publications, /Journal Articles &amp; Preprints/);
+  assert.doesNotMatch(publications, /Journal Articles &amp; Preprint<\/h4>/);
   assert.match(publications, /CONFERENCE PAPERS/);
   assert.match(publications, /<div class="pub-tabs"[\s\S]*?<button class="pub-tab" data-filter="conference"[^>]*>Conference Papers<\/button>/);
   assert.equal((publications.match(/data-publication-list="articles"/g) ?? []).length, 1);
@@ -357,8 +363,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.doesNotMatch(misc, /The Hong Kong Polytechnic University|Department of Industrial and Systems Engineering|The University of Hong Kong|Department of Data and Systems Engineering|Beijing Normal University/);
   assert.doesNotMatch(misc, /2025 — Present/);
   assert.match(misc, /<h4>ACADEMIC SERVICES \/<br>PEER REVIEW EXPERIENCE<\/h4>/);
-  assert.match(misc, /Member of Technical Committee, ICPR-APR 2025/);
-  assert.match(misc, /Volunteer, ICLR 2022/);
+  assert.match(misc, /Member of the Technical Committee for ICPR-APR 2025/);
+  assert.match(misc, /Volunteer at ICLR 2022/);
   assert.match(misc, /Reviewer, Information Processing &amp; Management/);
   assert.match(misc, /Reviewer, Humanities &amp; Social Sciences Communications/);
   assert.match(misc, /Reviewer, Chaos: An Interdisciplinary Journal of Nonlinear Science/);
@@ -399,7 +405,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.doesNotMatch(misc, /Reviewer, Discover Analytics <span class="journal-metrics">/);
   assert.doesNotMatch(misc, /Reviewer, Journal of Ambient Intelligence and Humanized Computing <span class="journal-metrics">/);
   assert.doesNotMatch(misc, /Reviewer, Operations Research Forum <span class="journal-metrics">/);
-  assert.match(misc, /<strong>Best Industry &amp; Impact Paper Award<\/strong>, 2026 ICDSM, 2026/);
+  assert.match(misc, /<strong>Best Industry &amp; Impact Paper Award<\/strong>, ICDSM 2026/);
   assert.match(misc, /<strong>99 Yuan Chuan Scholarship<\/strong>, BNU, 2023/);
   assert.doesNotMatch(misc, /Top \d+%/);
   assert.doesNotMatch(misc, /<h4>Skills<\/h4>|<dt>Languages<\/dt>/);
@@ -419,8 +425,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(style, /\.sidebar\s*\{[\s\S]*?pointer-events:\s*none;/);
   assert.match(style, /\.sidebar a,\s*\.sidebar #easter-egg\s*\{[\s\S]*?pointer-events:\s*auto;/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.sidebar\s*\{[\s\S]*?pointer-events:\s*auto;/);
-  assert.match(publications, /<p>\* indicates the corresponding author\.<\/p>/);
-  assert.match(selectedPublications, /<p>\* indicates the corresponding author\.<\/p>/);
+  assert.match(publications, /<p>An asterisk \(\*\) indicates the corresponding author\.<\/p>/);
+  assert.match(selectedPublications, /<p>An asterisk \(\*\) indicates the corresponding author\.<\/p>/);
   assert.doesNotMatch(publications, /通讯作者/);
   assert.doesNotMatch(selectedPublications, /通讯作者/);
   assert.match(selectedPublications, /class="selected-publications"/);
@@ -498,7 +504,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(zhAbout, /2024\.9 - 2025\.11[\s\S]*?工业工程与物流管理工学硕士[\s\S]*?DASE，HKU/);
   assert.match(zhAbout, /2020\.9 - 2024\.6[\s\S]*?金融学经济学学士[\s\S]*?BNU/);
   assert.doesNotMatch(zhMisc, /香港理工大学|香港大学|北京师范大学|工业及系统工程学系|数据与系统工程学系/);
-  assert.match(zhMisc, /<strong>最佳产业与影响力论文奖<\/strong>，2026 ICDSM，2026/);
+  assert.match(zhMisc, /<strong>最佳产业与影响力论文奖<\/strong>，ICDSM 2026/);
   assert.match(zhMisc, /<strong>Tony Reynolds 学术卓越奖<\/strong>，HKU，2025/);
   assert.equal((zhMisc.match(/优秀毕业论文/g) ?? []).length, 2);
   assert.match(zhMisc, /<strong>久久源川奖学金<\/strong>，BNU，2023/);
@@ -514,7 +520,7 @@ test('moves experience and education into about with updated academic copy', () 
   assert.match(about, /<h4>Experience<\/h4>[\s\S]*?2026\.7 - present[\s\S]*?Research Associate[\s\S]*?Paul Tsang/);
   assert.match(about, /<h4>Education<\/h4>[\s\S]*?Master of Science in Industrial Engineering and Logistics Management[\s\S]*?Jiayang Li[\s\S]*?Bachelor of Science in[\s\S]*?Systems Science[\s\S]*?Zengru Di[\s\S]*?Bachelor of Economics in[\s\S]*?Finance[\s\S]*?Lei Chen/);
   assert.doesNotMatch(about, /completed an M\.Sc\./);
-  assert.match(about, /obtained an M\.Sc\.\(Eng\)/);
+  assert.match(about, /obtained a M\.Sc\. \(Eng\.\)/);
   assert.doesNotMatch(about, /In addition, I obtained a B\.Sc\./);
   assert.match(about, /1030da90293e4df386079cdb673f6619\.htm/);
   assert.match(zhAbout, /class="about-background"/);
@@ -529,9 +535,9 @@ test('moves experience and education into about with updated academic copy', () 
   assert.match(style, /\.about-background\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.about-background\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
   assert.ok(about.indexOf('<div class="about-background">') > about.indexOf('</div>\n\n  <div class="about-background">'));
-  assert.match(homepage, /href="style\.css\?v=50"/);
-  assert.match(homepage, /<script src="script\.js\?v=50"><\/script>/);
-  assert.match(script, /const pageVersion = '50';/);
+  assert.match(homepage, /href="style\.css\?v=51"/);
+  assert.match(homepage, /<script src="script\.js\?v=51"><\/script>/);
+  assert.match(script, /const pageVersion = '51';/);
 });
 
 test('preprint exposes DOI and Google Scholar links in both languages', () => {
