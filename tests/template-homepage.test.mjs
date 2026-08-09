@@ -82,6 +82,17 @@ test('publishes synchronized Google Scholar metrics without per-publication cita
   assert.doesNotMatch(zhSelectedPublications, /class="scholar-citations|data-cited-by=/);
 });
 
+test('keeps Scholar metrics in a fixed desktop track while publication filters change', () => {
+  assert.match(style, /main\s*\{[\s\S]*?width:\s*80%;[\s\S]*?max-width:\s*80%;/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?main\s*\{[\s\S]*?width:\s*100%;[\s\S]*?max-width:\s*100%;/);
+  assert.match(publications, /<button class="pub-tab active" data-filter="selected"[^>]*>Selected<\/button>/);
+  assert.match(publications, /<button class="pub-tab" data-filter="all"[^>]*>Full List<\/button>/);
+  assert.match(publications, /<button class="pub-tab" data-filter="conference"[^>]*>Conference Papers<\/button>/);
+  assert.match(zhPublications, />精选论文<\/button>/);
+  assert.match(zhPublications, />全部论文<\/button>/);
+  assert.match(zhPublications, />会议论文<\/button>/);
+});
+
 function contrastRatio(foreground, background) {
   const toRgb = hex => [0, 2, 4].map(offset => parseInt(hex.slice(1 + offset, 3 + offset), 16) / 255);
   const toLinear = channel => channel <= 0.03928
@@ -131,8 +142,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((homepage.match(/id="btn-top"/g) ?? []).length, 1);
   assert.doesNotMatch(homepage, /id="btn-top-right"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=48"/);
-  assert.match(homepage, /<script src="script\.js\?v=48"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=49"/);
+  assert.match(homepage, /<script src="script\.js\?v=49"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -146,7 +157,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '48';/);
+  assert.match(script, /const pageVersion = '49';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -513,9 +524,9 @@ test('moves experience and education into about with updated academic copy', () 
   assert.match(style, /\.about-background\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.about-background\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
   assert.ok(about.indexOf('<div class="about-background">') > about.indexOf('</div>\n\n  <div class="about-background">'));
-  assert.match(homepage, /href="style\.css\?v=48"/);
-  assert.match(homepage, /<script src="script\.js\?v=48"><\/script>/);
-  assert.match(script, /const pageVersion = '48';/);
+  assert.match(homepage, /href="style\.css\?v=49"/);
+  assert.match(homepage, /<script src="script\.js\?v=49"><\/script>/);
+  assert.match(script, /const pageVersion = '49';/);
 });
 
 test('preprint exposes DOI and Google Scholar links in both languages', () => {

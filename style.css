@@ -93,6 +93,7 @@ body {
 /* Push main content to the right of the fixed sidebar */
 main {
   margin-left: 20%;
+  width: 80%;
   padding: 0.5rem 1rem 1rem;
   max-width: 80%;
 }
@@ -992,6 +993,7 @@ a:active {
 
   main {
     margin-left: 0;
+    width: 100%;
     padding: 1rem;
     padding-top: calc(3.8rem + env(safe-area-inset-top));
     padding-left: max(1rem, env(safe-area-inset-left));
