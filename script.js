@@ -2,8 +2,40 @@
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
-const pageVersion = '36';
+const pageVersion = '37';
 const languageStorageKey = 'site-language';
+const routePages = new Set(['home', 'about', 'publications', 'misc']);
+const publicationFilters = new Set(['selected', 'all', 'conference']);
+
+let lastLoadedPage = null;
+let applyPublicationFilter = null;
+
+function parseRoute(hash = location.hash) {
+  const raw = hash.replace(/^#/, '');
+  const [pagePart, query = ''] = raw.split('?');
+  const page = routePages.has(pagePart) ? pagePart : 'home';
+  const params = new URLSearchParams(query);
+  const requestedFilter = params.get('filter');
+  const filter = publicationFilters.has(requestedFilter) ? requestedFilter : 'selected';
+  return { page, filter };
+}
+
+function buildRouteHash(page, filter = 'selected') {
+  const safePage = routePages.has(page) ? page : 'home';
+  if (safePage === 'home') return '#';
+  if (safePage === 'publications' && filter !== 'selected') {
+    return `#publications?filter=${filter}`;
+  }
+  return `#${safePage}`;
+}
+
+function pushRouteState(newHash, state) {
+  if (window.history?.pushState) {
+    window.history.pushState(state, '', newHash);
+  } else {
+    location.hash = newHash;
+  }
+}
 
 const uiText = {
   en: {
@@ -106,9 +138,9 @@ function setLanguage(language) {
   document.documentElement.lang = currentLanguage === 'zh' ? 'zh-CN' : 'en';
   updateInterfaceText();
 
-  const page = lastLoadedPage || initialPage;
-  setActiveLink(page);
-  loadPage(page);
+  const route = parseRoute();
+  setActiveLink(route.page);
+  loadPage(route.page, route.filter);
 }
 
 function setActiveLink(page) {
@@ -123,8 +155,9 @@ function setActiveLink(page) {
   });
 }
 
-async function loadPage(page) {
+async function loadPage(page, filter = 'selected') {
   lastLoadedPage = page;
+  applyPublicationFilter = null;
   document.body.classList.toggle('page-home', page === 'home');
   try {
     const pageRoot = currentLanguage === 'zh' ? 'pages/zh' : 'pages';
@@ -151,7 +184,7 @@ async function loadPage(page) {
     }
 
     if (page === 'publications') {
-      initPubTabs();
+      initPubTabs(filter);
     }
 
     if (page === 'home') initGallery();
@@ -310,7 +343,7 @@ function initGallery() {
   }, interval);
 }
 
-function initPubTabs() {
+function initPubTabs(initialFilter = 'selected') {
   const tabs = content.querySelectorAll('.pub-tab');
   if (!tabs.length) return;
 
@@ -349,18 +382,32 @@ function initPubTabs() {
     if (firstVisibleSection) firstVisibleSection.classList.add('year-first-visible');
   }
 
+  function selectFilter(filter, { updateRoute = true } = {}) {
+    const nextFilter = publicationFilters.has(filter) ? filter : 'selected';
+    tabs.forEach(tab => {
+      const isActive = tab.dataset.filter === nextFilter;
+      tab.classList.toggle('active', isActive);
+      tab.setAttribute('aria-selected', isActive);
+    });
+    applyFilter(nextFilter);
+
+    if (updateRoute) {
+      const newHash = buildRouteHash('publications', nextFilter);
+      if (location.hash !== newHash) {
+        pushRouteState(newHash, { page: 'publications', filter: nextFilter });
+      }
+    }
+  }
+
+  applyPublicationFilter = selectFilter;
+
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      tabs.forEach(t => {
-        t.classList.toggle('active', t === tab);
-        t.setAttribute('aria-selected', t === tab);
-      });
-      applyFilter(tab.dataset.filter);
+      selectFilter(tab.dataset.filter);
     });
   });
 
-  const activeTab = content.querySelector('.pub-tab.active');
-  applyFilter(activeTab ? activeTab.dataset.filter : 'selected');
+  selectFilter(initialFilter, { updateRoute: false });
 }
 
 // Scroll reveal - Cargo-style scale-in
@@ -385,29 +432,39 @@ function initScrollReveal() {
   });
 }
 
+function handleRoute() {
+  const route = parseRoute();
+  setActiveLink(route.page);
+
+  if (route.page === lastLoadedPage && route.page === 'publications' && applyPublicationFilter) {
+    applyPublicationFilter(route.filter, { updateRoute: false });
+    return;
+  }
+
+  if (route.page === lastLoadedPage && route.page !== 'publications') return;
+  loadPage(route.page, route.filter);
+}
+
+function navigateTo(page) {
+  const newHash = buildRouteHash(page);
+  if (location.hash !== newHash) {
+    pushRouteState(newHash, { page, filter: 'selected' });
+  }
+  handleRoute();
+}
+
 // Navigation clicks
 links.forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
     const page = link.dataset.page;
-    if (!page) return;
-    const newHash = page === 'home' ? '' : page;
-    if (location.hash.slice(1) !== newHash) {
-      location.hash = newHash || '#';
-    }
-    setActiveLink(page);
-    loadPage(page);
+    if (page) navigateTo(page);
   });
 });
 
-// Hash navigation (back/forward only - skip if triggered by click)
-let lastLoadedPage = null;
-window.addEventListener('hashchange', () => {
-  const page = location.hash.slice(1) || 'home';
-  if (page === lastLoadedPage) return;
-  setActiveLink(page);
-  loadPage(page);
-});
+// Hash and history navigation
+window.addEventListener('hashchange', handleRoute);
+window.addEventListener('popstate', handleRoute);
 
 // Lightbox Modal
 (function initLightbox() {
@@ -542,19 +599,19 @@ document.addEventListener('click', event => {
 
 // Mobile bottom bar
 (function initMobileFooter() {
-  document.querySelectorAll('#btn-top, #btn-top-right').forEach(btn => {
-    btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  const btn = document.querySelector('#btn-top');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 })();
 
 // Initial load
-const initialPage = location.hash.slice(1) || 'home';
+const initialRoute = parseRoute();
 document.documentElement.lang = currentLanguage === 'zh' ? 'zh-CN' : 'en';
 updateInterfaceText();
-setActiveLink(initialPage);
-loadPage(initialPage);
+setActiveLink(initialRoute.page);
+loadPage(initialRoute.page, initialRoute.filter);
 
 // Easter egg
 (function initEasterEgg() {

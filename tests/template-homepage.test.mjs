@@ -22,14 +22,32 @@ const chineseSite = [zhAbout, zhPublications, zhMisc, zhHome, zhSelectedPublicat
 const englishSite = [homepage, script, style, about, publications, misc, home, selectedPublications].join('\n');
 const site = [englishSite, chineseSite].join('\n');
 
+function contrastRatio(foreground, background) {
+  const toRgb = hex => [0, 2, 4].map(offset => parseInt(hex.slice(1 + offset, 3 + offset), 16) / 255);
+  const toLinear = channel => channel <= 0.03928
+    ? channel / 12.92
+    : ((channel + 0.055) / 1.055) ** 2.4;
+  const luminance = hex => {
+    const [r, g, b] = toRgb(hex).map(toLinear);
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const foregroundLuminance = luminance(foreground);
+  const backgroundLuminance = luminance(background);
+  const lighter = Math.max(foregroundLuminance, backgroundLuminance);
+  const darker = Math.min(foregroundLuminance, backgroundLuminance);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
 test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', () => {
   assert.match(homepage, /class="sidebar"/);
   assert.match(homepage, /class="container"/);
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
+  assert.equal((homepage.match(/id="btn-top"/g) ?? []).length, 1);
+  assert.doesNotMatch(homepage, /id="btn-top-right"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=36"/);
-  assert.match(homepage, /<script src="script\.js\?v=36"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=37"/);
+  assert.match(homepage, /<script src="script\.js\?v=37"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -43,7 +61,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '36';/);
+  assert.match(script, /const pageVersion = '37';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -59,9 +77,16 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(script, /const pageSources = page === 'home'/);
   assert.match(script, /`\$\{pageRoot\}\/home\.html\?v=\$\{pageVersion\}`, `\$\{pageRoot\}\/about\.html\?v=\$\{pageVersion\}`, `\$\{pageRoot\}\/selected-publications\.html\?v=\$\{pageVersion\}`/);
   assert.match(script, /if \(page === 'publications' \|\| page === 'home'\)/);
-  assert.match(script, /const newHash = page === 'home' \? '' : page;/);
-  assert.match(script, /const page = location\.hash\.slice\(1\) \|\| 'home';/);
-  assert.match(script, /const initialPage = location\.hash\.slice\(1\) \|\| 'home';/);
+  assert.match(script, /function parseRoute\(hash = location\.hash\)/);
+  assert.match(script, /URLSearchParams/);
+  assert.match(script, /filter=\$\{filter\}/);
+  assert.match(script, /history\.pushState/);
+  assert.match(script, /window\.addEventListener\('popstate'/);
+  assert.match(script, /window\.addEventListener\('hashchange'/);
+  assert.match(script, /loadPage\(route\.page, route\.filter\)/);
+  assert.match(script, /function initPubTabs\(initialFilter = 'selected'\)/);
+  assert.match(script, /querySelector\('#btn-top'\)/);
+  assert.doesNotMatch(script, /#btn-top-right/);
   assert.match(script, /groupPublicationsByYear/);
   assert.match(script, /initPubTabs/);
   assert.match(script, /data-publication-list/);
@@ -75,6 +100,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.nav-index a\s*\{[\s\S]*?min-height:\s*44px/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.pub-tab\s*\{[\s\S]*?min-height:\s*44px/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer-btn\s*\{[\s\S]*?min-height:\s*44px/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?justify-content:\s*flex-start/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?overflow-wrap:\s*anywhere/);
   assert.match(homepage, /Haotian Xie/);
   assert.match(homepage, /haotiantimxie@gmail\.com/);
@@ -191,6 +217,11 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((selectedPublications.match(/>\[Cite \(APA\)\]<\/button>/g) ?? []).length, 3);
   assert.equal((publications.match(/width="960" height="540"/g) ?? []).length, 7);
   assert.equal((selectedPublications.match(/width="960" height="540"/g) ?? []).length, 3);
+  const secondaryColor = style.match(/--swatch-4:\s*(#[0-9a-f]{6})/i)?.[1];
+  assert.ok(secondaryColor, 'secondary color token should be a hex color');
+  assert.ok(contrastRatio(secondaryColor, '#ffffff') >= 4.5, 'secondary text should meet WCAG AA contrast');
+  assert.match(style, /\.year-label\s*\{[\s\S]*?opacity:\s*1/);
+  assert.match(style, /--swatch-4:\s*#666666;/);
   assert.match(style, /\.journal-metrics\s*\{[\s\S]*?color:\s*var\(--swatch-4\)/);
   assert.match(style, /\.cite-link\s*\{[\s\S]*?cursor:\s*pointer;/);
   assert.match(script, /navigator\.clipboard\.writeText/);

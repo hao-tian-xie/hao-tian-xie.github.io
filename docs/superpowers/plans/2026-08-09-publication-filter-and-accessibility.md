@@ -49,7 +49,8 @@ assert.match(script, /filter=\$\{filter\}/);
 assert.match(script, /history\.pushState/);
 assert.match(script, /window\.addEventListener\('popstate'/);
 assert.match(script, /window\.addEventListener\('hashchange'/);
-assert.match(script, /initPubTabs\(route\.filter\)/);
+assert.match(script, /loadPage\(route\.page, route\.filter\)/);
+assert.match(script, /function initPubTabs\(initialFilter = 'selected'\)/);
 ```
 
 - [ ] **Step 3: Add a computed contrast assertion**

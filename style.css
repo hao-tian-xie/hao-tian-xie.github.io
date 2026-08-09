@@ -7,7 +7,7 @@
   --swatch-1: rgba(0, 0, 0, 0.85);
   --swatch-2: rgba(0, 0, 0, 0.75);
   --swatch-3: rgba(0, 0, 0, 0.6);
-  --swatch-4: rgba(0, 0, 0, 0.4);
+  --swatch-4: #666666;
   --swatch-5: rgba(0, 0, 0, 0.25);
   --swatch-6: rgba(0, 0, 0, 0.15);
 
@@ -879,7 +879,7 @@ a:active {
 
   .year-label {
     margin-bottom: 0.5rem;
-    opacity: 0.5;
+    opacity: 1;
   }
 
   .publication {
@@ -952,7 +952,7 @@ a:active {
   /* Fixed bottom bar */
   .mobile-footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     position: fixed;
     bottom: 0;
