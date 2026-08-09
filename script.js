@@ -2,7 +2,7 @@
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
-const pageVersion = '39';
+const pageVersion = '43';
 const languageStorageKey = 'site-language';
 const routePages = new Set(['home', 'about', 'publications', 'misc']);
 const publicationFilters = new Set(['selected', 'all', 'conference']);
@@ -109,11 +109,10 @@ function updateInterfaceText() {
     if (translation) element.textContent = translation;
   });
 
-  const languageToggle = document.getElementById('language-toggle');
-  if (languageToggle) {
+  document.querySelectorAll('.language-toggle').forEach(languageToggle => {
     languageToggle.textContent = text.language;
     languageToggle.setAttribute('aria-label', text.switchLanguage);
-  }
+  });
 
   const modal = document.getElementById('image-modal');
   if (modal) modal.setAttribute('aria-label', text.imagePreview);
@@ -177,6 +176,7 @@ async function loadPage(page, filter = 'selected') {
     // Swap content
     content.innerHTML = html;
     window.scrollTo(0, 0);
+    updateTopButtonVisibility();
 
     // Publications year grouping
     if (page === 'publications' || page === 'home') {
@@ -202,6 +202,10 @@ async function loadPage(page, filter = 'selected') {
       img.setAttribute('aria-label', 'Open image preview');
     });
 
+    content.querySelectorAll('img').forEach(img => {
+      img.addEventListener('load', scheduleTopButtonUpdate, { once: true });
+    });
+
     // Update page title
     const pageTitles = currentLanguage === 'zh'
       ? { about: '关于我', publications: '学术出版物列表', misc: '其他', home: '主页' }
@@ -221,6 +225,7 @@ async function loadPage(page, filter = 'selected') {
   } catch (error) {
     console.error('Error loading page:', error);
     content.innerHTML = `<p>${uiText[currentLanguage].loadError}</p>`;
+    updateTopButtonVisibility();
   }
 }
 
@@ -580,30 +585,56 @@ document.addEventListener('click', event => {
 
 // Language switcher
 (function initLanguageSwitcher() {
-  const toggle = document.getElementById('language-toggle');
   const sidebar = document.querySelector('.sidebar');
   const menuToggle = document.getElementById('menu-toggle');
-  if (!toggle) return;
+  const toggles = document.querySelectorAll('.language-toggle');
+  if (!toggles.length) return;
 
-  toggle.addEventListener('click', () => {
-    setLanguage(currentLanguage === 'en' ? 'zh' : 'en');
+  toggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      setLanguage(currentLanguage === 'en' ? 'zh' : 'en');
 
-    if (sidebar?.classList.contains('menu-open') && menuToggle) {
-      sidebar.classList.remove('menu-open');
-      menuToggle.setAttribute('aria-expanded', 'false');
-      updateMenuButtonLabel();
-      menuToggle.focus();
-    }
+      if (sidebar?.classList.contains('menu-open') && menuToggle) {
+        sidebar.classList.remove('menu-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        updateMenuButtonLabel();
+        menuToggle.focus();
+      }
+    });
   });
 })();
 
-// Mobile bottom bar
-(function initMobileFooter() {
+// Conditional top control
+let topButtonFrame = null;
+
+function updateTopButtonVisibility() {
+  const button = document.querySelector('#btn-top');
+  if (!button) return;
+
+  const pageCanScroll = document.documentElement.scrollHeight > window.innerHeight + 1;
+  const shouldShow = pageCanScroll && window.scrollY > 160;
+  button.hidden = !shouldShow;
+}
+
+function scheduleTopButtonUpdate() {
+  if (topButtonFrame !== null) return;
+  topButtonFrame = window.requestAnimationFrame(() => {
+    topButtonFrame = null;
+    updateTopButtonVisibility();
+  });
+}
+
+window.addEventListener('scroll', scheduleTopButtonUpdate, { passive: true });
+window.addEventListener('resize', scheduleTopButtonUpdate);
+window.addEventListener('load', scheduleTopButtonUpdate);
+
+(function initTopControl() {
   const btn = document.querySelector('#btn-top');
   if (!btn) return;
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+  updateTopButtonVisibility();
 })();
 
 // Initial load

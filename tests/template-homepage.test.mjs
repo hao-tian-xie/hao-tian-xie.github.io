@@ -22,6 +22,49 @@ const chineseSite = [zhAbout, zhPublications, zhMisc, zhHome, zhSelectedPublicat
 const englishSite = [homepage, script, style, about, publications, misc, home, selectedPublications].join('\n');
 const site = [englishSite, chineseSite].join('\n');
 
+const journalIndexes = {
+  'Chaos: An Interdisciplinary Journal of Nonlinear Science': 'SCI (SCIE)',
+  'Information Sciences': 'SCI (SCIE) · EI',
+  'Electronic Commerce Research and Applications': 'SCI (SCIE) · SSCI',
+  'Journal of Air Transport Management': 'SSCI',
+  'Cleaner Logistics and Supply Chain': 'ESCI',
+  iScience: 'SCI (SCIE)',
+  'Clean Technologies and Environmental Policy': 'SCI (SCIE) · EI',
+  'Cognitive Computation': 'SCI (SCIE) · EI',
+  'Discover Analytics': 'DOAJ',
+  'Discover Applied Sciences': 'ESCI · EI',
+  'Humanities &amp; Social Sciences Communications': 'SSCI · AHCI',
+  'Information Processing &amp; Management': 'SCI (SCIE) · SSCI',
+  'Journal of Ambient Intelligence and Humanized Computing': 'EI',
+  'Operations Research Forum': 'Scopus',
+  'Quality &amp; Quantity': 'SSCI',
+  'Scientific Reports': 'SCI (SCIE)'
+};
+
+function assertJournalOccurrencesHaveIndexes(page, pageName) {
+  const visiblePage = page.replace(/ data-citation="[^"]*"/g, '');
+  for (const [journal, index] of Object.entries(journalIndexes)) {
+    const lines = visiblePage.split('\n').filter(line => line.includes(journal));
+    const escapedIndex = index.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    for (const line of lines) {
+      assert.match(
+        line,
+        new RegExp(`<span class="journal-index">\\[${escapedIndex}\\]<\\/span>`),
+        `${pageName}: ${journal} should display ${index}`
+      );
+    }
+  }
+}
+
+test('every visible journal occurrence carries a verified index label', () => {
+  assertJournalOccurrencesHaveIndexes(publications, 'English publications');
+  assertJournalOccurrencesHaveIndexes(selectedPublications, 'English selected publications');
+  assertJournalOccurrencesHaveIndexes(misc, 'English misc');
+  assertJournalOccurrencesHaveIndexes(zhPublications, 'Chinese publications');
+  assertJournalOccurrencesHaveIndexes(zhSelectedPublications, 'Chinese selected publications');
+  assertJournalOccurrencesHaveIndexes(zhMisc, 'Chinese misc');
+});
+
 function contrastRatio(foreground, background) {
   const toRgb = hex => [0, 2, 4].map(offset => parseInt(hex.slice(1 + offset, 3 + offset), 16) / 255);
   const toLinear = channel => channel <= 0.03928
@@ -38,6 +81,27 @@ function contrastRatio(foreground, background) {
   return (lighter + 0.05) / (darker + 0.05);
 }
 
+test('responsive utility controls share one conditional top action and mobile language switch', () => {
+  assert.equal((homepage.match(/id="btn-top"/g) ?? []).length, 1);
+  assert.match(homepage, /<div class="mobile-footer">[\s\S]*id="btn-top"[\s\S]*id="language-toggle-mobile"/);
+  assert.match(homepage, /id="language-toggle" class="language-toggle"/);
+  assert.match(homepage, /class="mobile-footer-btn mobile-language-toggle language-toggle"[^>]*id="language-toggle-mobile"/);
+  assert.match(script, /function updateTopButtonVisibility\(\)/);
+  assert.match(script, /document\.documentElement\.scrollHeight > window\.innerHeight/);
+  assert.match(script, /window\.scrollY > 160/);
+  assert.match(script, /button\.hidden = !shouldShow/);
+  assert.match(script, /window\.addEventListener\('scroll', scheduleTopButtonUpdate, \{ passive: true \}\)/);
+  assert.match(script, /window\.addEventListener\('resize', scheduleTopButtonUpdate\)/);
+  assert.match(script, /document\.querySelectorAll\('\.language-toggle'\)/);
+  assert.match(style, /\.mobile-footer\s*\{[\s\S]*?display:\s*flex[\s\S]*?position:\s*fixed/);
+  assert.match(style, /\.mobile-footer-btn\[hidden\]\s*\{\s*display:\s*none/);
+  assert.match(style, /\.mobile-language-toggle\s*\{[\s\S]*?display:\s*none/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?justify-content:\s*flex-end/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?right:\s*max\(1rem,\s*env\(safe-area-inset-right\)\)/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-language-toggle\s*\{[\s\S]*?margin-left:\s*0/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.sidebar \.language-switcher\s*\{[\s\S]*?display:\s*none/);
+});
+
 test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', () => {
   assert.match(homepage, /class="sidebar"/);
   assert.match(homepage, /class="container"/);
@@ -46,8 +110,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((homepage.match(/id="btn-top"/g) ?? []).length, 1);
   assert.doesNotMatch(homepage, /id="btn-top-right"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=39"/);
-  assert.match(homepage, /<script src="script\.js\?v=39"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=43"/);
+  assert.match(homepage, /<script src="script\.js\?v=43"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -61,7 +125,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '39';/);
+  assert.match(script, /const pageVersion = '43';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -100,7 +164,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.nav-index a\s*\{[\s\S]*?min-height:\s*44px/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.pub-tab\s*\{[\s\S]*?min-height:\s*44px/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer-btn\s*\{[\s\S]*?min-height:\s*44px/);
-  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?justify-content:\s*flex-start/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?justify-content:\s*flex-end/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?overflow-wrap:\s*anywhere/);
   assert.match(homepage, /Haotian Xie/);
   assert.match(homepage, /haotiantimxie@gmail\.com/);
@@ -222,6 +286,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(style, /\.year-label\s*\{[\s\S]*?opacity:\s*1/);
   assert.match(style, /--swatch-4:\s*#666666;/);
   assert.match(style, /\.journal-metrics\s*\{[\s\S]*?color:\s*var\(--swatch-4\)/);
+  assert.match(style, /\.journal-index\s*\{[\s\S]*?color:\s*var\(--swatch-4\)[\s\S]*?white-space:\s*nowrap/);
   assert.match(style, /\.cite-link\s*\{[\s\S]*?cursor:\s*pointer;/);
   assert.match(script, /navigator\.clipboard\.writeText/);
   assert.match(script, /copyCitation/);
@@ -413,18 +478,20 @@ test('moves experience and education into about with updated academic copy', () 
   assert.match(about, /<h4>Education<\/h4>[\s\S]*?Master of Science in Industrial Engineering and Logistics Management[\s\S]*?Jiayang Li[\s\S]*?Bachelor of Science in[\s\S]*?Systems Science[\s\S]*?Zengru Di[\s\S]*?Bachelor of Economics in[\s\S]*?Finance[\s\S]*?Lei Chen/);
   assert.doesNotMatch(about, /completed an M\.Sc\./);
   assert.match(about, /obtained an M\.Sc\.\(Eng\)/);
+  assert.match(about, /In addition, I obtained a B\.Sc\. in[\s\S]*Systems Science[\s\S]*a B\.Ec\. in[\s\S]*Finance[\s\S]*Zengru Di[\s\S]*Lei Chen/);
   assert.match(about, /1030da90293e4df386079cdb673f6619\.htm/);
   assert.match(zhAbout, /class="about-background"/);
   assert.match(zhAbout, /获得了工学硕士学位/);
+  assert.match(zhAbout, /此外，我还在[\s\S]*系统科学<\/a>理学学士学位[\s\S]*金融学<\/a>经济学学士学位[\s\S]*狄增如教授[\s\S]*陈蕾教授/);
   assert.doesNotMatch(zhAbout, /完成了/);
   assert.match(zhAbout, /师从[\s\S]*狄增如教授[\s\S]*陈蕾教授/);
   assert.match(zhAbout, /1030da90293e4df386079cdb673f6619\.htm/);
   assert.doesNotMatch(misc, /<h4>Experience<\/h4>|<h4>Education<\/h4>/);
   assert.doesNotMatch(zhMisc, /<h4>工作经历<\/h4>|<h4>教育背景<\/h4>/);
   assert.match(style, /\.about-background\s*\{/);
-  assert.match(homepage, /href="style\.css\?v=39"/);
-  assert.match(homepage, /<script src="script\.js\?v=39"><\/script>/);
-  assert.match(script, /const pageVersion = '39';/);
+  assert.match(homepage, /href="style\.css\?v=43"/);
+  assert.match(homepage, /<script src="script\.js\?v=43"><\/script>/);
+  assert.match(script, /const pageVersion = '43';/);
 });
 
 test('preprint exposes DOI and Google Scholar links in both languages', () => {
@@ -440,4 +507,12 @@ test('preprint exposes DOI and Google Scholar links in both languages', () => {
     assert.match(preprint, /\[DOI\]/);
     assert.match(preprint, /\[Google Scholar\]/);
   }
+});
+
+test('marks K. Zhang as corresponding author for the iScience article', () => {
+  const authorLine = '<p>K. Yang, T. Liu, Z. Wang, …, <strong>H. Xie</strong>, …, K. Zhang*</p>';
+  assert.match(publications, new RegExp(authorLine.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(zhPublications, new RegExp(authorLine.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.doesNotMatch(publications, /<p>K\. Yang,[^\n]*<strong>H\. Xie\*<\/strong>/);
+  assert.doesNotMatch(zhPublications, /<p>K\. Yang,[^\n]*<strong>H\. Xie\*<\/strong>/);
 });

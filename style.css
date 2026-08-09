@@ -459,6 +459,12 @@ a:active {
   font-size: 0.9em;
 }
 
+.journal-index {
+  color: var(--swatch-4);
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
 .publication, .teaching, .project {
   margin-bottom: 0.8rem;
   padding-bottom: 0.8rem;
@@ -726,9 +732,51 @@ a:active {
   display: none;
 }
 
-/* ─── Mobile Footer (hidden on desktop) ─── */
+/* ─── Responsive utility footer ─── */
 .mobile-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.mobile-footer-btn {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 450;
+  color: var(--swatch-1);
+  background: var(--bg);
+  border: 1px solid var(--swatch-1);
+  cursor: pointer;
+  padding: 0.45rem 0.7rem;
+  min-width: 44px;
+  min-height: 44px;
+  touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.mobile-footer-btn[hidden] {
   display: none;
+}
+
+.mobile-language-toggle {
+  display: none;
+}
+
+.mobile-footer-btn:hover,
+.mobile-footer-btn:focus-visible {
+  background: var(--swatch-1);
+  color: var(--bg);
+}
+
+.mobile-footer-btn:active {
+  opacity: 0.7;
 }
 
 /* ─── Mobile ─── */
@@ -981,47 +1029,43 @@ a:active {
   /* Fixed bottom bar */
   .mobile-footer {
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
     align-items: center;
     position: fixed;
     bottom: 0;
-    left: 0;
-    right: 0;
+    left: auto;
+    right: max(1rem, env(safe-area-inset-right));
     z-index: 200;
-    padding: 0.2rem max(1rem, env(safe-area-inset-right)) 0.2rem max(1rem, env(safe-area-inset-left));
+    gap: 0.4rem;
+    padding: 0.2rem 0;
     padding-bottom: calc(0.2rem + env(safe-area-inset-bottom));
     background: var(--bg);
+    pointer-events: auto;
   }
-
-  body.page-home .mobile-footer { display: none; }
 
   .mobile-footer::before {
     content: '';
     position: absolute;
     top: 0;
-    left: max(1rem, env(safe-area-inset-left));
-    right: max(1rem, env(safe-area-inset-right));
+    left: 0;
+    right: 0;
     height: 1px;
     background: var(--swatch-1);
   }
 
   .mobile-footer-btn {
-    font-family: inherit;
     font-size: 1.2rem;
-    font-weight: 450;
-    color: var(--swatch-1);
     background: none;
     border: none;
     cursor: pointer;
     padding: 0.15rem 0;
-    min-width: 44px;
     min-height: 44px;
-    touch-action: manipulation;
-    display: flex;
-    align-items: center;
   }
 
-  .mobile-footer-btn:active {
-    opacity: 0.7;
+  .mobile-language-toggle {
+    display: flex;
+    margin-left: 0;
   }
+
+  .sidebar .language-switcher { display: none; }
 }
