@@ -25,50 +25,20 @@ const chineseSite = [zhAbout, zhPublications, zhMisc, zhHome, zhSelectedPublicat
 const englishSite = [homepage, script, style, about, publications, misc, home, selectedPublications].join('\n');
 const site = [englishSite, chineseSite].join('\n');
 
-const journalIndexes = {
-  'Chaos: An Interdisciplinary Journal of Nonlinear Science': 'SCI (SCIE)',
-  'Information Sciences': 'SCI (SCIE) · EI',
-  'Electronic Commerce Research and Applications': 'SCI (SCIE) · SSCI',
-  'Journal of Air Transport Management': 'SSCI',
-  'Cleaner Logistics and Supply Chain': 'ESCI',
-  iScience: 'SCI (SCIE)',
-  'Clean Technologies and Environmental Policy': 'SCI (SCIE) · EI',
-  'Cognitive Computation': 'SCI (SCIE) · EI',
-  'Discover Analytics': 'DOAJ',
-  'Discover Applied Sciences': 'ESCI · EI',
-  'Humanities &amp; Social Sciences Communications': 'SSCI · AHCI',
-  'Information Processing &amp; Management': 'SCI (SCIE) · SSCI',
-  'Journal of Ambient Intelligence and Humanized Computing': 'EI',
-  'Operations Research Forum': 'Scopus',
-  'Quality &amp; Quantity': 'SSCI',
-  'Scientific Reports': 'SCI (SCIE)'
-};
-
-function assertJournalOccurrencesHaveIndexes(page, pageName) {
-  const visiblePage = page.replace(/ data-citation="[^"]*"/g, '');
-  for (const [journal, index] of Object.entries(journalIndexes)) {
-    const lines = visiblePage.split('\n').filter(line => line.includes(journal));
-    const escapedIndex = index.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    for (const line of lines) {
-      assert.match(
-        line,
-        new RegExp(`<span class="journal-index">\\[${escapedIndex}\\]<\\/span>`),
-        `${pageName}: ${journal} should display ${index}`
-      );
-    }
+test('does not render journal index labels', () => {
+  for (const [pageName, page] of [
+    ['English publications', publications],
+    ['English selected publications', selectedPublications],
+    ['English misc', misc],
+    ['Chinese publications', zhPublications],
+    ['Chinese selected publications', zhSelectedPublications],
+    ['Chinese misc', zhMisc]
+  ]) {
+    assert.doesNotMatch(page, /class="journal-index"/, `${pageName} should omit journal index labels`);
   }
-}
-
-test('every visible journal occurrence carries a verified index label', () => {
-  assertJournalOccurrencesHaveIndexes(publications, 'English publications');
-  assertJournalOccurrencesHaveIndexes(selectedPublications, 'English selected publications');
-  assertJournalOccurrencesHaveIndexes(misc, 'English misc');
-  assertJournalOccurrencesHaveIndexes(zhPublications, 'Chinese publications');
-  assertJournalOccurrencesHaveIndexes(zhSelectedPublications, 'Chinese selected publications');
-  assertJournalOccurrencesHaveIndexes(zhMisc, 'Chinese misc');
 });
 
-test('publishes synchronized Google Scholar metrics and citation chart', () => {
+test('publishes synchronized Google Scholar metrics without per-publication citation details', () => {
   assert.deepEqual(academicProfile.scholar, {
     sourceUrl: 'https://scholar.google.com/citations?user=X42fddQAAAAJ&hl=en',
     asOf: '2026-08-09',
@@ -95,21 +65,21 @@ test('publishes synchronized Google Scholar metrics and citation chart', () => {
   );
 
   for (const [language, page] of [['English', publications], ['Chinese', zhPublications]]) {
+    assert.match(page, /class="publication-header"[\s\S]*class="publication-heading"[\s\S]*<h3>[\s\S]*<p>[\s\S]*<\/div>\s*<section class="scholar-metrics"/);
     assert.match(page, /class="scholar-metrics"/);
     assert.match(page, /data-scholar-citations="57"/);
     assert.match(page, /data-scholar-h-index="3"/);
     assert.match(page, /data-scholar-i10-index="2"/);
     assert.match(page, /data-scholar-as-of="2026-08-09"/);
-    assert.equal((page.match(/class="scholar-bar-row"/g) ?? []).length, 5, `${language} chart should show five matched records`);
-    assert.equal((page.match(/data-cited-by="\d+"/g) ?? []).length, 5, `${language} records should expose five known citation counts`);
-    assert.match(page, /未纳入图表|Not included in the chart/);
     assert.match(page, /Google Scholar/);
+    assert.doesNotMatch(page, /class="scholar-citations|scholar-citation-breakdown|scholar-bar-row|scholar-citation-table|scholar-citation-pending|data-cited-by=/, `${language} page should omit per-publication citation details`);
+    assert.doesNotMatch(page, /Google Scholar 各论文引用次数|Google Scholar citations by publication|未纳入图表|Not included in the chart/);
   }
 
-  assert.equal((selectedPublications.match(/data-cited-by="\d+"/g) ?? []).length, 2);
-  assert.equal((zhSelectedPublications.match(/data-cited-by="\d+"/g) ?? []).length, 2);
-  assert.match(selectedPublications, /scholar-citations--pending/);
-  assert.match(zhSelectedPublications, /scholar-citations--pending/);
+  assert.match(style, /\.publication-header\s*\{[\s\S]*?display:\s*flex;[\s\S]*?justify-content:\s*space-between/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.publication-header\s*\{[\s\S]*?display:\s*block/);
+  assert.doesNotMatch(selectedPublications, /class="scholar-citations|data-cited-by=/);
+  assert.doesNotMatch(zhSelectedPublications, /class="scholar-citations|data-cited-by=/);
 });
 
 function contrastRatio(foreground, background) {
@@ -143,9 +113,12 @@ test('responsive utility controls share one conditional top action and mobile la
   assert.match(style, /\.mobile-footer\s*\{[\s\S]*?display:\s*flex[\s\S]*?position:\s*fixed/);
   assert.match(style, /\.mobile-footer-btn\[hidden\]\s*\{\s*display:\s*none/);
   assert.match(style, /\.mobile-language-toggle\s*\{[\s\S]*?display:\s*none/);
-  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?justify-content:\s*flex-end/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?justify-content:\s*space-between/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?left:\s*0;[\s\S]*?right:\s*0;[\s\S]*?width:\s*100%;/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?padding-left:\s*max\(1rem,\s*env\(safe-area-inset-left\)\)[\s\S]*?padding-right:\s*max\(1rem,\s*env\(safe-area-inset-right\)\)/);
+  assert.match(style, /\.mobile-footer-btn\s*\{[\s\S]*?border:\s*0;[\s\S]*?background:\s*none/);
+  assert.match(style, /\.mobile-footer-btn:hover,\s*\.mobile-footer-btn:focus-visible\s*\{[\s\S]*?background:\s*none;[\s\S]*?text-decoration:\s*underline;[\s\S]*?text-underline-offset:\s*3px/);
+  assert.match(style, /\.nav-index a:hover,\s*\.nav-index a:focus-visible\s*\{[\s\S]*?text-decoration:\s*underline;[\s\S]*?text-underline-offset:\s*3px/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-language-toggle\s*\{[\s\S]*?margin-left:\s*0/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.sidebar \.language-switcher\s*\{[\s\S]*?display:\s*none/);
 });
@@ -158,8 +131,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((homepage.match(/id="btn-top"/g) ?? []).length, 1);
   assert.doesNotMatch(homepage, /id="btn-top-right"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=45"/);
-  assert.match(homepage, /<script src="script\.js\?v=45"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=46"/);
+  assert.match(homepage, /<script src="script\.js\?v=46"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -173,7 +146,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '45';/);
+  assert.match(script, /const pageVersion = '46';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -212,7 +185,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.nav-index a\s*\{[\s\S]*?min-height:\s*44px/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.pub-tab\s*\{[\s\S]*?min-height:\s*44px/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer-btn\s*\{[\s\S]*?min-height:\s*44px/);
-  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?justify-content:\s*flex-end/);
+  assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.mobile-footer\s*\{[\s\S]*?justify-content:\s*space-between/);
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?overflow-wrap:\s*anywhere/);
   assert.match(homepage, /Haotian Xie/);
   assert.match(homepage, /haotiantimxie@gmail\.com/);
@@ -334,7 +307,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(style, /\.year-label\s*\{[\s\S]*?opacity:\s*1/);
   assert.match(style, /--swatch-4:\s*#666666;/);
   assert.match(style, /\.journal-metrics\s*\{[\s\S]*?color:\s*var\(--swatch-4\)/);
-  assert.match(style, /\.journal-index\s*\{[\s\S]*?color:\s*var\(--swatch-4\)[\s\S]*?white-space:\s*nowrap/);
+  assert.doesNotMatch(style, /\.journal-index\s*\{/);
   assert.match(style, /\.cite-link\s*\{[\s\S]*?cursor:\s*pointer;/);
   assert.match(script, /navigator\.clipboard\.writeText/);
   assert.match(script, /copyCitation/);
@@ -537,9 +510,10 @@ test('moves experience and education into about with updated academic copy', () 
   assert.doesNotMatch(misc, /<h4>Experience<\/h4>|<h4>Education<\/h4>/);
   assert.doesNotMatch(zhMisc, /<h4>工作经历<\/h4>|<h4>教育背景<\/h4>/);
   assert.match(style, /\.about-background\s*\{/);
-  assert.match(homepage, /href="style\.css\?v=45"/);
-  assert.match(homepage, /<script src="script\.js\?v=45"><\/script>/);
-  assert.match(script, /const pageVersion = '45';/);
+  assert.match(style, /\.about-background\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
+  assert.match(homepage, /href="style\.css\?v=46"/);
+  assert.match(homepage, /<script src="script\.js\?v=46"><\/script>/);
+  assert.match(script, /const pageVersion = '46';/);
 });
 
 test('preprint exposes DOI and Google Scholar links in both languages', () => {
