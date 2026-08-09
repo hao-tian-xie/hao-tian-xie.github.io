@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
-const [homepage, script, style, about, publications, misc, home, selectedPublications, zhAbout, zhPublications, zhMisc, zhHome, zhSelectedPublications] = await Promise.all([
+const [homepage, script, style, about, publications, misc, home, selectedPublications, zhAbout, zhPublications, zhMisc, zhHome, zhSelectedPublications, academicProfileText] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../script.js', import.meta.url), 'utf8'),
   readFile(new URL('../style.css', import.meta.url), 'utf8'),
@@ -16,7 +16,10 @@ const [homepage, script, style, about, publications, misc, home, selectedPublica
   readFile(new URL('../pages/zh/misc.html', import.meta.url), 'utf8').catch(() => ''),
   readFile(new URL('../pages/zh/home.html', import.meta.url), 'utf8').catch(() => ''),
   readFile(new URL('../pages/zh/selected-publications.html', import.meta.url), 'utf8').catch(() => ''),
+  readFile(new URL('../data/academic-profile.json', import.meta.url), 'utf8').catch(() => '{}'),
 ]);
+
+const academicProfile = JSON.parse(academicProfileText);
 
 const chineseSite = [zhAbout, zhPublications, zhMisc, zhHome, zhSelectedPublications].join('\n');
 const englishSite = [homepage, script, style, about, publications, misc, home, selectedPublications].join('\n');
@@ -65,6 +68,50 @@ test('every visible journal occurrence carries a verified index label', () => {
   assertJournalOccurrencesHaveIndexes(zhMisc, 'Chinese misc');
 });
 
+test('publishes synchronized Google Scholar metrics and citation chart', () => {
+  assert.deepEqual(academicProfile.scholar, {
+    sourceUrl: 'https://scholar.google.com/citations?user=X42fddQAAAAJ&hl=en',
+    asOf: '2026-08-09',
+    citations: 57,
+    hIndex: 3,
+    i10Index: 2
+  });
+
+  const expectedCitations = [
+    ['Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis', 28],
+    ['Exploring the drivers of green supply chain management in the chinese electronics industry: evidence from a gdematel–aism approach', 17],
+    ['Classifying drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction', 6],
+    ['Topological persistence pinpoints higher-order network vulnerabilities', 3],
+    ['Decentralized autonomous organizations in e-commerce supply chains: a bayesian method to barrier identification and interrelationship mapping', 3]
+  ];
+
+  assert.equal(academicProfile.publicationCitations.length, 9);
+  assert.deepEqual(
+    academicProfile.publicationCitations
+      .filter(record => record.citedBy !== null)
+      .sort((left, right) => right.citedBy - left.citedBy)
+      .map(record => [record.title, record.citedBy]),
+    expectedCitations
+  );
+
+  for (const [language, page] of [['English', publications], ['Chinese', zhPublications]]) {
+    assert.match(page, /class="scholar-metrics"/);
+    assert.match(page, /data-scholar-citations="57"/);
+    assert.match(page, /data-scholar-h-index="3"/);
+    assert.match(page, /data-scholar-i10-index="2"/);
+    assert.match(page, /data-scholar-as-of="2026-08-09"/);
+    assert.equal((page.match(/class="scholar-bar-row"/g) ?? []).length, 5, `${language} chart should show five matched records`);
+    assert.equal((page.match(/data-cited-by="\d+"/g) ?? []).length, 5, `${language} records should expose five known citation counts`);
+    assert.match(page, /未纳入图表|Not included in the chart/);
+    assert.match(page, /Google Scholar/);
+  }
+
+  assert.equal((selectedPublications.match(/data-cited-by="\d+"/g) ?? []).length, 2);
+  assert.equal((zhSelectedPublications.match(/data-cited-by="\d+"/g) ?? []).length, 2);
+  assert.match(selectedPublications, /scholar-citations--pending/);
+  assert.match(zhSelectedPublications, /scholar-citations--pending/);
+});
+
 function contrastRatio(foreground, background) {
   const toRgb = hex => [0, 2, 4].map(offset => parseInt(hex.slice(1 + offset, 3 + offset), 16) / 255);
   const toLinear = channel => channel <= 0.03928
@@ -110,8 +157,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((homepage.match(/id="btn-top"/g) ?? []).length, 1);
   assert.doesNotMatch(homepage, /id="btn-top-right"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=43"/);
-  assert.match(homepage, /<script src="script\.js\?v=43"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=44"/);
+  assert.match(homepage, /<script src="script\.js\?v=44"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -125,7 +172,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '43';/);
+  assert.match(script, /const pageVersion = '44';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -489,9 +536,9 @@ test('moves experience and education into about with updated academic copy', () 
   assert.doesNotMatch(misc, /<h4>Experience<\/h4>|<h4>Education<\/h4>/);
   assert.doesNotMatch(zhMisc, /<h4>工作经历<\/h4>|<h4>教育背景<\/h4>/);
   assert.match(style, /\.about-background\s*\{/);
-  assert.match(homepage, /href="style\.css\?v=43"/);
-  assert.match(homepage, /<script src="script\.js\?v=43"><\/script>/);
-  assert.match(script, /const pageVersion = '43';/);
+  assert.match(homepage, /href="style\.css\?v=44"/);
+  assert.match(homepage, /<script src="script\.js\?v=44"><\/script>/);
+  assert.match(script, /const pageVersion = '44';/);
 });
 
 test('preprint exposes DOI and Google Scholar links in both languages', () => {

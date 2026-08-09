@@ -1,0 +1,66 @@
+{
+  "scholar": {
+    "sourceUrl": "https://scholar.google.com/citations?user=X42fddQAAAAJ&hl=en",
+    "asOf": "2026-08-09",
+    "citations": 57,
+    "hIndex": 3,
+    "i10Index": 2
+  },
+  "publicationCitations": [
+    {
+      "key": "doi:10.48550/arXiv.2604.10890",
+      "title": "Forecasting return time of extreme precipitation by large deviation theory",
+      "year": 2026,
+      "citedBy": null
+    },
+    {
+      "key": "doi:10.1063/5.0293652",
+      "title": "Topological persistence pinpoints higher-order network vulnerabilities",
+      "year": 2026,
+      "citedBy": 3
+    },
+    {
+      "key": "doi:10.1016/j.ins.2026.123522",
+      "title": "A virtual node based zero-shot learning framework for link prediction in complex networks",
+      "year": 2026,
+      "citedBy": null
+    },
+    {
+      "key": "doi:10.1016/j.elerap.2025.101533",
+      "title": "Decentralized autonomous organizations in e-commerce supply chains: a bayesian method to barrier identification and interrelationship mapping",
+      "year": 2025,
+      "citedBy": 3
+    },
+    {
+      "key": "doi:10.1016/j.jairtraman.2024.102655",
+      "title": "Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis",
+      "year": 2024,
+      "citedBy": 28
+    },
+    {
+      "key": "doi:10.1016/j.clscn.2023.100110",
+      "title": "Exploring the drivers of green supply chain management in the chinese electronics industry: evidence from a gdematel–aism approach",
+      "year": 2023,
+      "citedBy": 17
+    },
+    {
+      "key": "doi:10.1016/j.isci.2022.104180",
+      "title": "Classifying drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction",
+      "year": 2022,
+      "citedBy": 6
+    },
+    {
+      "key": "title:bextools-esgpath: a text-mining-based esg report analyser for advancing supply chain sustainability",
+      "title": "BEXTools-ESGPath: A text-mining-based ESG report analyser for advancing supply chain sustainability",
+      "year": 2026,
+      "citedBy": null
+    },
+    {
+      "key": "title:aism: a novel method for node importance ranking in complex network",
+      "title": "AISM: A novel method for node importance ranking in complex network",
+      "year": 2023,
+      "citedBy": null
+    }
+  ],
+  "journalMetrics": []
+}

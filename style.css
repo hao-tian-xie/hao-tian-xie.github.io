@@ -315,6 +315,177 @@ a:active {
 /* ─── Publications ─── */
 .selected-publications { margin-top: 2rem; }
 
+.scholar-metrics {
+  margin: 1.5rem 0 2rem;
+  padding: 1rem 0 1.25rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.scholar-metrics-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.scholar-metrics-heading h4,
+.scholar-citation-breakdown h4 {
+  margin: 0;
+}
+
+.scholar-metrics-heading p {
+  margin: 0;
+  color: var(--swatch-4);
+  font-size: 0.9rem;
+}
+
+.scholar-metrics-heading a {
+  color: var(--swatch-1);
+}
+
+.scholar-metric-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.scholar-metric-card {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  padding: 0.75rem 0.9rem;
+}
+
+.scholar-metric-card span {
+  color: var(--swatch-4);
+  font-size: 0.9rem;
+}
+
+.scholar-metric-card strong {
+  color: var(--swatch-1);
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.scholar-citation-breakdown h4 {
+  margin-bottom: 0.8rem;
+  color: var(--swatch-2);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.scholar-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.scholar-bar-row {
+  display: grid;
+  grid-template-columns: minmax(16rem, 2fr) minmax(8rem, 1fr) 2rem;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.scholar-bar-label {
+  min-width: 0;
+  color: var(--swatch-2);
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.scholar-bar-label small {
+  display: inline-block;
+  color: var(--swatch-4);
+  font-size: 0.9em;
+  margin-left: 0.35rem;
+  white-space: nowrap;
+}
+
+.scholar-bar-track {
+  display: block;
+  height: 0.7rem;
+  background: var(--swatch-6);
+}
+
+.scholar-bar {
+  display: block;
+  width: var(--bar-width);
+  height: 100%;
+  background: var(--swatch-1);
+}
+
+.scholar-bar-row > strong {
+  color: var(--swatch-1);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: right;
+}
+
+.scholar-citation-table {
+  width: 100%;
+  margin-top: 1rem;
+  border-collapse: collapse;
+  color: var(--swatch-2);
+  font-size: 0.9rem;
+}
+
+.scholar-citation-table caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.scholar-citation-table th,
+.scholar-citation-table td {
+  padding: 0.45rem 0.5rem;
+  border-top: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.scholar-citation-table th {
+  color: var(--swatch-4);
+  font-weight: 500;
+}
+
+.scholar-citation-table th:nth-child(2),
+.scholar-citation-table td:nth-child(2) {
+  width: 4.5rem;
+  white-space: nowrap;
+}
+
+.scholar-citation-table th:last-child,
+.scholar-citation-table td:last-child {
+  width: 5.5rem;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.scholar-citation-pending {
+  margin: 0.8rem 0 0;
+  color: var(--swatch-4);
+  font-size: 0.9rem;
+}
+
+.scholar-citations {
+  color: var(--swatch-4);
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.scholar-citations--pending {
+  font-style: italic;
+}
+
 .pub-tabs {
   display: flex;
   gap: 1.5rem;
@@ -939,6 +1110,53 @@ a:active {
     gap: 1.2rem;
     margin: 0.5rem 0 1.5rem;
     flex-wrap: wrap;
+  }
+
+  .scholar-metrics {
+    margin-top: 1rem;
+  }
+
+  .scholar-metrics-heading {
+    display: block;
+  }
+
+  .scholar-metrics-heading p {
+    margin-top: 0.35rem;
+  }
+
+  .scholar-metric-cards {
+    gap: 0.5rem;
+  }
+
+  .scholar-metric-card {
+    display: block;
+    padding: 0.6rem;
+  }
+
+  .scholar-metric-card span,
+  .scholar-metric-card strong {
+    display: block;
+  }
+
+  .scholar-metric-card strong {
+    margin-top: 0.35rem;
+  }
+
+  .scholar-bar-row {
+    grid-template-columns: minmax(0, 1fr) 2rem;
+    gap: 0.35rem 0.6rem;
+  }
+
+  .scholar-bar-label {
+    grid-column: 1 / -1;
+  }
+
+  .scholar-bar-label small {
+    margin-left: 0.2rem;
+  }
+
+  .scholar-citation-table {
+    font-size: 0.85rem;
   }
 
   .pub-tab {
