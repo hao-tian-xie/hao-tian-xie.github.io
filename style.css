@@ -1183,7 +1183,7 @@ a:active {
 
   .mobile-language-toggle {
     display: flex;
-    margin-left: 0;
+    margin-left: auto;
   }
 
   .sidebar .language-switcher { display: none; }

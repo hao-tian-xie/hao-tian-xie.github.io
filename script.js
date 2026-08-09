@@ -2,7 +2,7 @@
 
 const links = document.querySelectorAll('a[data-page]');
 const content = document.getElementById('content');
-const pageVersion = '47';
+const pageVersion = '48';
 const languageStorageKey = 'site-language';
 const routePages = new Set(['home', 'about', 'publications', 'misc']);
 const publicationFilters = new Set(['selected', 'all', 'conference']);
