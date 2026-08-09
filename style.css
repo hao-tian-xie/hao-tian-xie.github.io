@@ -140,6 +140,12 @@ main {
   text-decoration: none;
 }
 
+.sidebar-info a:hover,
+.sidebar-info a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .sidebar-info a:active {
   opacity: 0.7;
 }
@@ -325,7 +331,7 @@ a:active {
 .publication-header {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 2rem;
   margin-bottom: 1.5rem;
 }
