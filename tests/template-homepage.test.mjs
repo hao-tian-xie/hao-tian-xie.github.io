@@ -28,8 +28,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /class="mobile-header"/);
   assert.match(homepage, /class="mobile-footer"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=35"/);
-  assert.match(homepage, /<script src="script\.js\?v=35"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=36"/);
+  assert.match(homepage, /<script src="script\.js\?v=36"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -43,7 +43,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '35';/);
+  assert.match(script, /const pageVersion = '36';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -162,8 +162,19 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(publications, /Topological persistence pinpoints higher-order network vulnerabilities/);
   assert.match(publications, /A virtual node based zero-shot learning framework for link prediction in complex networks/);
   assert.match(publications, /10\.1016\/j\.ins\.2026\.123522/);
-  assert.match(publications, /<h4 class="publication-list-title">CONFERENCE PAPERS<\/h4>[\s\S]*?<h4>BEXTools-ESGPath: A text-mining-based ESG report analyser for advancing supply chain sustainability<\/h4>[\s\S]*?<p><strong>H\. Xie<\/strong>, G\. Yim, Y\. P\. Tsang\*, C\. K\. M\. Lee, &amp; C\. H\. Wu<\/p>[\s\S]*?ICDSM 2026, The International Conference on Decision Science &amp; Management, Hong Kong/);
-  assert.match(publications, /<h4>AISM: A novel method for node importance ranking in complex network<\/h4>[\s\S]*?<p><strong>H\. Xie\*<\/strong>, C\. Zhang<\/p>[\s\S]*?12th International Conference on Complex Networks and their Applications, 28–30 November 2023, Menton, France/);
+  assert.match(publications, /<h4 class="publication-list-title">CONFERENCE PAPERS<\/h4>[\s\S]*?<h4>BEXTools-ESGPath: A text-mining-based ESG report analyser for advancing supply chain sustainability<\/h4>[\s\S]*?<p><strong>H\. Xie<\/strong>, G\. Yim, Y\. P\. Tsang\*, C\. K\. M\. Lee, &amp; C\. H\. Wu<\/p>[\s\S]*?The 8th International Conference on Decision Science &amp; Management, 24-26 April 2026, Hong Kong/);
+  assert.match(publications, /<h4>AISM: A novel method for node importance ranking in complex network<\/h4>[\s\S]*?<p><strong>H\. Xie\*<\/strong>, C\. Zhang<\/p>[\s\S]*?The 12th International Conference on Complex Networks and their Applications, 28-30 November 2023, Menton, France/);
+  for (const conferenceFormat of [
+    'The 8th International Conference on Decision Science &amp; Management, 24-26 April 2026, Hong Kong',
+    'The 12th International Conference on Complex Networks and their Applications, 28-30 November 2023, Menton, France'
+  ]) {
+    assert.ok(publications.includes(conferenceFormat), `English conference format should be standardized: ${conferenceFormat}`);
+    assert.ok(zhPublications.includes(conferenceFormat), `Chinese conference format should be standardized: ${conferenceFormat}`);
+  }
+  assert.doesNotMatch(publications, /ICDSM 2026, The International Conference on Decision Science &amp; Management, Hong Kong/);
+  assert.doesNotMatch(zhPublications, /ICDSM 2026, The International Conference on Decision Science &amp; Management, Hong Kong/);
+  assert.doesNotMatch(publications, /12th International Conference on Complex Networks and their Applications, 28–30 November 2023/);
+  assert.doesNotMatch(zhPublications, /12th International Conference on Complex Networks and their Applications, 28–30 November 2023/);
   const articleList = publications.slice(publications.indexOf('data-publication-list="articles"'), publications.indexOf('data-publication-list="conference"'));
   const conferenceList = publications.slice(publications.indexOf('data-publication-list="conference"'));
   assert.doesNotMatch(articleList, /BEXTools-ESGPath|AISM: A novel method/);
