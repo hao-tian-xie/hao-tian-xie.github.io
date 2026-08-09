@@ -46,8 +46,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((homepage.match(/id="btn-top"/g) ?? []).length, 1);
   assert.doesNotMatch(homepage, /id="btn-top-right"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=38"/);
-  assert.match(homepage, /<script src="script\.js\?v=38"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=39"/);
+  assert.match(homepage, /<script src="script\.js\?v=39"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -61,7 +61,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '38';/);
+  assert.match(script, /const pageVersion = '39';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -422,7 +422,22 @@ test('moves experience and education into about with updated academic copy', () 
   assert.doesNotMatch(misc, /<h4>Experience<\/h4>|<h4>Education<\/h4>/);
   assert.doesNotMatch(zhMisc, /<h4>工作经历<\/h4>|<h4>教育背景<\/h4>/);
   assert.match(style, /\.about-background\s*\{/);
-  assert.match(homepage, /href="style\.css\?v=38"/);
-  assert.match(homepage, /<script src="script\.js\?v=38"><\/script>/);
-  assert.match(script, /const pageVersion = '38';/);
+  assert.match(homepage, /href="style\.css\?v=39"/);
+  assert.match(homepage, /<script src="script\.js\?v=39"><\/script>/);
+  assert.match(script, /const pageVersion = '39';/);
+});
+
+test('preprint exposes DOI and Google Scholar links in both languages', () => {
+  const preprintTitle = 'Forecasting return time of extreme precipitation by large deviation theory';
+  const doiLink = 'href="https://doi.org/10.48550/arXiv.2604.10890"';
+  const scholarLink = 'href="https://scholar.google.com/scholar?q=Forecasting+return+time+of+extreme+precipitation+by+large+deviation+theory"';
+
+  for (const [language, page] of [['English', publications], ['Chinese', zhPublications]]) {
+    const preprint = page.slice(page.indexOf(preprintTitle));
+    assert.ok(preprint.includes(preprintTitle), `${language} page should include the preprint`);
+    assert.match(preprint, new RegExp(doiLink.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.match(preprint, new RegExp(scholarLink.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.match(preprint, /\[DOI\]/);
+    assert.match(preprint, /\[Google Scholar\]/);
+  }
 });
