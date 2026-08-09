@@ -147,8 +147,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((homepage.match(/id="btn-top"/g) ?? []).length, 1);
   assert.doesNotMatch(homepage, /id="btn-top-right"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=53"/);
-  assert.match(homepage, /<script src="script\.js\?v=53"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=54"/);
+  assert.match(homepage, /<script src="script\.js\?v=54"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -162,7 +162,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '53';/);
+  assert.match(script, /const pageVersion = '54';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -355,7 +355,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(about, /2025\.4 - 2026\.6[\s\S]*?<strong>Research Assistant<\/strong>[\s\S]*?ISE, PolyU/);
   assert.match(about, /2026\.7 - present[\s\S]*?<strong>Research Associate<\/strong>[\s\S]*?ISE, PolyU/);
   assert.ok(about.indexOf('2026.7 - present') < about.indexOf('2025.4 - 2026.6'));
-  assert.match(about, /2024\.9 - 2025\.11[\s\S]*?<strong>[\s\S]*?Master of Science in Industrial Engineering and Logistics Management[\s\S]*?<\/strong>[\s\S]*?DASE, HKU/);
+  assert.match(about, /2024\.9 - 2025\.11[\s\S]*?<strong>[\s\S]*?Master of Science in[\s\S]*?Industrial Engineering and Logistics Management[\s\S]*?<\/strong>[\s\S]*?DASE, HKU/);
   assert.match(about, /2020\.9 - 2024\.6[\s\S]*?<strong>[\s\S]*?Bachelor of Science in[\s\S]*?Systems Science[\s\S]*?<\/strong>[\s\S]*?BNU/);
   assert.match(about, /2020\.9 - 2024\.6[\s\S]*?<strong>[\s\S]*?Bachelor of Economics in[\s\S]*?Finance[\s\S]*?<\/strong>[\s\S]*?BNU/);
   assert.equal((about.match(/<strong>Bachelor of /g) ?? []).length, 2);
@@ -453,7 +453,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(zhAbout, /导师：<a href="https:\/\/www\.dase\.hku\.hk\/people\/j-y-li"[^>]*>李加阳教授<\/a>/);
   assert.match(zhAbout, /金融学.*经济学学士学位/);
   assert.match(zhAbout, /<a href="https:\/\/bibs\.bnu\.edu\.cn\/en\/index\.htm"[^>]*>金融学经济学学士学位<\/a>/);
-  assert.match(zhAbout, /<a href="https:\/\/www\.dase\.hku\.hk\/teaching-and-learning\/prospective-students\/master-of-science-in-engineering-and-logistics-management"[^>]*>工业工程与物流管理工学硕士学位<\/a>/);
+  assert.match(zhAbout, /<a href="https:\/\/www\.dase\.hku\.hk\/teaching-and-learning\/prospective-students\/master-of-science-in-engineering-and-logistics-management"[^>]*>工业工程与物流管理<\/a>工学硕士学位/);
   assert.match(zhAbout, /我目前在<a href="https:\/\/www\.polyu\.edu\.hk\/"[^>]*>香港理工大学（PolyU）<\/a>的<a href="https:\/\/www\.polyu\.edu\.hk\/ise\/"[^>]*>工业及系统工程学系（ISE）<\/a>担任研究助理/);
   assert.doesNotMatch(zhAbout, /担任 Research Associate/);
   assert.match(zhAbout, /导师：<a href="https:\/\/sss\.bnu\.edu\.cn\/en\/Faculty\/Professor\/1fb42055bc1e42ca8e13c27e378e2d82\.htm"[^>]*>狄增如教授<\/a>/);
@@ -501,7 +501,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(zhMisc, /同行评审经历/);
   assert.doesNotMatch(zhMisc, /工作经历|教育背景/);
   assert.match(zhAbout, /2026\.7 - 至今[\s\S]*?Research Associate（研究助理）[\s\S]*?ISE，PolyU/);
-  assert.match(zhAbout, /2024\.9 - 2025\.11[\s\S]*?工业工程与物流管理工学硕士[\s\S]*?DASE，HKU/);
+  assert.match(zhAbout, /2024\.9 - 2025\.11[\s\S]*?工业工程与物流管理[\s\S]*?工学硕士[\s\S]*?DASE，HKU/);
   assert.match(zhAbout, /2020\.9 - 2024\.6[\s\S]*?金融学经济学学士[\s\S]*?BNU/);
   assert.doesNotMatch(zhMisc, /香港理工大学|香港大学|北京师范大学|工业及系统工程学系|数据与系统工程学系/);
   assert.match(zhMisc, /<strong>最佳产业与影响力论文奖<\/strong>，ICDSM 2026/);
@@ -533,7 +533,7 @@ test('renders experience and education as separate full-width rows after the Abo
   }
 
   assert.match(about, /<h4>Experience<\/h4>[\s\S]*?2026\.7 - present[\s\S]*?Research Associate[\s\S]*?Paul Tsang/);
-  assert.match(about, /<h4>Education<\/h4>[\s\S]*?Master of Science in Industrial Engineering and Logistics Management[\s\S]*?Jiayang Li[\s\S]*?Bachelor of Science in[\s\S]*?Systems Science[\s\S]*?Zengru Di[\s\S]*?Bachelor of Economics in[\s\S]*?Finance[\s\S]*?Lei Chen/);
+  assert.match(about, /<h4>Education<\/h4>[\s\S]*?Master of Science in[\s\S]*?Industrial Engineering and Logistics Management[\s\S]*?Jiayang Li[\s\S]*?Bachelor of Science in[\s\S]*?Systems Science[\s\S]*?Zengru Di[\s\S]*?Bachelor of Economics in[\s\S]*?Finance[\s\S]*?Lei Chen/);
   assert.doesNotMatch(about, /completed an M\.Sc\./);
   assert.match(about, /obtained a M\.Sc\. \(Eng\.\)/);
   assert.doesNotMatch(about, /In addition, I obtained a B\.Sc\./);
@@ -553,9 +553,26 @@ test('renders experience and education as separate full-width rows after the Abo
   assert.match(historyRule, /grid-column:\s*1\s*\/\s*-1;/);
   assert.doesNotMatch(historyRule, /grid-template-columns/);
   assert.match(style, /\.about-history-section,\s*\.about-background-column\s*\{[\s\S]*?width:\s*100%;/);
-  assert.match(homepage, /href="style\.css\?v=53"/);
-  assert.match(homepage, /<script src="script\.js\?v=53"><\/script>/);
-  assert.match(script, /const pageVersion = '53';/);
+  assert.match(homepage, /href="style\.css\?v=54"/);
+  assert.match(homepage, /<script src="script\.js\?v=54"><\/script>/);
+  assert.match(script, /const pageVersion = '54';/);
+});
+
+test('links only the Industrial Engineering and Logistics Management program name', () => {
+  const degreeUrl = 'https://www.dase.hku.hk/teaching-and-learning/prospective-students/master-of-science-in-engineering-and-logistics-management';
+  const escapedDegreeUrl = degreeUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+  assert.match(
+    about,
+    new RegExp(`<strong>Master of Science in <a href="${escapedDegreeUrl}"[^>]*>Industrial Engineering and Logistics Management<\\/a><\\/strong>, DASE, HKU`)
+  );
+  assert.doesNotMatch(about, new RegExp(`<a href="${escapedDegreeUrl}"[^>]*>Master of Science in Industrial Engineering and Logistics Management<\\/a>`));
+
+  assert.match(
+    zhAbout,
+    new RegExp(`<strong><a href="${escapedDegreeUrl}"[^>]*>工业工程与物流管理<\\/a>工学硕士学位<\\/strong>，DASE，HKU`)
+  );
+  assert.doesNotMatch(zhAbout, new RegExp(`<a href="${escapedDegreeUrl}"[^>]*>工业工程与物流管理工学硕士学位<\\/a>`));
 });
 
 test('preprint exposes DOI and Google Scholar links in both languages', () => {
