@@ -231,6 +231,10 @@ a:active {
 }
 
 /* ─── About Page ─── */
+.about-section {
+  display: block;
+}
+
 .about-section a {
   color: var(--swatch-4);
   text-decoration: none;
@@ -262,29 +266,46 @@ a:active {
 
 .about-panel > p:first-child { margin-top: 0; }
 
+.about-history,
 .about-background {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  clear: both;
+  grid-column: 1 / -1;
   gap: 2rem;
   margin-top: 2rem;
   padding-top: 1rem;
   border-top: 1px solid var(--border);
 }
 
+.about-history-section,
+.about-background-column {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.about-history h4,
 .about-background h4 { margin-bottom: 0.6rem; }
 
+.about-history ul,
 .about-background ul {
   margin: 0;
   padding-left: 1.2rem;
 }
 
+.about-history li,
 .about-background li {
   margin-bottom: 0.7rem;
   color: var(--swatch-3);
   line-height: 1.3;
 }
 
+.about-history li strong,
 .about-background li strong { color: var(--swatch-1); }
+
+.about-history li span,
 .about-background li span { color: var(--swatch-4); }
 
 /* Research interests */
@@ -1014,10 +1035,6 @@ a:active {
       'interests'
       'phd'
       'contact';
-  }
-
-  .about-background {
-    grid-template-columns: 1fr;
   }
 
   h2, h3 { font-size: 1.5rem; }

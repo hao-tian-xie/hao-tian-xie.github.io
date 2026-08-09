@@ -147,8 +147,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((homepage.match(/id="btn-top"/g) ?? []).length, 1);
   assert.doesNotMatch(homepage, /id="btn-top-right"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=52"/);
-  assert.match(homepage, /<script src="script\.js\?v=52"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=53"/);
+  assert.match(homepage, /<script src="script\.js\?v=53"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -162,7 +162,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '52';/);
+  assert.match(script, /const pageVersion = '53';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -232,8 +232,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(about, /class="about-panel about-interests"/);
   assert.match(about, /class="about-panel about-phd"/);
   assert.match(about, /class="about-panel about-contact"/);
-  assert.match(about, /class="about-background"/);
-  assert.match(style, /\.about-background\s*\{/);
+  assert.match(about, /class="about-history"/);
+  assert.match(style, /\.about-history,\s*\.about-background\s*\{/);
   assert.doesNotMatch(about, /LinkedIn/);
   assert.doesNotMatch(about, /news-section|<h3>News<\/h3>/);
   assert.doesNotMatch(style, /\.news-section|\.news-list/);
@@ -515,15 +515,29 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.doesNotMatch(chineseSite, /PREPRINT ARTICLES|About Me|Full List|Misc\./);
 });
 
-test('moves experience and education into about with updated academic copy', () => {
-  assert.match(about, /class="about-background"/);
+test('renders experience and education as separate full-width rows after the About content', () => {
+  for (const [language, page, ariaLabel] of [
+    ['English', about, 'Experience and education'],
+    ['Chinese', zhAbout, '工作经历与教育背景']
+  ]) {
+    const aboutGridStart = page.indexOf('<div class="about-grid">');
+    const historyStart = page.indexOf(`<section class="about-history" aria-label="${ariaLabel}">`);
+    const experienceStart = page.indexOf('<section class="about-history-section about-experience">');
+    const educationStart = page.indexOf('<section class="about-history-section about-education">');
+
+    assert.ok(aboutGridStart >= 0, `${language} About content grid should exist`);
+    assert.ok(historyStart > aboutGridStart, `${language} history should follow the About content grid`);
+    assert.ok(experienceStart > historyStart, `${language} experience should be inside the history row`);
+    assert.ok(educationStart > experienceStart, `${language} education should follow experience vertically`);
+    assert.doesNotMatch(page, /class="about-background(?:\s|"|$)/, `${language} should not reuse the cache-sensitive legacy layout class`);
+  }
+
   assert.match(about, /<h4>Experience<\/h4>[\s\S]*?2026\.7 - present[\s\S]*?Research Associate[\s\S]*?Paul Tsang/);
   assert.match(about, /<h4>Education<\/h4>[\s\S]*?Master of Science in Industrial Engineering and Logistics Management[\s\S]*?Jiayang Li[\s\S]*?Bachelor of Science in[\s\S]*?Systems Science[\s\S]*?Zengru Di[\s\S]*?Bachelor of Economics in[\s\S]*?Finance[\s\S]*?Lei Chen/);
   assert.doesNotMatch(about, /completed an M\.Sc\./);
   assert.match(about, /obtained a M\.Sc\. \(Eng\.\)/);
   assert.doesNotMatch(about, /In addition, I obtained a B\.Sc\./);
   assert.match(about, /1030da90293e4df386079cdb673f6619\.htm/);
-  assert.match(zhAbout, /class="about-background"/);
   assert.match(zhAbout, /获得了工学硕士学位/);
   assert.doesNotMatch(zhAbout, /此外，我还在/);
   assert.doesNotMatch(zhAbout, /完成了/);
@@ -531,14 +545,17 @@ test('moves experience and education into about with updated academic copy', () 
   assert.match(zhAbout, /1030da90293e4df386079cdb673f6619\.htm/);
   assert.doesNotMatch(misc, /<h4>Experience<\/h4>|<h4>Education<\/h4>/);
   assert.doesNotMatch(zhMisc, /<h4>工作经历<\/h4>|<h4>教育背景<\/h4>/);
-  assert.match(style, /\.about-background\s*\{/);
-  assert.match(style, /\.about-background\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
-  assert.doesNotMatch(style, /\.about-background\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/);
-  const aboutGridEnd = about.indexOf('\n  </div>\n\n  <div class="about-background">');
-  assert.ok(aboutGridEnd > about.indexOf('<div class="about-grid">'));
-  assert.match(homepage, /href="style\.css\?v=52"/);
-  assert.match(homepage, /<script src="script\.js\?v=52"><\/script>/);
-  assert.match(script, /const pageVersion = '52';/);
+  const historyRule = style.match(/\.about-history,\s*\.about-background\s*\{([\s\S]*?)\}/)?.[1] ?? '';
+  assert.match(historyRule, /display:\s*flex;/);
+  assert.match(historyRule, /flex-direction:\s*column;/);
+  assert.match(historyRule, /width:\s*100%;/);
+  assert.match(historyRule, /clear:\s*both;/);
+  assert.match(historyRule, /grid-column:\s*1\s*\/\s*-1;/);
+  assert.doesNotMatch(historyRule, /grid-template-columns/);
+  assert.match(style, /\.about-history-section,\s*\.about-background-column\s*\{[\s\S]*?width:\s*100%;/);
+  assert.match(homepage, /href="style\.css\?v=53"/);
+  assert.match(homepage, /<script src="script\.js\?v=53"><\/script>/);
+  assert.match(script, /const pageVersion = '53';/);
 });
 
 test('preprint exposes DOI and Google Scholar links in both languages', () => {
