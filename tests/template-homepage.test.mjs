@@ -41,7 +41,7 @@ test('does not render journal index labels', () => {
 test('publishes synchronized Google Scholar metrics without per-publication citation details', () => {
   assert.deepEqual(academicProfile.scholar, {
     sourceUrl: 'https://scholar.google.com/citations?user=X42fddQAAAAJ&hl=en',
-    asOf: '2026-08-09',
+    asOf: '2026-08-11',
     citations: 57,
     hIndex: 3,
     i10Index: 2
@@ -70,7 +70,7 @@ test('publishes synchronized Google Scholar metrics without per-publication cita
     assert.match(page, /data-scholar-citations="57"/);
     assert.match(page, /data-scholar-h-index="3"/);
     assert.match(page, /data-scholar-i10-index="2"/);
-    assert.match(page, /data-scholar-as-of="2026-08-09"/);
+    assert.match(page, /data-scholar-as-of="2026-08-11"/);
     assert.match(page, /Google Scholar/);
     assert.doesNotMatch(page, /class="scholar-citations|scholar-citation-breakdown|scholar-bar-row|scholar-citation-table|scholar-citation-pending|data-cited-by=/, `${language} page should omit per-publication citation details`);
     assert.doesNotMatch(page, /Google Scholar 各论文引用次数|Google Scholar citations by publication|未纳入图表|Not included in the chart/);
@@ -80,6 +80,28 @@ test('publishes synchronized Google Scholar metrics without per-publication cita
   assert.match(style, /@media\s*\(max-width:\s*768px\)[\s\S]*?\.publication-header\s*\{[\s\S]*?display:\s*block/);
   assert.doesNotMatch(selectedPublications, /class="scholar-citations|data-cited-by=/);
   assert.doesNotMatch(zhSelectedPublications, /class="scholar-citations|data-cited-by=/);
+});
+
+test('keeps normalized JCR rows sourced from the current Clarivate release', () => {
+  assert.equal(academicProfile.journalMetrics.length, 16);
+  for (const row of academicProfile.journalMetrics) {
+    assert.equal(row.editionYear, 2026);
+    assert.equal(row.accessDate, '2026-08-11');
+    assert.match(row.sourceUrl, /^https:\/\/clarivate\.com\/academia-government\/scientific-and-academic-research\/research-funding-analytics\/journal-citation-reports\/$/);
+  }
+
+  const metricByJournal = new Map(academicProfile.journalMetrics.map(row => [row.journal, row]));
+  assert.deepEqual(metricByJournal.get('Chaos: An Interdisciplinary Journal of Nonlinear Science'), {
+    journal: 'Chaos: An Interdisciplinary Journal of Nonlinear Science',
+    jcrQuartile: 'Q1',
+    impactFactor: 3.3,
+    editionYear: 2026,
+    sourceUrl: 'https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/',
+    accessDate: '2026-08-11'
+  });
+  assert.equal(metricByJournal.get('Discover Analytics').impactFactor, null);
+  assert.equal(metricByJournal.get('Humanities & Social Sciences Communications').impactFactor, 4.8);
+  assert.equal(metricByJournal.get('Quality & Quantity').jcrQuartile, 'Q1');
 });
 
 test('keeps Scholar metrics in a fixed desktop track while publication filters change', () => {
@@ -147,8 +169,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((homepage.match(/id="btn-top"/g) ?? []).length, 1);
   assert.doesNotMatch(homepage, /id="btn-top-right"/);
   assert.match(homepage, /id="content"/);
-  assert.match(homepage, /href="style\.css\?v=54"/);
-  assert.match(homepage, /<script src="script\.js\?v=54"><\/script>/);
+  assert.match(homepage, /href="style\.css\?v=55"/);
+  assert.match(homepage, /<script src="script\.js\?v=55"><\/script>/);
   assert.match(homepage, /class="mobile-header-name" href="#" data-page="home"/);
   assert.match(homepage, /<h1><a href="#" data-page="home">/);
   assert.match(homepage, /data-page="about"/);
@@ -162,7 +184,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(homepage, /<div class="sidebar-info">[\s\S]*?<a href="mailto:haotiantimxie@gmail\.com" data-i18n="email">Email<\/a>[\s\S]*?<a href="https:\/\/scholar\.google\.com\/citations\?user=X42fddQAAAAJ" target="_blank" rel="noopener noreferrer" data-i18n="scholar">Google Scholar<\/a>\s*<a href="https:\/\/www\.linkedin\.com\/in\/haotianxiehtxie\/" target="_blank" rel="noopener noreferrer" data-i18n="linkedin">LinkedIn<\/a>/);
   assert.doesNotMatch(homepage, /Hong Kong, China/);
   assert.match(script, /`\$\{pageRoot\}\/\$\{page\}\.html\?v=\$\{pageVersion\}`/);
-  assert.match(script, /const pageVersion = '54';/);
+  assert.match(script, /const pageVersion = '55';/);
   assert.match(script, /let currentLanguage/);
   assert.match(script, /localStorage/);
   assert.match(script, /pages\/zh/);
@@ -553,9 +575,9 @@ test('renders experience and education as separate full-width rows after the Abo
   assert.match(historyRule, /grid-column:\s*1\s*\/\s*-1;/);
   assert.doesNotMatch(historyRule, /grid-template-columns/);
   assert.match(style, /\.about-history-section,\s*\.about-background-column\s*\{[\s\S]*?width:\s*100%;/);
-  assert.match(homepage, /href="style\.css\?v=54"/);
-  assert.match(homepage, /<script src="script\.js\?v=54"><\/script>/);
-  assert.match(script, /const pageVersion = '54';/);
+  assert.match(homepage, /href="style\.css\?v=55"/);
+  assert.match(homepage, /<script src="script\.js\?v=55"><\/script>/);
+  assert.match(script, /const pageVersion = '55';/);
 });
 
 test('links only the Industrial Engineering and Logistics Management program name', () => {

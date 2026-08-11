@@ -1,7 +1,7 @@
 {
   "scholar": {
     "sourceUrl": "https://scholar.google.com/citations?user=X42fddQAAAAJ&hl=en",
-    "asOf": "2026-08-09",
+    "asOf": "2026-08-11",
     "citations": 57,
     "hIndex": 3,
     "i10Index": 2
@@ -62,5 +62,134 @@
       "citedBy": null
     }
   ],
-  "journalMetrics": []
+  "journalMetrics": [
+    {
+      "journal": "Chaos: An Interdisciplinary Journal of Nonlinear Science",
+      "jcrQuartile": "Q1",
+      "impactFactor": 3.3,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Information Sciences",
+      "jcrQuartile": "Q1",
+      "impactFactor": 6,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Electronic Commerce Research and Applications",
+      "jcrQuartile": "Q1",
+      "impactFactor": 6.8,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Journal of Air Transport Management",
+      "jcrQuartile": "Q2",
+      "impactFactor": 4.6,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Cleaner Logistics and Supply Chain",
+      "jcrQuartile": "Q1",
+      "impactFactor": 6.6,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "iScience",
+      "jcrQuartile": "Q1",
+      "impactFactor": 4.5,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Clean Technologies and Environmental Policy",
+      "jcrQuartile": "Q2",
+      "impactFactor": 5.1,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Cognitive Computation",
+      "jcrQuartile": "Q1",
+      "impactFactor": 7.4,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Discover Analytics",
+      "jcrQuartile": null,
+      "impactFactor": null,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Discover Applied Sciences",
+      "jcrQuartile": "Q1",
+      "impactFactor": 3.8,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Humanities & Social Sciences Communications",
+      "jcrQuartile": "Q1",
+      "impactFactor": 4.8,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Information Processing & Management",
+      "jcrQuartile": "Q1",
+      "impactFactor": 8.1,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Journal of Ambient Intelligence and Humanized Computing",
+      "jcrQuartile": null,
+      "impactFactor": null,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Operations Research Forum",
+      "jcrQuartile": null,
+      "impactFactor": null,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Quality & Quantity",
+      "jcrQuartile": "Q1",
+      "impactFactor": 4.3,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    },
+    {
+      "journal": "Scientific Reports",
+      "jcrQuartile": "Q1",
+      "impactFactor": 4.9,
+      "editionYear": 2026,
+      "sourceUrl": "https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/",
+      "accessDate": "2026-08-11"
+    }
+  ]
 }
