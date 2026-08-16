@@ -817,7 +817,7 @@ body[data-screen="welcome"] .save-status {
 
 .topic-index-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 6px;
 }
 
@@ -1791,6 +1791,10 @@ body[data-screen="welcome"] .save-status {
     grid-template-columns: 38px 92px minmax(0, 1fr) 0;
     gap: 10px;
   }
+
+  .topic-index-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 880px) {
@@ -2529,7 +2533,7 @@ body[data-screen="welcome"] .save-status {
 
 .target-list {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 1px;
   padding: 1px;
   background: var(--line);
@@ -2538,7 +2542,7 @@ body[data-screen="welcome"] .save-status {
 .target-option {
   position: relative;
   display: grid;
-  min-height: 108px;
+  min-height: 88px;
   padding: 14px 12px;
   grid-template-columns: 22px minmax(0, 1fr);
   grid-template-rows: auto 1fr;
@@ -3045,7 +3049,7 @@ body[data-screen="welcome"] .save-status {
 
 .topic-notes ul {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px 24px;
   margin: 0;
   padding: 0;
