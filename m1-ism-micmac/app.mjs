@@ -8,6 +8,8 @@ import {
 } from './survey-core.mjs';
 import { localisedFactors, studyConfig } from './survey-config.mjs';
 import { copy, languageNames, locales } from './translations.mjs';
+import { guideStepsForScreen } from './guide-steps.mjs';
+import { canNavigateToStage, topicIsAvailable } from './navigation-rules.mjs';
 
 const STORAGE_KEY = `bextools:${studyConfig.id}:${studyConfig.version}`;
 const NONE_VALUE = '__none__';
@@ -28,18 +30,6 @@ const guideDots = document.querySelector('#guide-dots');
 const guidePrevious = document.querySelector('#guide-previous');
 const guideNext = document.querySelector('#guide-next');
 const guideClose = document.querySelector('#guide-close');
-const guideSteps = [
-  { screen: 'welcome', target: '.hero-button', title: 'guideWelcomeTitle', text: 'guideWelcomeText' },
-  { screen: 'profile', target: '.profile-form [name="code"]', title: 'guideCodeTitle', text: 'guideCodeText' },
-  { screen: 'profile', target: '.profile-form [name="role"]', title: 'guideRoleTitle', text: 'guideRoleText' },
-  { screen: 'profile', target: '.profile-form .primary-button', title: 'guideStartTitle', text: 'guideStartText' },
-  { screen: 'survey', target: '.source-topic', title: 'guideIfTitle', text: 'guideIfText' },
-  { screen: 'survey', target: '.target-fieldset', title: 'guideThenTitle', text: 'guideThenText' },
-  { screen: 'survey', target: '.topic-notes', title: 'guideNotesTitle', text: 'guideNotesText' },
-  { screen: 'survey', target: '.topic-actions .primary-button', title: 'guideNextTitle', text: 'guideNextText' },
-  { screen: 'review', target: '.review-actions .primary-button', title: 'guideSubmitTitle', text: 'guideSubmitText' },
-];
-
 const roleKeys = ['roleOperations', 'roleEsg', 'roleTechnology', 'roleManagement', 'roleAcademic', 'roleOther'];
 const experienceKeys = ['exp1', 'exp2', 'exp3', 'exp4'];
 let storageAvailable = true;
@@ -129,6 +119,7 @@ let state = loadState();
 let guideIndex = 0;
 let guideReturnScreen = state.screen;
 let guideIsOpen = false;
+let guideSessionSteps = guideStepsForScreen(state.screen);
 
 function t(key, values = {}) {
   const template = copy[state.locale][key] || copy.en[key] || key;
@@ -231,6 +222,35 @@ function goTo(screen, { scroll = true } = {}) {
   focusPageHeading();
 }
 
+function navigateToStage(targetStage) {
+  if (!canNavigateToStage(state.screen, targetStage)) return;
+  const fromReview = state.screen === 'review';
+
+  if (targetStage === 'profile') {
+    state.editingFromReview = fromReview;
+    state.showValidation = false;
+    goTo('profile');
+    return;
+  }
+
+  if (targetStage === 'survey') {
+    state.currentIndex = fromReview ? 0 : Math.min(state.currentIndex, factors.length - 1);
+    state.editingFromReview = fromReview;
+    goTo('survey');
+  }
+}
+
+function navigateToTopic(index) {
+  if (state.screen !== 'survey' || !Number.isInteger(index) || !factors[index]) return;
+  const factor = factors[index];
+  if (!topicIsAvailable(index, state.currentIndex, state.reviewedFactors, factor.id)) return;
+  state.currentIndex = index;
+  persist();
+  render();
+  pageTop();
+  focusPageHeading();
+}
+
 function renderLanguages() {
   const languageLabel = {
     'zh-CN': '语言切换',
@@ -252,22 +272,23 @@ function renderGuide() {
   guideOverlay.hidden = !guideIsOpen;
   if (!guideIsOpen) return;
 
-  const step = guideSteps[guideIndex];
-  guideDialogStep.textContent = t('guideStep', { i: guideIndex + 1, total: guideSteps.length });
+  const step = guideSessionSteps[guideIndex];
+  if (!step) return;
+  guideDialogStep.textContent = t('guideStep', { i: guideIndex + 1, total: guideSessionSteps.length });
   guideDialogTitle.textContent = t(step.title);
   guideDialogCopy.textContent = t(step.text);
   guideCallout.setAttribute('aria-label', t(step.title));
   guideClose.setAttribute('aria-label', t('guideClose'));
   guidePrevious.textContent = t('guidePrevious');
   guidePrevious.disabled = guideIndex === 0;
-  guideNext.textContent = guideIndex === guideSteps.length - 1 ? t('guideFinish') : t('guideNext');
-  guideDots.innerHTML = guideSteps.map((item, index) => `<span class="${index === guideIndex ? 'is-active' : ''}"></span>`).join('');
+  guideNext.textContent = guideIndex === guideSessionSteps.length - 1 ? t('guideFinish') : t('guideNext');
+  guideDots.innerHTML = guideSessionSteps.map((item, index) => `<span class="${index === guideIndex ? 'is-active' : ''}"></span>`).join('');
   requestAnimationFrame(positionGuide);
 }
 
 function positionGuide(allowScrollAdjust = false) {
   if (!guideIsOpen || !guideOverlay || guideOverlay.hidden) return;
-  const step = guideSteps[guideIndex];
+  const step = guideSessionSteps[guideIndex];
   const target = document.querySelector(step.target);
   if (!target) return;
 
@@ -318,9 +339,10 @@ function positionGuide(allowScrollAdjust = false) {
 }
 
 function showGuideStep(index) {
-  guideIndex = Math.min(Math.max(index, 0), guideSteps.length - 1);
-  const step = guideSteps[guideIndex];
-  if (state.screen !== step.screen) {
+  if (!guideSessionSteps.length) return;
+  guideIndex = Math.min(Math.max(index, 0), guideSessionSteps.length - 1);
+  const step = guideSessionSteps[guideIndex];
+  if (guideReturnScreen === 'welcome' && state.screen !== step.screen) {
     state.screen = step.screen;
     render();
   } else {
@@ -337,6 +359,7 @@ function showGuideStep(index) {
 
 function openGuide() {
   guideReturnScreen = state.screen;
+  guideSessionSteps = guideStepsForScreen(state.screen);
   guideIsOpen = true;
   guideIndex = 0;
   showGuideStep(0);
@@ -358,17 +381,53 @@ function renderStepper() {
     complete: 2,
   }[state.screen] ?? 0;
   const steps = [t('stepProfile'), t('stepSurvey'), t('stepReview')];
+  const stageIds = ['profile', 'survey', 'review'];
+  const stageItems = steps.map((label, index) => {
+    const stage = stageIds[index];
+    const isActive = index === activeIndex;
+    const isDone = index < activeIndex;
+    const canGoBack = canNavigateToStage(state.screen, stage);
+    const stepContent = `
+      <span>${String(index + 1).padStart(2, '0')}</span>
+      <b>${escapeHtml(label)}</b>
+    `;
+    return `
+      <li class="${isActive ? 'is-active' : ''} ${isDone ? 'is-done' : ''}" ${isActive ? 'aria-current="step"' : ''}>
+        ${canGoBack
+          ? `<button class="step-link" type="button" data-action="stage-nav" data-stage="${stage}" aria-label="${escapeHtml(label)}">${stepContent}</button>`
+          : stepContent}
+      </li>
+    `;
+  }).join('');
+  const topicDirectory = state.screen === 'survey' ? `
+    <nav class="topic-index" aria-label="${escapeHtml(t('topicDirectoryLabel'))}">
+      <div class="topic-index-grid">
+        ${factors.map((factor, index) => {
+          const number = String(index + 1).padStart(2, '0');
+          const isActive = index === state.currentIndex;
+          const isDone = state.reviewedFactors.includes(factor.id);
+          const available = topicIsAvailable(index, state.currentIndex, state.reviewedFactors, factor.id);
+          return `
+            <button
+              class="topic-index-item ${isActive ? 'is-active' : ''} ${isDone ? 'is-done' : ''}"
+              type="button"
+              data-action="topic-index"
+              data-topic-index="${index}"
+              aria-label="${escapeHtml(t('topicDirectoryItem', { n: number }))}"
+              ${isActive ? 'aria-current="step"' : ''}
+              ${available ? '' : 'disabled'}
+            >${number}</button>
+          `;
+        }).join('')}
+      </div>
+    </nav>
+  ` : '';
 
   return `
     <aside class="step-sidebar" aria-label="${escapeHtml(t('progressLabel'))}">
       <div class="mini-brand">M1 <span>·</span> ISM / MICMAC</div>
       <ol class="steps">
-        ${steps.map((label, index) => `
-          <li class="${index === activeIndex ? 'is-active' : ''} ${index < activeIndex ? 'is-done' : ''}" ${index === activeIndex ? 'aria-current="step"' : ''}>
-            <span>${String(index + 1).padStart(2, '0')}</span>
-            <b>${escapeHtml(label)}</b>
-          </li>
-        `).join('')}
+        ${stageItems}
       </ol>
       <div class="sidebar-progress">
         <div class="sidebar-progress-copy">
@@ -378,6 +437,7 @@ function renderStepper() {
         <progress class="native-progress" max="${factors.length}" value="${reviewedCount()}" aria-label="${escapeHtml(t('progressLabel'))}"></progress>
         <small data-progress-count>${escapeHtml(t('confirmedProgress', { n: reviewedCount(), total: factors.length }))}</small>
       </div>
+      ${topicDirectory}
     </aside>
   `;
 }
@@ -921,7 +981,7 @@ guidePrevious?.addEventListener('click', () => {
   showGuideStep(guideIndex - 1);
 });
 guideNext?.addEventListener('click', () => {
-  if (guideIndex === guideSteps.length - 1) {
+  if (guideIndex === guideSessionSteps.length - 1) {
     closeGuide();
     return;
   }
@@ -1002,6 +1062,12 @@ app.addEventListener('click', (event) => {
   if (state.submitState === 'submitting') return;
 
   switch (button.dataset.action) {
+    case 'stage-nav':
+      navigateToStage(button.dataset.stage);
+      break;
+    case 'topic-index':
+      navigateToTopic(Number(button.dataset.topicIndex));
+      break;
     case 'start':
       if (state.submissionId) {
         goTo('complete');

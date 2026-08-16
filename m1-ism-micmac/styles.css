@@ -726,6 +726,32 @@ body[data-screen="welcome"] .save-status {
   font-weight: 400;
 }
 
+.steps .step-link {
+  display: grid;
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 8px;
+  align-items: baseline;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  text-align: left;
+  pointer-events: auto;
+}
+
+.steps .step-link:hover {
+  color: var(--accent);
+}
+
+.steps .step-link:hover b {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .steps li.is-done {
   color: var(--ink);
 }
@@ -780,6 +806,49 @@ body[data-screen="welcome"] .save-status {
   margin-top: 9px;
   color: var(--muted);
   font-size: 14px;
+}
+
+.topic-index {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  pointer-events: auto;
+}
+
+.topic-index-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.topic-index-item {
+  min-height: 32px;
+  padding: 4px 2px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  color: var(--muted);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  pointer-events: auto;
+}
+
+.topic-index-item:not(:disabled):hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.topic-index-item.is-done {
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.topic-index-item.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .page-heading {
@@ -1951,22 +2020,42 @@ body[data-screen="welcome"] .save-status {
   }
 
   .steps {
-    display: block;
+    display: grid;
     max-width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
   }
 
   .steps li {
-    display: none;
-    min-width: max-content;
-    gap: 6px;
-    padding: 3px 0 6px;
-    font-size: 14px;
+    display: block;
+    min-width: 0;
+    padding: 3px 4px 6px;
+    overflow: hidden;
+    font-size: 13px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .steps li > span {
+    display: inline-block;
+    min-width: 20px;
+  }
+
+  .steps li > b {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .steps .step-link {
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 5px;
+    font-size: 13px;
   }
 
   .steps li.is-active {
-    display: flex;
     margin-left: 0;
-    padding-left: 0;
+    padding-left: 4px;
     border-bottom: 1px solid var(--accent);
     border-left: 0;
   }
@@ -1981,6 +2070,7 @@ body[data-screen="welcome"] .save-status {
     margin-top: 0;
     padding-top: 0;
     border-top: 0;
+    grid-column: 1 / -1;
   }
 
   .sidebar-progress-copy {
@@ -1994,6 +2084,21 @@ body[data-screen="welcome"] .save-status {
   .sidebar-progress small {
     margin-top: 0;
     white-space: nowrap;
+  }
+
+  .topic-index {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+    padding-top: 8px;
+  }
+
+  .topic-index-grid {
+    gap: 4px;
+  }
+
+  .topic-index-item {
+    min-height: 28px;
+    font-size: 12px;
   }
 
   .content-stage {
@@ -2865,7 +2970,15 @@ body[data-screen="welcome"] .save-status {
 /* Keep the Step 2 choice grid above its fixed actions on short mobile screens. */
 @media (max-width: 767px) and (max-height: 640px) {
   body[data-screen="survey"] .step-sidebar {
-    display: none;
+    display: grid;
+    min-height: 0;
+    padding: 6px 12px 8px;
+    gap: 5px 8px;
+  }
+
+  body[data-screen="survey"] .sidebar-progress .native-progress {
+    display: block;
+    margin-top: 4px;
   }
 
   body[data-screen="survey"] .content-stage {
@@ -2970,5 +3083,90 @@ body[data-screen="welcome"] .save-status {
     grid-template-columns: auto 1fr;
     gap: 7px;
     font-size: .78rem;
+  }
+}
+
+/* Tablet: keep the rail, but give the answer area room to breathe. */
+@media (min-width: 768px) and (max-width: 1040px) and (min-height: 501px) {
+  .content-stage {
+    width: calc(100% - 48px);
+    padding-top: 38px;
+  }
+
+  .topic-survey {
+    max-width: 100%;
+  }
+
+  .topic-workspace {
+    grid-template-columns: minmax(170px, 0.78fr) minmax(0, 1.22fr);
+    gap: 28px;
+    margin-top: 24px;
+  }
+
+  .source-topic h2 {
+    font-size: clamp(24px, 3vw, 31px);
+  }
+
+  .topic-question h1 {
+    font-size: clamp(25px, 3.5vw, 32px);
+  }
+
+  .target-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .target-option {
+    min-height: 84px;
+    padding: 12px 10px;
+  }
+
+  .target-copy strong {
+    font-size: 15px;
+    line-height: 1.18;
+  }
+
+  .topic-actions {
+    margin-top: 22px;
+  }
+
+  .topic-index-grid {
+    gap: 5px;
+  }
+
+  .topic-index-item {
+    min-height: 30px;
+  }
+}
+
+/* Narrow tablet portrait: stack the source and answer panels before they become cramped. */
+@media (min-width: 768px) and (max-width: 840px) and (min-height: 501px) {
+  .topic-workspace {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .source-topic {
+    display: grid;
+    padding: 12px 0 14px;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 8px;
+    align-items: start;
+  }
+
+  .topic-kicker {
+    margin: 3px 0 0;
+  }
+
+  .source-topic p {
+    display: none;
+  }
+
+  .target-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .target-option {
+    min-height: 82px;
+    padding: 10px 8px;
   }
 }
