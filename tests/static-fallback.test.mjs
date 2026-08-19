@@ -16,10 +16,11 @@ const fragmentPaths = [
   'pages/zh/misc.html',
   'pages/zh/selected-publications.html'
 ];
-const [homepage, sitemap, script, ...documents] = await Promise.all([
+const [homepage, sitemap, script, style, ...documents] = await Promise.all([
   readFile(new URL('index.html', root), 'utf8'),
   readFile(new URL('sitemap.xml', root), 'utf8'),
   readFile(new URL('script.js', root), 'utf8'),
+  readFile(new URL('style.css', root), 'utf8'),
   ...fragmentPaths.map(path => readFile(new URL(path, root), 'utf8'))
 ]);
 
@@ -60,6 +61,15 @@ test('SPA loader extracts only the marked body content from static documents', (
     context.extractPageFragment('<!DOCTYPE html><html><body><main data-spa-fragment><h3>About</h3></main></body></html>'),
     '<h3>About</h3>'
   );
+  assert.equal(
+    context.extractPageFragment('<main data-spa-fragment><div id="publication-results" data-spa-role="tabpanel" data-spa-aria-labelledby="pub-tab-selected">All publications</div></main>'),
+    '<div id="publication-results" role="tabpanel" aria-labelledby="pub-tab-selected">All publications</div>'
+  );
+  for (const document of [documents[2], documents[7]]) {
+    const renderedFragment = context.extractPageFragment(document);
+    assert.match(renderedFragment, /<div id="publication-results" role="tabpanel" aria-labelledby="pub-tab-selected">/);
+    assert.doesNotMatch(renderedFragment, /data-spa-(?:role|aria-labelledby)/);
+  }
   assert.equal(context.extractPageFragment('<p>Legacy fragment</p>'), '<p>Legacy fragment</p>');
 });
 
@@ -78,4 +88,23 @@ test('static publication documents resolve their image assets at the site root',
       assert.match(new URL(source, baseUrl).pathname, /^\/asset\/publications\//, `${path} should resolve ${source} from /asset/publications/`);
     });
   });
+});
+
+test('static publication pages only expose controls that work without the SPA', () => {
+  assert.match(style, /\.static-fallback-page \.pub-tabs,\s*\.static-fallback-page \.cite-link\s*\{\s*display:\s*none;/);
+
+  documents.forEach((document, index) => {
+    const path = fragmentPaths[index];
+    assert.match(document, /<body class="static-fallback-page">/);
+    if (!path.endsWith('/publications.html')) return;
+
+    assert.match(document, /class="cite-link"/);
+    const fragment = document.match(/<main\b(?=[^>]*\bdata-spa-fragment\b)[^>]*>([\s\S]*?)<\/main>/i)?.[1] ?? '';
+    assert.doesNotMatch(fragment, /static-fallback-note/);
+    assert.match(fragment, /<div id="publication-results" data-spa-role="tabpanel" data-spa-aria-labelledby="pub-tab-selected">/);
+    assert.doesNotMatch(fragment, /<div id="publication-results" role="tabpanel"/);
+  });
+
+  assert.match(documents[2], /<p class="static-fallback-note">All publication records are shown in this static page\.<\/p>\s*<main/);
+  assert.match(documents[7], /<p class="static-fallback-note">此静态页面展示全部论文。<\/p>\s*<main/);
 });

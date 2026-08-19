@@ -172,7 +172,10 @@ function focusLoadedContent() {
 
 function extractPageFragment(pageDocument) {
   const match = pageDocument.match(/<main\b(?=[^>]*\bdata-spa-fragment\b)[^>]*>([\s\S]*?)<\/main>/i);
-  return match ? match[1] : pageDocument;
+  if (!match) return pageDocument;
+  return match[1]
+    .replace(/\sdata-spa-role=(["'])([^"']*)\1/gi, ' role="$2"')
+    .replace(/\sdata-spa-aria-labelledby=(["'])([^"']*)\1/gi, ' aria-labelledby="$2"');
 }
 
 const pageMetadata = {

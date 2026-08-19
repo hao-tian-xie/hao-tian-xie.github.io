@@ -276,13 +276,13 @@ function createPublicationTabsHarness() {
   };
 }
 
-test('publication tabs use a shared labelled result panel in both languages', () => {
+test('publication tab sources retain a shared result panel in both languages', () => {
   for (const fragment of [publications, zhPublications]) {
     assert.match(fragment, /<div class="pub-tabs" role="tablist" aria-label="[^"]+">/);
     assert.match(fragment, /<button class="pub-tab active" data-filter="selected" id="pub-tab-selected"[^>]*role="tab"[^>]*aria-selected="true"[^>]*aria-controls="publication-results"[^>]*tabindex="0"/);
     assert.match(fragment, /<button class="pub-tab" data-filter="all" id="pub-tab-all"[^>]*role="tab"[^>]*aria-selected="false"[^>]*aria-controls="publication-results"[^>]*tabindex="-1"/);
     assert.match(fragment, /<button class="pub-tab" data-filter="conference" id="pub-tab-conference"[^>]*role="tab"[^>]*aria-selected="false"[^>]*aria-controls="publication-results"[^>]*tabindex="-1"/);
-    assert.match(fragment, /<div id="publication-results" role="tabpanel" aria-labelledby="pub-tab-selected">[\s\S]*?data-publication-list="articles"[\s\S]*?data-publication-list="conference"[\s\S]*?<\/div>\s*<\/div>\s*<\/main>\s*<\/body>\s*<\/html>\s*$/);
+    assert.match(fragment, /<div id="publication-results" data-spa-role="tabpanel" data-spa-aria-labelledby="pub-tab-selected">[\s\S]*?data-publication-list="articles"[\s\S]*?data-publication-list="conference"[\s\S]*?<\/div>\s*<\/div>\s*<\/main>\s*<\/body>\s*<\/html>\s*$/);
   }
 });
 

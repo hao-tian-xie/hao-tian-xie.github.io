@@ -122,6 +122,17 @@ main.static-fallback-content {
   padding: 1rem 0 2rem;
 }
 
+.static-fallback-note {
+  width: min(100% - 2rem, 72rem);
+  margin: 0.75rem auto 0;
+  color: var(--swatch-4);
+}
+
+.static-fallback-page .pub-tabs,
+.static-fallback-page .cite-link {
+  display: none;
+}
+
 .sidebar-header {
   margin-bottom: 1.8rem;
 }
