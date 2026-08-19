@@ -17,11 +17,12 @@
   </section>
 </div>
 <div class="pub-tabs" role="tablist" aria-label="论文筛选">
-  <button class="pub-tab active" data-filter="selected" role="tab" aria-selected="true">精选论文</button>
-  <button class="pub-tab" data-filter="all" role="tab" aria-selected="false">全部论文</button>
-  <button class="pub-tab" data-filter="conference" role="tab" aria-selected="false">会议论文</button>
+  <button class="pub-tab active" data-filter="selected" id="pub-tab-selected" role="tab" aria-selected="true" aria-controls="publication-results" tabindex="0">精选论文</button>
+  <button class="pub-tab" data-filter="all" id="pub-tab-all" role="tab" aria-selected="false" aria-controls="publication-results" tabindex="-1">全部论文</button>
+  <button class="pub-tab" data-filter="conference" id="pub-tab-conference" role="tab" aria-selected="false" aria-controls="publication-results" tabindex="-1">会议论文</button>
 </div>
 
+<div id="publication-results" role="tabpanel" aria-labelledby="pub-tab-selected">
 <div class="publication-list" data-publication-list="articles">
 <h4 class="publication-list-title">期刊论文与预印本</h4>
 <div class="publication" data-year="2026" data-selected="false">
@@ -149,5 +150,6 @@
       <button type="button" class="cite-link" data-citation="Xie, H., &amp; Zhang, C. (2023, November 28-30). AISM: A novel method for node importance ranking in complex network [Conference paper]. The 12th International Conference on Complex Networks and their Applications, 28-30 November 2023, Menton, France." aria-label="复制 APA 引用">[Cite (APA)]</button>
     </p>
   </div>
+</div>
 </div>
 </div>

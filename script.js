@@ -381,7 +381,8 @@ function initGallery() {
 }
 
 function initPubTabs(initialFilter = 'selected') {
-  const tabs = content.querySelectorAll('.pub-tab');
+  const tabs = Array.from(content.querySelectorAll('.pub-tab'));
+  const resultsPanel = content.querySelector('#publication-results');
   if (!tabs.length) return;
 
   function applyFilter(filter) {
@@ -424,8 +425,11 @@ function initPubTabs(initialFilter = 'selected') {
     tabs.forEach(tab => {
       const isActive = tab.dataset.filter === nextFilter;
       tab.classList.toggle('active', isActive);
-      tab.setAttribute('aria-selected', isActive);
+      tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      tab.tabIndex = isActive ? 0 : -1;
     });
+    const activeTab = tabs.find(tab => tab.dataset.filter === nextFilter);
+    if (resultsPanel && activeTab) resultsPanel.setAttribute('aria-labelledby', activeTab.id);
     applyFilter(nextFilter);
 
     if (updateRoute) {
@@ -439,9 +443,37 @@ function initPubTabs(initialFilter = 'selected') {
 
   applyPublicationFilter = selectFilter;
 
-  tabs.forEach(tab => {
+  function selectAndFocus(index) {
+    const tab = tabs[(index + tabs.length) % tabs.length];
+    tab.focus();
+    selectFilter(tab.dataset.filter);
+  }
+
+  tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => {
+      tab.focus();
       selectFilter(tab.dataset.filter);
+    });
+    tab.addEventListener('keydown', event => {
+      let nextIndex;
+      switch (event.key) {
+        case 'ArrowRight':
+          nextIndex = index + 1;
+          break;
+        case 'ArrowLeft':
+          nextIndex = index - 1;
+          break;
+        case 'Home':
+          nextIndex = 0;
+          break;
+        case 'End':
+          nextIndex = tabs.length - 1;
+          break;
+        default:
+          return;
+      }
+      event.preventDefault();
+      selectAndFocus(nextIndex);
     });
   });
 

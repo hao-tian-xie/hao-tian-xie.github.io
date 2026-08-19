@@ -84,6 +84,158 @@ const flushMicrotasks = async () => {
   for (let count = 0; count < 12; count += 1) await Promise.resolve();
 };
 
+function createPublicationTabsHarness() {
+  const state = { focused: null, routeUpdates: [] };
+  const createClassList = () => {
+    const classes = new Set();
+    return {
+      add: name => classes.add(name),
+      remove: name => classes.delete(name),
+      toggle: (name, force) => {
+        const enabled = force ?? !classes.has(name);
+        classes[enabled ? 'add' : 'delete'](name);
+      },
+      contains: name => classes.has(name)
+    };
+  };
+  const createTab = filter => {
+    const attributes = new Map();
+    const listeners = new Map();
+    return {
+      id: `pub-tab-${filter}`,
+      dataset: { filter },
+      classList: createClassList(),
+      tabIndex: -1,
+      setAttribute(name, value) { attributes.set(name, String(value)); },
+      getAttribute(name) { return attributes.get(name) ?? null; },
+      addEventListener(name, listener) { listeners.set(name, listener); },
+      focus() { state.focused = this; },
+      dispatch(name, key) {
+        let defaultPrevented = false;
+        listeners.get(name)({
+          key,
+          preventDefault() { defaultPrevented = true; }
+        });
+        return defaultPrevented;
+      }
+    };
+  };
+  const createPublication = (selected, publicationList) => ({
+    dataset: { selected: String(selected) },
+    style: {},
+    classList: createClassList(),
+    closest: selector => selector === '[data-publication-list]' ? publicationList : null
+  });
+  const articleList = { dataset: { publicationList: 'articles' }, style: {} };
+  const conferenceList = { dataset: { publicationList: 'conference' }, style: {} };
+  const articles = [createPublication(true, articleList), createPublication(false, articleList)];
+  const conferences = [createPublication(false, conferenceList)];
+  articleList.querySelectorAll = selector => selector === '.publication' ? articles : [];
+  conferenceList.querySelectorAll = selector => selector === '.publication' ? conferences : [];
+  const tabs = ['selected', 'all', 'conference'].map(createTab);
+  const panelAttributes = new Map();
+  const panel = {
+    setAttribute(name, value) { panelAttributes.set(name, String(value)); },
+    getAttribute(name) { return panelAttributes.get(name) ?? null; }
+  };
+  const content = {
+    querySelector: selector => selector === '#publication-results' ? panel : null,
+    querySelectorAll: selector => ({
+      '.pub-tab': tabs,
+      '.publication': [...articles, ...conferences],
+      '[data-publication-list]': [articleList, conferenceList],
+      '.year-section': []
+    })[selector] ?? []
+  };
+  const context = {
+    content,
+    location: { hash: '#publications' },
+    window: {
+      history: {
+        pushState: (route, _title, hash) => {
+          state.routeUpdates.push([route, hash]);
+          context.location.hash = hash;
+        }
+      }
+    }
+  };
+  const tabSource = script.slice(script.indexOf('function initPubTabs'), script.indexOf('// Scroll reveal'));
+  vm.runInNewContext(`
+    const publicationFilters = new Set(['selected', 'all', 'conference']);
+    let applyPublicationFilter = null;
+    let pendingLoadIntent = null;
+    function buildRouteHash(page, filter = 'selected') {
+      if (page === 'publications' && filter !== 'selected') return \`#publications?filter=\${filter}\`;
+      return '#publications';
+    }
+    function pushRouteState(newHash, route) { window.history.pushState(route, '', newHash); }
+    function handleRoute() {}
+    ${tabSource}
+    globalThis.initPublicationTabs = initPubTabs;
+  `, context);
+  return {
+    get focused() { return state.focused; },
+    routeUpdates: state.routeUpdates,
+    tabs,
+    panel,
+    articles,
+    conferences,
+    articleList,
+    conferenceList,
+    init: context.initPublicationTabs
+  };
+}
+
+test('publication tabs use a shared labelled result panel in both languages', () => {
+  for (const fragment of [publications, zhPublications]) {
+    assert.match(fragment, /<div class="pub-tabs" role="tablist" aria-label="[^"]+">/);
+    assert.match(fragment, /<button class="pub-tab active" data-filter="selected" id="pub-tab-selected"[^>]*role="tab"[^>]*aria-selected="true"[^>]*aria-controls="publication-results"[^>]*tabindex="0"/);
+    assert.match(fragment, /<button class="pub-tab" data-filter="all" id="pub-tab-all"[^>]*role="tab"[^>]*aria-selected="false"[^>]*aria-controls="publication-results"[^>]*tabindex="-1"/);
+    assert.match(fragment, /<button class="pub-tab" data-filter="conference" id="pub-tab-conference"[^>]*role="tab"[^>]*aria-selected="false"[^>]*aria-controls="publication-results"[^>]*tabindex="-1"/);
+    assert.match(fragment, /<div id="publication-results" role="tabpanel" aria-labelledby="pub-tab-selected">[\s\S]*?data-publication-list="articles"[\s\S]*?data-publication-list="conference"[\s\S]*?<\/div>\s*<\/div>\s*$/);
+  }
+});
+
+test('publication filter tabs select and focus with click and roving keyboard keys', () => {
+  const harness = createPublicationTabsHarness();
+  harness.init('selected');
+
+  assert.equal(harness.tabs[0].tabIndex, 0);
+  assert.equal(harness.tabs[1].tabIndex, -1);
+  assert.equal(harness.tabs[0].getAttribute('aria-selected'), 'true');
+  assert.equal(harness.panel.getAttribute('aria-labelledby'), 'pub-tab-selected');
+  assert.equal(harness.articles[0].style.display, '');
+  assert.equal(harness.articles[1].style.display, 'none');
+  assert.equal(harness.conferences[0].style.display, 'none');
+
+  assert.equal(harness.tabs[0].dispatch('keydown', 'ArrowRight'), true);
+  assert.equal(harness.focused, harness.tabs[1]);
+  assert.equal(harness.tabs[1].tabIndex, 0);
+  assert.equal(harness.tabs[1].getAttribute('aria-selected'), 'true');
+  assert.equal(harness.panel.getAttribute('aria-labelledby'), 'pub-tab-all');
+  assert.equal(harness.articles[1].style.display, '');
+  assert.equal(harness.routeUpdates.at(-1)[1], '#publications?filter=all');
+
+  assert.equal(harness.tabs[1].dispatch('keydown', 'End'), true);
+  assert.equal(harness.focused, harness.tabs[2]);
+  assert.equal(harness.panel.getAttribute('aria-labelledby'), 'pub-tab-conference');
+  assert.equal(harness.articleList.style.display, 'none');
+  assert.equal(harness.conferenceList.style.display, '');
+  assert.equal(harness.routeUpdates.at(-1)[1], '#publications?filter=conference');
+
+  assert.equal(harness.tabs[2].dispatch('keydown', 'ArrowRight'), true);
+  assert.equal(harness.focused, harness.tabs[0]);
+  assert.equal(harness.tabs[0].dispatch('keydown', 'ArrowLeft'), true);
+  assert.equal(harness.focused, harness.tabs[2]);
+  assert.equal(harness.tabs[2].dispatch('keydown', 'Home'), true);
+  assert.equal(harness.focused, harness.tabs[0]);
+
+  harness.tabs[1].dispatch('click');
+  assert.equal(harness.focused, harness.tabs[1]);
+  assert.equal(harness.tabs[1].getAttribute('aria-selected'), 'true');
+  assert.equal(harness.panel.getAttribute('aria-labelledby'), 'pub-tab-all');
+});
+
 test('prevents a slow old fragment response from replacing a newer route', () => {
   assert.match(script, /let activeLoadId = 0;/);
   assert.match(script, /const loadId = \+\+activeLoadId;/);
