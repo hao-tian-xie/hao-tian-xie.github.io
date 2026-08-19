@@ -68,8 +68,9 @@
   </div>
 
   <!-- Easter Egg -->
-  <div id="easter-egg-overlay" class="easter-egg-overlay">
-    <span class="easter-egg-text" data-i18n="easter-egg">Operations Research &amp; Complex Systems</span>
+  <div id="easter-egg-overlay" class="easter-egg-overlay" role="dialog" aria-modal="true" aria-labelledby="easter-egg-message" tabindex="-1" hidden aria-hidden="true">
+    <button type="button" id="easter-egg-close" class="easter-egg-close" data-i18n="close">Close</button>
+    <span id="easter-egg-message" class="easter-egg-text" data-i18n="easter-egg">Operations Research &amp; Complex Systems</span>
   </div>
 
   <!-- Lightbox Modal -->

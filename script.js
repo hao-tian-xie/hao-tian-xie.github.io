@@ -522,6 +522,39 @@ links.forEach(link => {
 window.addEventListener('hashchange', handleRoute);
 window.addEventListener('popstate', handleRoute);
 
+let imageModalOpen = false;
+let easterEggOpen = false;
+const focusableSelector = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function syncPageShellInert() {
+  const shouldInert = imageModalOpen || easterEggOpen;
+  Array.from(document.body.children)
+    .filter(element => !element.matches('#image-modal, #easter-egg-overlay') && element.tagName !== 'SCRIPT')
+    .forEach(element => {
+      element.inert = shouldInert;
+    });
+}
+
+function trapFocus(container, e) {
+  if (e.key !== 'Tab') return;
+  const focusable = Array.from(container.querySelectorAll(focusableSelector));
+  if (!focusable.length) {
+    e.preventDefault();
+    container.focus();
+    return;
+  }
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
 // Lightbox Modal
 (function initLightbox() {
   const modal = document.getElementById('image-modal');
@@ -531,24 +564,18 @@ window.addEventListener('popstate', handleRoute);
 
   let lastFocused = null;
   let previousBodyOverflow = '';
-  const pageShell = Array.from(document.body.children)
-    .filter(element => element !== modal && element.tagName !== 'SCRIPT');
-
-  function setPageShellInert(inert) {
-    pageShell.forEach(element => {
-      element.inert = inert;
-    });
-  }
 
   function openModal(img) {
+    if (easterEggOpen) return;
     lastFocused = img;
     previousBodyOverflow = document.body.style.overflow;
+    imageModalOpen = true;
     modal.hidden = false;
     modal.classList.add('active');
     modalImg.src = img.src;
     modalImg.alt = img.alt || uiText[currentLanguage].imagePreview;
     document.body.style.overflow = 'hidden';
-    setPageShellInert(true);
+    syncPageShellInert();
     closeBtn.focus();
   }
 
@@ -557,31 +584,10 @@ window.addEventListener('popstate', handleRoute);
     modal.classList.remove('active');
     modal.hidden = true;
     document.body.style.overflow = previousBodyOverflow;
-    setPageShellInert(false);
+    imageModalOpen = false;
+    syncPageShellInert();
     if (lastFocused) lastFocused.focus();
     lastFocused = null;
-  }
-
-  function trapModalFocus(e) {
-    if (e.key !== 'Tab') return;
-    const focusable = Array.from(modal.querySelectorAll(
-      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-    ));
-    if (!focusable.length) {
-      e.preventDefault();
-      modal.focus();
-      return;
-    }
-
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
-    }
   }
 
   document.addEventListener('click', e => {
@@ -598,7 +604,7 @@ window.addEventListener('popstate', handleRoute);
   modal.addEventListener('click', e => {
     if (e.target === modal) closeModal();
   });
-  modal.addEventListener('keydown', trapModalFocus);
+  modal.addEventListener('keydown', e => trapFocus(modal, e));
   closeBtn.addEventListener('click', closeModal);
 
   document.addEventListener('keydown', e => {
@@ -759,8 +765,39 @@ loadPage(initialRoute.page, initialRoute.filter);
 (function initEasterEgg() {
   const trigger = document.getElementById('easter-egg');
   const overlay = document.getElementById('easter-egg-overlay');
-  if (!trigger || !overlay) return;
+  const closeBtn = document.getElementById('easter-egg-close');
+  if (!trigger || !overlay || !closeBtn) return;
 
-  trigger.addEventListener('click', () => overlay.classList.add('active'));
-  overlay.addEventListener('click', () => overlay.classList.remove('active'));
+  function openOverlay() {
+    if (imageModalOpen) return;
+    easterEggOpen = true;
+    overlay.hidden = false;
+    overlay.setAttribute('aria-hidden', 'false');
+    overlay.classList.add('active');
+    syncPageShellInert();
+    closeBtn.focus();
+  }
+
+  function closeOverlay() {
+    if (overlay.hidden) return;
+    overlay.classList.remove('active');
+    overlay.hidden = true;
+    overlay.setAttribute('aria-hidden', 'true');
+    easterEggOpen = false;
+    syncPageShellInert();
+    trigger.focus();
+  }
+
+  trigger.addEventListener('click', openOverlay);
+  overlay.addEventListener('click', e => {
+    if (e.target !== closeBtn) closeOverlay();
+  });
+  closeBtn.addEventListener('click', closeOverlay);
+  overlay.addEventListener('keydown', e => trapFocus(overlay, e));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !overlay.hidden) {
+      e.preventDefault();
+      closeOverlay();
+    }
+  });
 })();

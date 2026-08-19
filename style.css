@@ -740,6 +740,28 @@ a:active {
   pointer-events: auto;
 }
 
+.easter-egg-overlay[hidden] {
+  display: none;
+}
+
+.easter-egg-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--swatch-1);
+  font: inherit;
+  cursor: pointer;
+}
+
+.easter-egg-close:hover,
+.easter-egg-close:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .easter-egg-text {
   font-size: 1.1rem;
   font-weight: 400;

@@ -202,13 +202,28 @@ test('keeps the shell inaccessible while a mobile menu or image dialog is closed
   assert.match(script, /e\.key === 'Escape' && sidebar\.classList\.contains\('menu-open'\)/);
   assert.match(script, /modal\.hidden = false;/);
   assert.match(script, /modal\.hidden = true;/);
-  assert.match(script, /setPageShellInert\(true\);/);
-  assert.match(script, /setPageShellInert\(false\);/);
+  assert.match(script, /const shouldInert = imageModalOpen \|\| easterEggOpen;/);
+  assert.match(script, /element\.inert = shouldInert;/);
   assert.match(script, /e\.key !== 'Tab'/);
   assert.match(script, /<p role="alert">/);
   assert.match(style, /\.modal\[hidden\]\s*\{\s*display:\s*none;/);
   assert.match(style, /\.about-section a\s*\{[\s\S]*?text-decoration:\s*underline;/);
   assert.match(style, /\.easter-egg-trigger\s*\{[\s\S]*?background:\s*none;/);
+});
+
+test('keeps the easter egg overlay hidden, closable, and focus-contained', () => {
+  assert.match(homepage, /<div id="easter-egg-overlay"[^>]*role="dialog"[^>]*aria-modal="true"[^>]*hidden[^>]*aria-hidden="true"/);
+  assert.match(homepage, /<button type="button" id="easter-egg-close"[^>]*data-i18n="close">Close<\/button>/);
+  assert.match(script, /let easterEggOpen = false;/);
+  assert.match(script, /easterEggOpen = true;/);
+  assert.match(script, /overlay\.hidden = false;/);
+  assert.match(script, /overlay\.setAttribute\('aria-hidden', 'false'\);/);
+  assert.match(script, /overlay\.hidden = true;/);
+  assert.match(script, /overlay\.setAttribute\('aria-hidden', 'true'\);/);
+  assert.match(script, /e\.key === 'Escape' && !overlay\.hidden/);
+  assert.match(script, /trigger\.focus\(\);/);
+  assert.match(script, /trapFocus\(overlay, e\)\);/);
+  assert.match(style, /\.easter-egg-overlay\[hidden\]\s*\{\s*display:\s*none;/);
 });
 
 test('does not render journal index labels', () => {
