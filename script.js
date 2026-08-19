@@ -170,6 +170,11 @@ function focusLoadedContent() {
   focusTarget.focus({ preventScroll: true });
 }
 
+function extractPageFragment(pageDocument) {
+  const match = pageDocument.match(/<main\b(?=[^>]*\bdata-spa-fragment\b)[^>]*>([\s\S]*?)<\/main>/i);
+  return match ? match[1] : pageDocument;
+}
+
 const pageMetadata = {
   en: {
     home: {
@@ -244,7 +249,7 @@ async function loadPage(page, filter = 'selected') {
     if (failedResponse) throw new Error(`HTTP error! status: ${failedResponse.status}`);
     const htmlParts = await Promise.all(responses.map(response => response.text()));
     if (loadId !== activeLoadId) return;
-    const html = htmlParts.join('\n');
+    const html = htmlParts.map(extractPageFragment).join('\n');
 
     // Animate out
     document.body.classList.toggle('page-home', page === 'home');

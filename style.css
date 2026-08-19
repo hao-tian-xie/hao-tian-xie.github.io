@@ -98,6 +98,30 @@ main {
   max-width: 80%;
 }
 
+/* ─── Direct static fallback pages ─── */
+.static-fallback-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  width: min(100% - 2rem, 72rem);
+  margin: 0 auto;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.static-fallback-nav a {
+  color: var(--swatch-1);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+main.static-fallback-content {
+  width: min(100% - 2rem, 72rem);
+  max-width: 72rem;
+  margin: 0 auto 3rem;
+  padding: 1rem 0 2rem;
+}
+
 .sidebar-header {
   margin-bottom: 1.8rem;
 }
