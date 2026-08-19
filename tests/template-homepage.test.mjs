@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
+import vm from 'node:vm';
 
 const [homepage, script, style, about, publications, misc, home, selectedPublications, zhAbout, zhPublications, zhMisc, zhHome, zhSelectedPublications, academicProfileText] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
@@ -25,11 +26,101 @@ const chineseSite = [zhAbout, zhPublications, zhMisc, zhHome, zhSelectedPublicat
 const englishSite = [homepage, script, style, about, publications, misc, home, selectedPublications].join('\n');
 const site = [englishSite, chineseSite].join('\n');
 
+function createLoaderHarness(fetch, { holdFade = false } = {}) {
+  const classes = new Set();
+  const classList = {
+    add: name => classes.add(name),
+    remove: name => classes.delete(name),
+    toggle: (name, force) => {
+      const enabled = force ?? !classes.has(name);
+      classes[enabled ? 'add' : 'delete'](name);
+    },
+    contains: name => classes.has(name)
+  };
+  const content = { classList, innerHTML: '', querySelector: () => null, querySelectorAll: () => [] };
+  const timers = [];
+  const context = {
+    URLSearchParams,
+    console: { error: () => {} },
+    content,
+    document: {
+      body: { classList },
+      documentElement: {},
+      getElementById: id => id === 'content' ? content : null,
+      querySelector: () => null,
+      querySelectorAll: () => []
+    },
+    fetch,
+    localStorage: { getItem: () => null },
+    location: { hash: '#' },
+    setTimeout: callback => {
+      if (holdFade) timers.push(callback);
+      else callback();
+      return timers.length;
+    },
+    window: { scrollTo: () => {} }
+  };
+  const loaderSource = script.slice(0, script.indexOf('// Navigation clicks'));
+  vm.runInNewContext(`${loaderSource}\nfunction updateTopButtonVisibility() {}\nglobalThis.loader = { loadPage, handleRoute, getLastLoadedPage: () => lastLoadedPage };`, context);
+  return { ...context, content, runTimers: () => timers.splice(0).forEach(callback => callback()) };
+}
+
+const response = html => ({ ok: true, text: async () => html });
+const flushMicrotasks = async () => {
+  for (let count = 0; count < 12; count += 1) await Promise.resolve();
+};
+
 test('prevents a slow old fragment response from replacing a newer route', () => {
   assert.match(script, /let activeLoadId = 0;/);
   assert.match(script, /const loadId = \+\+activeLoadId;/);
   assert.match(script, /if \(loadId !== activeLoadId\) return;/);
   assert.match(script, /lastLoadedPage = page;/);
+});
+
+test('returning to a committed route invalidates a different in-flight route without reloading it', () => {
+  assert.match(script, /let pendingLoadPage = null;/);
+  assert.match(script, /pendingLoadPage = page;/);
+  assert.match(script, /if \(pendingLoadPage && pendingLoadPage !== route\.page\) \{[\s\S]*?activeLoadId\+\+;[\s\S]*?pendingLoadPage = null;/);
+});
+
+test('keeps a committed page when a slow route is cancelled by returning to it', async () => {
+  let mode = 'home';
+  let resolveAbout;
+  const aboutResponse = new Promise(resolve => { resolveAbout = resolve; });
+  const harness = createLoaderHarness(source => {
+    if (mode === 'about') return aboutResponse;
+    return Promise.resolve(response('<p>Home</p>'));
+  });
+
+  await harness.loader.loadPage('home');
+  mode = 'about';
+  harness.location.hash = '#about';
+  harness.loader.handleRoute();
+  await flushMicrotasks();
+  harness.location.hash = '#';
+  harness.loader.handleRoute();
+  resolveAbout(response('<p>About</p>'));
+  await flushMicrotasks();
+
+  assert.equal(harness.content.innerHTML, '<p>Home</p>\n<p>Home</p>\n<p>Home</p>');
+  assert.equal(harness.loader.getLastLoadedPage(), 'home');
+});
+
+test('shows a visible error when the current request fails after an older fade started', async () => {
+  let mode = 'about';
+  const harness = createLoaderHarness(() => Promise.resolve(
+    mode === 'about' ? response('<p>About</p>') : { ok: false, status: 500 }
+  ), { holdFade: true });
+
+  harness.loader.loadPage('about');
+  await flushMicrotasks();
+  assert.equal(harness.content.classList.contains('fading-out'), true);
+  mode = 'home';
+  await harness.loader.loadPage('home');
+
+  assert.match(harness.content.innerHTML, /Error loading page/);
+  assert.equal(harness.content.classList.contains('fading-out'), false);
+  assert.equal(harness.document.body.classList.contains('page-home'), true);
 });
 
 test('does not render journal index labels', () => {

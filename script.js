@@ -10,6 +10,7 @@ const publicationFilters = new Set(['selected', 'all', 'conference']);
 let lastLoadedPage = null;
 let applyPublicationFilter = null;
 let activeLoadId = 0;
+let pendingLoadPage = null;
 
 function parseRoute(hash = location.hash) {
   const raw = hash.replace(/^#/, '');
@@ -157,6 +158,7 @@ function setActiveLink(page) {
 
 async function loadPage(page, filter = 'selected') {
   const loadId = ++activeLoadId;
+  pendingLoadPage = page;
   const language = currentLanguage;
   try {
     const pageRoot = language === 'zh' ? 'pages/zh' : 'pages';
@@ -181,6 +183,7 @@ async function loadPage(page, filter = 'selected') {
     // Swap content
     content.innerHTML = html;
     lastLoadedPage = page;
+    pendingLoadPage = null;
     window.scrollTo(0, 0);
     updateTopButtonVisibility();
 
@@ -231,7 +234,11 @@ async function loadPage(page, filter = 'selected') {
 
   } catch (error) {
     if (loadId !== activeLoadId) return;
+    pendingLoadPage = null;
     console.error('Error loading page:', error);
+    document.body.classList.toggle('page-home', page === 'home');
+    content.classList.remove('fading-out');
+    content.classList.remove('fading-in');
     content.innerHTML = `<p>${uiText[language].loadError}</p>`;
     updateTopButtonVisibility();
   }
@@ -449,12 +456,21 @@ function handleRoute() {
   const route = parseRoute();
   setActiveLink(route.page);
 
-  if (route.page === lastLoadedPage && route.page === 'publications' && applyPublicationFilter) {
-    applyPublicationFilter(route.filter, { updateRoute: false });
+  if (route.page === lastLoadedPage) {
+    if (pendingLoadPage && pendingLoadPage !== route.page) {
+      activeLoadId++;
+      pendingLoadPage = null;
+      document.body.classList.toggle('page-home', route.page === 'home');
+      content.classList.remove('fading-out');
+      content.classList.remove('fading-in');
+    }
+
+    if (route.page === 'publications' && applyPublicationFilter) {
+      applyPublicationFilter(route.filter, { updateRoute: false });
+    }
     return;
   }
 
-  if (route.page === lastLoadedPage && route.page !== 'publications') return;
   loadPage(route.page, route.filter);
 }
 
