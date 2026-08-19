@@ -47,3 +47,27 @@ Observed passing output after implementation:
 - `git diff --check` passed.
 - No stale `.png` URLs or lowercase title variants remain in owned content/test files.
 - Only Task 1-owned files are included in the commit; unrelated planning documents remain untouched.
+
+## Review fix: cache version 56
+
+The review-required cache fix updated `index.html` stylesheet/script URLs and `script.js` `pageVersion` from 55 to 56. Focused test assertions were updated accordingly.
+
+Verification evidence:
+
+```text
+$ node --test tests/template-homepage.test.mjs
+ℹ tests 12
+ℹ pass 12
+ℹ fail 0
+
+$ node --test
+ℹ tests 12
+ℹ pass 12
+ℹ fail 0
+
+$ node --check script.js
+# exit 0, no output
+
+$ git diff --check
+# exit 0, no output
+```
