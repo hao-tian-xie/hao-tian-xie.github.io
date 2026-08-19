@@ -25,6 +25,13 @@ const chineseSite = [zhAbout, zhPublications, zhMisc, zhHome, zhSelectedPublicat
 const englishSite = [homepage, script, style, about, publications, misc, home, selectedPublications].join('\n');
 const site = [englishSite, chineseSite].join('\n');
 
+test('prevents a slow old fragment response from replacing a newer route', () => {
+  assert.match(script, /let activeLoadId = 0;/);
+  assert.match(script, /const loadId = \+\+activeLoadId;/);
+  assert.match(script, /if \(loadId !== activeLoadId\) return;/);
+  assert.match(script, /lastLoadedPage = page;/);
+});
+
 test('does not render journal index labels', () => {
   for (const [pageName, page] of [
     ['English publications', publications],

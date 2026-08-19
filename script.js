@@ -9,6 +9,7 @@ const publicationFilters = new Set(['selected', 'all', 'conference']);
 
 let lastLoadedPage = null;
 let applyPublicationFilter = null;
+let activeLoadId = 0;
 
 function parseRoute(hash = location.hash) {
   const raw = hash.replace(/^#/, '');
@@ -155,26 +156,31 @@ function setActiveLink(page) {
 }
 
 async function loadPage(page, filter = 'selected') {
-  lastLoadedPage = page;
-  applyPublicationFilter = null;
-  document.body.classList.toggle('page-home', page === 'home');
+  const loadId = ++activeLoadId;
+  const language = currentLanguage;
   try {
-    const pageRoot = currentLanguage === 'zh' ? 'pages/zh' : 'pages';
+    const pageRoot = language === 'zh' ? 'pages/zh' : 'pages';
     const pageSources = page === 'home'
       ? [`${pageRoot}/home.html?v=${pageVersion}`, `${pageRoot}/about.html?v=${pageVersion}`, `${pageRoot}/selected-publications.html?v=${pageVersion}`]
       : [`${pageRoot}/${page}.html?v=${pageVersion}`];
     const responses = await Promise.all(pageSources.map(source => fetch(source)));
+    if (loadId !== activeLoadId) return;
     const failedResponse = responses.find(response => !response.ok);
     if (failedResponse) throw new Error(`HTTP error! status: ${failedResponse.status}`);
     const htmlParts = await Promise.all(responses.map(response => response.text()));
+    if (loadId !== activeLoadId) return;
     const html = htmlParts.join('\n');
 
     // Animate out
+    applyPublicationFilter = null;
+    document.body.classList.toggle('page-home', page === 'home');
     content.classList.add('fading-out');
     await new Promise(r => setTimeout(r, 150));
+    if (loadId !== activeLoadId) return;
 
     // Swap content
     content.innerHTML = html;
+    lastLoadedPage = page;
     window.scrollTo(0, 0);
     updateTopButtonVisibility();
 
@@ -207,7 +213,7 @@ async function loadPage(page, filter = 'selected') {
     });
 
     // Update page title
-    const pageTitles = currentLanguage === 'zh'
+    const pageTitles = language === 'zh'
       ? { about: '关于我', publications: '学术出版物列表', misc: '其他', home: '主页' }
       : { about: 'About', publications: 'Publications', misc: 'Miscellaneous', home: 'Home' };
     document.title = pageTitles[page]
@@ -218,13 +224,15 @@ async function loadPage(page, filter = 'selected') {
     content.classList.remove('fading-out');
     content.classList.add('fading-in');
     setTimeout(() => {
+      if (loadId !== activeLoadId) return;
       content.classList.remove('fading-in');
       initScrollReveal();
     }, 400);
 
   } catch (error) {
+    if (loadId !== activeLoadId) return;
     console.error('Error loading page:', error);
-    content.innerHTML = `<p>${uiText[currentLanguage].loadError}</p>`;
+    content.innerHTML = `<p>${uiText[language].loadError}</p>`;
     updateTopButtonVisibility();
   }
 }
