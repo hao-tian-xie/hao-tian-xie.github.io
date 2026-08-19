@@ -468,6 +468,29 @@ test('keeps the easter egg overlay hidden, closable, and focus-contained', () =>
   assert.match(style, /\.easter-egg-overlay\[hidden\]\s*\{\s*display:\s*none;/);
 });
 
+test('inerts obscured mobile content while the fullscreen menu is open', () => {
+  assert.match(script, /let mobileMenuOpen = false;/);
+  assert.match(script, /mobileMenuOpen && window\.matchMedia\('\(max-width: 768px\)'\)\.matches/);
+  assert.match(script, /document\.querySelector\('main'\)/);
+  assert.match(script, /mobileMenuOpen = shouldOpen;/);
+  assert.match(script, /syncMenuBackgroundInert\(\);/);
+});
+
+test('keeps dialog backgrounds inert when the mobile menu is closed', () => {
+  assert.match(
+    script,
+    /const shouldInert = imageModalOpen \|\| easterEggOpen \|\|\s*\(mobileMenuOpen && window\.matchMedia\('\(max-width: 768px\)'\)\.matches\);/
+  );
+});
+
+test('cycles Tab within the open mobile menu and its close control', () => {
+  assert.match(script, /function trapMenuFocus\(e\)/);
+  assert.match(script, /if \(e\.key !== 'Tab' \|\| !mobileMenuOpen\) return;/);
+  assert.match(script, /const focusable = \[btn, \.\.\.sidebar\.querySelectorAll\(focusableSelector\)\]/);
+  assert.match(script, /focusable\[0\]\.focus\(\);/);
+  assert.match(script, /focusable\[focusable\.length - 1\]\.focus\(\);/);
+});
+
 test('does not render journal index labels', () => {
   for (const [pageName, page] of [
     ['English publications', publications],

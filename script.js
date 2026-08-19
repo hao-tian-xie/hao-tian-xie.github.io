@@ -611,7 +611,21 @@ window.addEventListener('popstate', handleRoute);
 
 let imageModalOpen = false;
 let easterEggOpen = false;
+let mobileMenuOpen = false;
 const focusableSelector = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function syncMenuBackgroundInert() {
+  const shouldInert = imageModalOpen || easterEggOpen ||
+    (mobileMenuOpen && window.matchMedia('(max-width: 768px)').matches);
+  [
+    document.querySelector('.skip-link'),
+    document.querySelector('.mobile-header-name'),
+    document.querySelector('main'),
+    document.querySelector('.mobile-footer')
+  ].forEach(element => {
+    if (element) element.inert = shouldInert;
+  });
+}
 
 function syncPageShellInert() {
   const shouldInert = imageModalOpen || easterEggOpen;
@@ -620,6 +634,7 @@ function syncPageShellInert() {
     .forEach(element => {
       element.inert = shouldInert;
     });
+  syncMenuBackgroundInert();
 }
 
 function trapFocus(container, e) {
@@ -756,11 +771,32 @@ document.addEventListener('click', event => {
     const shouldOpen = isMobile && open;
     sidebar.classList.toggle('menu-open', shouldOpen);
     sidebar.inert = isMobile && !shouldOpen;
+    mobileMenuOpen = shouldOpen;
+    syncMenuBackgroundInert();
     sidebar.setAttribute('aria-hidden', String(sidebar.inert));
     btn.setAttribute('aria-expanded', String(shouldOpen));
     updateMenuButtonLabel();
     if (shouldOpen && focusFirst) sidebar.querySelector('a[data-page]')?.focus();
     if (restoreFocus) btn.focus();
+  }
+
+  function trapMenuFocus(e) {
+    if (e.key !== 'Tab' || !mobileMenuOpen) return;
+    const focusable = [btn, ...sidebar.querySelectorAll(focusableSelector)]
+      .filter(element => element.getClientRects().length > 0);
+    if (!focusable.length) return;
+
+    const currentIndex = focusable.indexOf(document.activeElement);
+    if (currentIndex === -1) {
+      e.preventDefault();
+      focusable[0].focus();
+    } else if (e.shiftKey && currentIndex === 0) {
+      e.preventDefault();
+      focusable[focusable.length - 1].focus();
+    } else if (!e.shiftKey && currentIndex === focusable.length - 1) {
+      e.preventDefault();
+      focusable[0].focus();
+    }
   }
 
   setMobileMenuState = setMenuState;
@@ -782,6 +818,7 @@ document.addEventListener('click', event => {
       setMenuState(false, { restoreFocus: true });
     }
   });
+  document.addEventListener('keydown', trapMenuFocus);
 
   window.addEventListener('resize', () => {
     setMenuState(sidebar.classList.contains('menu-open'), { focusFirst: false });
