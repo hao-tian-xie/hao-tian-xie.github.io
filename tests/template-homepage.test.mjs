@@ -27,6 +27,7 @@ const englishSite = [homepage, script, style, about, publications, misc, home, s
 const site = [englishSite, chineseSite].join('\n');
 
 function createLoaderHarness(fetch, { holdFade = false } = {}) {
+  let shouldHoldFade = holdFade;
   const classes = new Set();
   const classList = {
     add: name => classes.add(name),
@@ -51,18 +52,18 @@ function createLoaderHarness(fetch, { holdFade = false } = {}) {
       querySelectorAll: () => []
     },
     fetch,
-    localStorage: { getItem: () => null },
+    localStorage: { getItem: () => null, setItem: () => {} },
     location: { hash: '#' },
     setTimeout: callback => {
-      if (holdFade) timers.push(callback);
+      if (shouldHoldFade) timers.push(callback);
       else callback();
       return timers.length;
     },
     window: { scrollTo: () => {} }
   };
   const loaderSource = script.slice(0, script.indexOf('// Navigation clicks'));
-  vm.runInNewContext(`${loaderSource}\nfunction updateTopButtonVisibility() {}\nglobalThis.loader = { loadPage, handleRoute, getLastLoadedPage: () => lastLoadedPage };`, context);
-  return { ...context, content, runTimers: () => timers.splice(0).forEach(callback => callback()) };
+  vm.runInNewContext(`${loaderSource}\nfunction updateTopButtonVisibility() {}\nglobalThis.loader = { loadPage, handleRoute, setLanguage, getLastLoadedPage: () => lastLoadedPage, setPublicationFilterHandler: handler => { applyPublicationFilter = handler; } };`, context);
+  return { ...context, content, setHoldFade: value => { shouldHoldFade = value; } };
 }
 
 const response = html => ({ ok: true, text: async () => html });
@@ -78,9 +79,9 @@ test('prevents a slow old fragment response from replacing a newer route', () =>
 });
 
 test('returning to a committed route invalidates a different in-flight route without reloading it', () => {
-  assert.match(script, /let pendingLoadPage = null;/);
-  assert.match(script, /pendingLoadPage = page;/);
-  assert.match(script, /if \(pendingLoadPage && pendingLoadPage !== route\.page\) \{[\s\S]*?activeLoadId\+\+;[\s\S]*?pendingLoadPage = null;/);
+  assert.match(script, /let pendingLoadIntent = null;/);
+  assert.match(script, /pendingLoadIntent = \{ page, filter, language \};/);
+  assert.match(script, /if \(pendingLoadIntent && !matchesPendingLoad\(route\.page, route\.filter, currentLanguage\)\) \{[\s\S]*?activeLoadId\+\+;[\s\S]*?pendingLoadIntent = null;/);
 });
 
 test('keeps a committed page when a slow route is cancelled by returning to it', async () => {
@@ -121,6 +122,53 @@ test('shows a visible error when the current request fails after an older fade s
   assert.match(harness.content.innerHTML, /Error loading page/);
   assert.equal(harness.content.classList.contains('fading-out'), false);
   assert.equal(harness.document.body.classList.contains('page-home'), true);
+});
+
+test('retains the committed Publications filter handler when a slow About load is cancelled', async () => {
+  let mode = 'publications';
+  const harness = createLoaderHarness(() => Promise.resolve(response(`<p>${mode}</p>`)));
+  const calls = [];
+
+  await harness.loader.loadPage('publications');
+  harness.loader.setPublicationFilterHandler((filter, options) => calls.push([filter, options]));
+  harness.setHoldFade(true);
+  mode = 'about';
+  harness.loader.loadPage('about');
+  await flushMicrotasks();
+  harness.location.hash = '#publications';
+  harness.loader.handleRoute();
+  harness.location.hash = '#publications?filter=conference';
+  harness.loader.handleRoute();
+
+  assert.deepEqual(calls.map(([filter, options]) => [filter, options.updateRoute]), [
+    ['selected', false],
+    ['conference', false]
+  ]);
+});
+
+test('reloads a pending language-switched Publications route when its filter intent changes', async () => {
+  let resolveSelected;
+  const selectedResponse = new Promise(resolve => { resolveSelected = resolve; });
+  let fetchCount = 0;
+  const harness = createLoaderHarness(() => {
+    fetchCount += 1;
+    if (fetchCount === 1) return Promise.resolve(response('<p>English publications</p>'));
+    if (fetchCount === 2) return selectedResponse;
+    return Promise.resolve(response('<p>Chinese conference publications</p>'));
+  });
+
+  await harness.loader.loadPage('publications');
+  harness.location.hash = '#publications';
+  harness.loader.setLanguage('zh');
+  await flushMicrotasks();
+  harness.location.hash = '#publications?filter=conference';
+  harness.loader.handleRoute();
+  await flushMicrotasks();
+  resolveSelected(response('<p>Chinese selected publications</p>'));
+  await flushMicrotasks();
+
+  assert.equal(harness.content.innerHTML, '<p>Chinese conference publications</p>');
+  assert.equal(harness.loader.getLastLoadedPage(), 'publications');
 });
 
 test('does not render journal index labels', () => {

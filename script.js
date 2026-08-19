@@ -10,7 +10,14 @@ const publicationFilters = new Set(['selected', 'all', 'conference']);
 let lastLoadedPage = null;
 let applyPublicationFilter = null;
 let activeLoadId = 0;
-let pendingLoadPage = null;
+let pendingLoadIntent = null;
+
+function matchesPendingLoad(page, filter, language) {
+  return pendingLoadIntent
+    && pendingLoadIntent.page === page
+    && pendingLoadIntent.filter === filter
+    && pendingLoadIntent.language === language;
+}
 
 function parseRoute(hash = location.hash) {
   const raw = hash.replace(/^#/, '');
@@ -158,8 +165,8 @@ function setActiveLink(page) {
 
 async function loadPage(page, filter = 'selected') {
   const loadId = ++activeLoadId;
-  pendingLoadPage = page;
   const language = currentLanguage;
+  pendingLoadIntent = { page, filter, language };
   try {
     const pageRoot = language === 'zh' ? 'pages/zh' : 'pages';
     const pageSources = page === 'home'
@@ -174,7 +181,6 @@ async function loadPage(page, filter = 'selected') {
     const html = htmlParts.join('\n');
 
     // Animate out
-    applyPublicationFilter = null;
     document.body.classList.toggle('page-home', page === 'home');
     content.classList.add('fading-out');
     await new Promise(r => setTimeout(r, 150));
@@ -183,7 +189,8 @@ async function loadPage(page, filter = 'selected') {
     // Swap content
     content.innerHTML = html;
     lastLoadedPage = page;
-    pendingLoadPage = null;
+    pendingLoadIntent = null;
+    applyPublicationFilter = null;
     window.scrollTo(0, 0);
     updateTopButtonVisibility();
 
@@ -234,7 +241,8 @@ async function loadPage(page, filter = 'selected') {
 
   } catch (error) {
     if (loadId !== activeLoadId) return;
-    pendingLoadPage = null;
+    pendingLoadIntent = null;
+    applyPublicationFilter = null;
     console.error('Error loading page:', error);
     document.body.classList.toggle('page-home', page === 'home');
     content.classList.remove('fading-out');
@@ -416,6 +424,7 @@ function initPubTabs(initialFilter = 'selected') {
       if (location.hash !== newHash) {
         pushRouteState(newHash, { page: 'publications', filter: nextFilter });
       }
+      if (pendingLoadIntent) handleRoute();
     }
   }
 
@@ -457,12 +466,21 @@ function handleRoute() {
   setActiveLink(route.page);
 
   if (route.page === lastLoadedPage) {
-    if (pendingLoadPage && pendingLoadPage !== route.page) {
+    if (pendingLoadIntent && !matchesPendingLoad(route.page, route.filter, currentLanguage)) {
+      const reloadCurrentRoute = pendingLoadIntent.page === route.page;
       activeLoadId++;
-      pendingLoadPage = null;
+      pendingLoadIntent = null;
       document.body.classList.toggle('page-home', route.page === 'home');
       content.classList.remove('fading-out');
       content.classList.remove('fading-in');
+
+      if (reloadCurrentRoute) {
+        if (route.page === 'publications' && applyPublicationFilter) {
+          applyPublicationFilter(route.filter, { updateRoute: false });
+        }
+        loadPage(route.page, route.filter);
+        return;
+      }
     }
 
     if (route.page === 'publications' && applyPublicationFilter) {
