@@ -170,6 +170,65 @@ function focusLoadedContent() {
   focusTarget.focus({ preventScroll: true });
 }
 
+const pageMetadata = {
+  en: {
+    home: {
+      title: 'Haotian Xie | Operations Research & Complex Systems',
+      description: 'Academic homepage of Haotian Xie, a Research Associate at The Hong Kong Polytechnic University working on operations research, complex systems, logistics, and supply chains.'
+    },
+    about: {
+      title: 'About | Haotian Xie',
+      description: 'About Haotian Xie, a Research Associate in the Department of Industrial and Systems Engineering at The Hong Kong Polytechnic University.'
+    },
+    publications: {
+      title: 'Publications | Haotian Xie',
+      description: 'Publications by Haotian Xie in operations research, complex systems, logistics, and supply chains.'
+    },
+    misc: {
+      title: 'Miscellaneous | Haotian Xie',
+      description: 'Academic services and peer-review activities by Haotian Xie.'
+    }
+  },
+  zh: {
+    home: {
+      title: '谢昊天 | 运筹学与复杂系统',
+      description: '谢昊天的学术主页：香港理工大学研究助理，研究运筹学、复杂系统、物流与供应链。'
+    },
+    about: {
+      title: '关于我 | 谢昊天',
+      description: '了解香港理工大学工业及系统工程学系研究助理谢昊天。'
+    },
+    publications: {
+      title: '学术出版物列表 | 谢昊天',
+      description: '谢昊天在运筹学、复杂系统、物流与供应链领域的学术出版物。'
+    },
+    misc: {
+      title: '其他 | 谢昊天',
+      description: '谢昊天的学术服务与同行评审经历。'
+    }
+  }
+};
+
+function updatePageMetadata(page, language) {
+  const metadata = pageMetadata[language]?.[page] || pageMetadata.en.home;
+  document.title = metadata.title;
+  [
+    'meta[name="description"]',
+    'meta[property="og:description"]',
+    'meta[name="twitter:description"]'
+  ].forEach(selector => {
+    const element = document.querySelector(selector);
+    if (element) element.setAttribute('content', metadata.description);
+  });
+  [
+    'meta[property="og:title"]',
+    'meta[name="twitter:title"]'
+  ].forEach(selector => {
+    const element = document.querySelector(selector);
+    if (element) element.setAttribute('content', metadata.title);
+  });
+}
+
 async function loadPage(page, filter = 'selected') {
   const loadId = ++activeLoadId;
   const language = currentLanguage;
@@ -229,13 +288,9 @@ async function loadPage(page, filter = 'selected') {
       img.addEventListener('load', scheduleTopButtonUpdate, { once: true });
     });
 
-    // Update page title
-    const pageTitles = language === 'zh'
-      ? { about: '关于我', publications: '学术出版物列表', misc: '其他', home: '主页' }
-      : { about: 'About', publications: 'Publications', misc: 'Miscellaneous', home: 'Home' };
-    document.title = pageTitles[page]
-      ? `${pageTitles[page]} - Haotian Xie`
-      : 'Haotian Xie - Operations Research & Complex Systems';
+    // Update title and sharing metadata after the current route has rendered.
+    if (loadId !== activeLoadId) return;
+    updatePageMetadata(page, language);
     focusLoadedContent();
 
     // Animate in

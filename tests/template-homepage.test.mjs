@@ -3,9 +3,10 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import vm from 'node:vm';
 
-const [homepage, script, style, about, publications, misc, home, selectedPublications, zhAbout, zhPublications, zhMisc, zhHome, zhSelectedPublications, academicProfileText] = await Promise.all([
+const [homepage, script, sitemap, style, about, publications, misc, home, selectedPublications, zhAbout, zhPublications, zhMisc, zhHome, zhSelectedPublications, academicProfileText] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../script.js', import.meta.url), 'utf8'),
+  readFile(new URL('../sitemap.xml', import.meta.url), 'utf8'),
   readFile(new URL('../style.css', import.meta.url), 'utf8'),
   readFile(new URL('../pages/about.html', import.meta.url), 'utf8'),
   readFile(new URL('../pages/publications.html', import.meta.url), 'utf8'),
@@ -28,6 +29,26 @@ const site = [englishSite, chineseSite].join('\n');
 
 function createLoaderHarness(fetch, { holdFade = false } = {}) {
   let shouldHoldFade = holdFade;
+  const createMeta = content => ({
+    content,
+    setAttribute(name, value) {
+      if (name === 'content') this.content = String(value);
+    }
+  });
+  const metadata = {
+    description: createMeta('Academic homepage of Haotian Xie, a Research Associate at The Hong Kong Polytechnic University working on operations research, complex systems, logistics, and supply chains.'),
+    ogTitle: createMeta('Haotian Xie | Operations Research & Complex Systems'),
+    ogDescription: createMeta('Academic homepage of Haotian Xie, a Research Associate at The Hong Kong Polytechnic University working on operations research, complex systems, logistics, and supply chains.'),
+    twitterTitle: createMeta('Haotian Xie | Operations Research & Complex Systems'),
+    twitterDescription: createMeta('Academic homepage of Haotian Xie, a Research Associate at The Hong Kong Polytechnic University working on operations research, complex systems, logistics, and supply chains.')
+  };
+  const metadataSelectors = new Map([
+    ['meta[name="description"]', metadata.description],
+    ['meta[property="og:title"]', metadata.ogTitle],
+    ['meta[property="og:description"]', metadata.ogDescription],
+    ['meta[name="twitter:title"]', metadata.twitterTitle],
+    ['meta[name="twitter:description"]', metadata.twitterDescription]
+  ]);
   const classes = new Set();
   const classList = {
     add: name => classes.add(name),
@@ -58,10 +79,11 @@ function createLoaderHarness(fetch, { holdFade = false } = {}) {
     console: { error: () => {} },
     content,
     document: {
+      title: 'Haotian Xie | Operations Research & Complex Systems',
       body: { classList },
       documentElement: {},
       getElementById: id => id === 'content' ? content : null,
-      querySelector: () => null,
+      querySelector: selector => metadataSelectors.get(selector) ?? null,
       querySelectorAll: () => []
     },
     fetch,
@@ -76,13 +98,81 @@ function createLoaderHarness(fetch, { holdFade = false } = {}) {
   };
   const loaderSource = script.slice(0, script.indexOf('// Navigation clicks'));
   vm.runInNewContext(`${loaderSource}\nfunction updateTopButtonVisibility() {}\nglobalThis.loader = { loadPage, handleRoute, setLanguage, getLastLoadedPage: () => lastLoadedPage, setPublicationFilterHandler: handler => { applyPublicationFilter = handler; } };`, context);
-  return { ...context, content, heading, setHoldFade: value => { shouldHoldFade = value; } };
+  return { ...context, content, heading, metadata, setHoldFade: value => { shouldHoldFade = value; } };
 }
 
 const response = html => ({ ok: true, text: async () => html });
 const flushMicrotasks = async () => {
   for (let count = 0; count < 12; count += 1) await Promise.resolve();
 };
+
+test('ships complete static discovery and share metadata for every direct fragment', () => {
+  assert.match(homepage, /<noscript>[\s\S]*?<nav aria-label="Static site pages">[\s\S]*?href="pages\/home\.html"[\s\S]*?href="pages\/about\.html"[\s\S]*?href="pages\/publications\.html"[\s\S]*?href="pages\/misc\.html"[\s\S]*?href="pages\/zh\/home\.html"[\s\S]*?href="pages\/zh\/about\.html"[\s\S]*?href="pages\/zh\/publications\.html"[\s\S]*?href="pages\/zh\/misc\.html"[\s\S]*?<\/nav>[\s\S]*?<\/noscript>/);
+  assert.match(homepage, /<meta property="og:title" content="Haotian Xie \| Operations Research &amp; Complex Systems" \/>/);
+  assert.match(homepage, /<meta property="og:description"[\s\S]*?content="Academic homepage of Haotian Xie, a Research Associate at The Hong Kong Polytechnic University working on operations research, complex systems, logistics, and supply chains\." \/>/);
+  assert.match(homepage, /<meta name="twitter:title" content="Haotian Xie \| Operations Research &amp; Complex Systems" \/>/);
+  assert.match(homepage, /<meta name="twitter:description"[\s\S]*?content="Academic homepage of Haotian Xie, a Research Associate at The Hong Kong Polytechnic University working on operations research, complex systems, logistics, and supply chains\." \/>/);
+  assert.match(homepage, /<script type="application\/ld\+json">[\s\S]*?"@type": "Person"[\s\S]*?"name": "Haotian Xie"[\s\S]*?"jobTitle": "Research Associate"[\s\S]*?"name": "The Hong Kong Polytechnic University"[\s\S]*?"url": "https:\/\/hao-tian-xie\.github\.io\/"[\s\S]*?"sameAs"[\s\S]*?scholar\.google\.com[\s\S]*?linkedin\.com[\s\S]*?"email": "mailto:haotiantimxie@gmail\.com"[\s\S]*?<\/script>/);
+  assert.match(homepage, /fonts\.googleapis\.com\/css2\?family=Archivo\+Narrow:[^"]+&amp;family=Space\+Mono&amp;display=swap/);
+  assert.match(homepage, /href="style\.css\?v=56"/);
+  assert.match(homepage, /<script src="script\.js\?v=56"><\/script>/);
+  assert.match(script, /const pageVersion = '56';/);
+  assert.match(script, /function updatePageMetadata\(page, language\)/);
+  assert.match(script, /if \(loadId !== activeLoadId\) return;\s*updatePageMetadata\(page, language\);/);
+  assert.match(sitemap, /<urlset xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/);
+  const expectedPaths = [
+    '',
+    'pages/home.html',
+    'pages/about.html',
+    'pages/publications.html',
+    'pages/misc.html',
+    'pages/selected-publications.html',
+    'pages/zh/home.html',
+    'pages/zh/about.html',
+    'pages/zh/publications.html',
+    'pages/zh/misc.html',
+    'pages/zh/selected-publications.html'
+  ];
+  assert.equal((sitemap.match(/<url>/g) ?? []).length, expectedPaths.length);
+  for (const path of expectedPaths) {
+    assert.match(sitemap, new RegExp(`<loc>https://hao-tian-xie\\.github\\.io/${path}<\\/loc>\\s*<lastmod>2026-08-19<\\/lastmod>`));
+  }
+});
+
+test('updates share metadata only for the current successful route render', async () => {
+  let resolveAbout;
+  const aboutResponse = new Promise(resolve => { resolveAbout = resolve; });
+  const harness = createLoaderHarness(source => {
+    if (source.includes('/about.html')) return aboutResponse;
+    return Promise.resolve(response('<h3>Miscellaneous</h3>'));
+  });
+
+  const slowAbout = harness.loader.loadPage('about');
+  await flushMicrotasks();
+  await harness.loader.loadPage('misc');
+
+  assert.equal(harness.document.title, 'Miscellaneous | Haotian Xie');
+  assert.equal(harness.metadata.description.content, 'Academic services and peer-review activities by Haotian Xie.');
+  assert.equal(harness.metadata.ogTitle.content, 'Miscellaneous | Haotian Xie');
+  assert.equal(harness.metadata.ogDescription.content, 'Academic services and peer-review activities by Haotian Xie.');
+  assert.equal(harness.metadata.twitterTitle.content, 'Miscellaneous | Haotian Xie');
+  assert.equal(harness.metadata.twitterDescription.content, 'Academic services and peer-review activities by Haotian Xie.');
+
+  resolveAbout(response('<h3>About</h3>'));
+  await slowAbout;
+
+  assert.equal(harness.document.title, 'Miscellaneous | Haotian Xie');
+  assert.equal(harness.metadata.ogTitle.content, 'Miscellaneous | Haotian Xie');
+
+  harness.loader.setLanguage('zh');
+  await flushMicrotasks();
+  await harness.loader.loadPage('publications');
+
+  assert.equal(harness.document.title, '学术出版物列表 | 谢昊天');
+  assert.equal(harness.metadata.description.content, '谢昊天在运筹学、复杂系统、物流与供应链领域的学术出版物。');
+  assert.equal(harness.metadata.ogTitle.content, '学术出版物列表 | 谢昊天');
+  assert.equal(harness.metadata.twitterDescription.content, '谢昊天在运筹学、复杂系统、物流与供应链领域的学术出版物。');
+});
 
 function createPublicationTabsHarness() {
   const state = { focused: null, routeUpdates: [] };
