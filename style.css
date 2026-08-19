@@ -237,10 +237,12 @@ a:active {
 
 .about-section a {
   color: var(--swatch-4);
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-.about-section a:hover {
+.about-section a:hover,
+.about-section a:focus-visible {
   text-decoration: underline;
 }
 
@@ -681,6 +683,10 @@ a:active {
   pointer-events: auto;
 }
 
+.modal[hidden] {
+  display: none;
+}
+
 .modal-content {
   max-width: 90%;
   max-height: 90%;
@@ -782,6 +788,21 @@ a:active {
 
 .site-footer--sidebar {
   position: static;
+}
+
+.easter-egg-trigger {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.easter-egg-trigger:hover,
+.easter-egg-trigger:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* ─── Page Transitions ─── */

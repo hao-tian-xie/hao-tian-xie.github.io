@@ -11,6 +11,7 @@ let lastLoadedPage = null;
 let applyPublicationFilter = null;
 let activeLoadId = 0;
 let pendingLoadIntent = null;
+let setMobileMenuState = () => {};
 
 function matchesPendingLoad(page, filter, language) {
   return pendingLoadIntent
@@ -163,6 +164,12 @@ function setActiveLink(page) {
   });
 }
 
+function focusLoadedContent() {
+  const focusTarget = content.querySelector('h3') || content;
+  focusTarget.setAttribute('tabindex', '-1');
+  focusTarget.focus({ preventScroll: true });
+}
+
 async function loadPage(page, filter = 'selected') {
   const loadId = ++activeLoadId;
   const language = currentLanguage;
@@ -229,6 +236,7 @@ async function loadPage(page, filter = 'selected') {
     document.title = pageTitles[page]
       ? `${pageTitles[page]} - Haotian Xie`
       : 'Haotian Xie - Operations Research & Complex Systems';
+    focusLoadedContent();
 
     // Animate in
     content.classList.remove('fading-out');
@@ -247,7 +255,8 @@ async function loadPage(page, filter = 'selected') {
     document.body.classList.toggle('page-home', page === 'home');
     content.classList.remove('fading-out');
     content.classList.remove('fading-in');
-    content.innerHTML = `<p>${uiText[language].loadError}</p>`;
+    content.innerHTML = `<p role="alert">${uiText[language].loadError}</p>`;
+    content.focus({ preventScroll: true });
     updateTopButtonVisibility();
   }
 }
@@ -521,20 +530,58 @@ window.addEventListener('popstate', handleRoute);
   if (!modal || !modalImg || !closeBtn) return;
 
   let lastFocused = null;
+  let previousBodyOverflow = '';
+  const pageShell = Array.from(document.body.children)
+    .filter(element => element !== modal && element.tagName !== 'SCRIPT');
+
+  function setPageShellInert(inert) {
+    pageShell.forEach(element => {
+      element.inert = inert;
+    });
+  }
 
   function openModal(img) {
-    lastFocused = document.activeElement;
+    lastFocused = img;
+    previousBodyOverflow = document.body.style.overflow;
+    modal.hidden = false;
     modal.classList.add('active');
     modalImg.src = img.src;
     modalImg.alt = img.alt || uiText[currentLanguage].imagePreview;
     document.body.style.overflow = 'hidden';
-    modal.focus();
+    setPageShellInert(true);
+    closeBtn.focus();
   }
 
   function closeModal() {
+    if (modal.hidden) return;
     modal.classList.remove('active');
-    document.body.style.overflow = '';
+    modal.hidden = true;
+    document.body.style.overflow = previousBodyOverflow;
+    setPageShellInert(false);
     if (lastFocused) lastFocused.focus();
+    lastFocused = null;
+  }
+
+  function trapModalFocus(e) {
+    if (e.key !== 'Tab') return;
+    const focusable = Array.from(modal.querySelectorAll(
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    ));
+    if (!focusable.length) {
+      e.preventDefault();
+      modal.focus();
+      return;
+    }
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   }
 
   document.addEventListener('click', e => {
@@ -551,10 +598,14 @@ window.addEventListener('popstate', handleRoute);
   modal.addEventListener('click', e => {
     if (e.target === modal) closeModal();
   });
+  modal.addEventListener('keydown', trapModalFocus);
   closeBtn.addEventListener('click', closeModal);
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+    if (e.key === 'Escape' && !modal.hidden) {
+      e.preventDefault();
+      closeModal();
+    }
   });
 })();
 
@@ -607,11 +658,19 @@ document.addEventListener('click', event => {
   const sidebar = document.querySelector('.sidebar');
   if (!btn || !sidebar) return;
 
-  function setMenuState(open) {
-    sidebar.classList.toggle('menu-open', open);
-    btn.setAttribute('aria-expanded', open);
+  function setMenuState(open, { restoreFocus = false, focusFirst = true } = {}) {
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const shouldOpen = isMobile && open;
+    sidebar.classList.toggle('menu-open', shouldOpen);
+    sidebar.inert = isMobile && !shouldOpen;
+    sidebar.setAttribute('aria-hidden', String(sidebar.inert));
+    btn.setAttribute('aria-expanded', String(shouldOpen));
     updateMenuButtonLabel();
+    if (shouldOpen && focusFirst) sidebar.querySelector('a[data-page]')?.focus();
+    if (restoreFocus) btn.focus();
   }
+
+  setMobileMenuState = setMenuState;
 
   btn.addEventListener('click', () => {
     setMenuState(!sidebar.classList.contains('menu-open'));
@@ -620,9 +679,22 @@ document.addEventListener('click', event => {
   // Close menu when a nav link is clicked
   sidebar.addEventListener('click', e => {
     if (e.target.matches('a[data-page]') || e.target.closest('a[data-page]')) {
-      setMenuState(false);
+      setMenuState(false, { focusFirst: false });
     }
   });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && sidebar.classList.contains('menu-open')) {
+      e.preventDefault();
+      setMenuState(false, { restoreFocus: true });
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    setMenuState(sidebar.classList.contains('menu-open'), { focusFirst: false });
+  });
+
+  setMenuState(false, { focusFirst: false });
 })();
 
 // Language switcher
@@ -637,10 +709,7 @@ document.addEventListener('click', event => {
       setLanguage(currentLanguage === 'en' ? 'zh' : 'en');
 
       if (sidebar?.classList.contains('menu-open') && menuToggle) {
-        sidebar.classList.remove('menu-open');
-        menuToggle.setAttribute('aria-expanded', 'false');
-        updateMenuButtonLabel();
-        menuToggle.focus();
+        setMobileMenuState(false, { restoreFocus: true });
       }
     });
   });

@@ -52,11 +52,11 @@
         <div class="language-switcher" aria-label="Language selection">
           <button type="button" id="language-toggle" class="language-toggle" aria-label="Switch to Chinese">Eng / 中</button>
         </div>
-        <footer class="site-footer site-footer--sidebar"><span id="easter-egg" style="cursor: pointer">&copy; 2026 Haotian Xie</span></footer>
+        <footer class="site-footer site-footer--sidebar"><button type="button" id="easter-egg" class="easter-egg-trigger">&copy; 2026 Haotian Xie</button></footer>
       </div>
     </aside>
 
-    <main id="content">
+    <main id="content" tabindex="-1" aria-live="polite">
       <!-- Content will load here -->
     </main>
   </div>
@@ -73,7 +73,7 @@
   </div>
 
   <!-- Lightbox Modal -->
-  <div id="image-modal" class="modal" role="dialog" aria-modal="true" aria-label="Image preview" tabindex="-1">
+  <div id="image-modal" class="modal" role="dialog" aria-modal="true" aria-label="Image preview" tabindex="-1" hidden>
     <button class="modal-close" id="modal-close" type="button" aria-label="Close image preview">&times;</button>
     <img class="modal-content" id="modal-img" alt="">
   </div>

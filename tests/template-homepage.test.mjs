@@ -38,7 +38,20 @@ function createLoaderHarness(fetch, { holdFade = false } = {}) {
     },
     contains: name => classes.has(name)
   };
-  const content = { classList, innerHTML: '', querySelector: () => null, querySelectorAll: () => [] };
+  const heading = {
+    attributes: new Map(),
+    focusOptions: null,
+    setAttribute(name, value) { this.attributes.set(name, value); },
+    focus(options) { this.focusOptions = options; }
+  };
+  const content = {
+    classList,
+    innerHTML: '',
+    focusOptions: null,
+    focus(options) { this.focusOptions = options; },
+    querySelector: selector => selector === 'h3' ? heading : null,
+    querySelectorAll: () => []
+  };
   const timers = [];
   const context = {
     URLSearchParams,
@@ -63,7 +76,7 @@ function createLoaderHarness(fetch, { holdFade = false } = {}) {
   };
   const loaderSource = script.slice(0, script.indexOf('// Navigation clicks'));
   vm.runInNewContext(`${loaderSource}\nfunction updateTopButtonVisibility() {}\nglobalThis.loader = { loadPage, handleRoute, setLanguage, getLastLoadedPage: () => lastLoadedPage, setPublicationFilterHandler: handler => { applyPublicationFilter = handler; } };`, context);
-  return { ...context, content, setHoldFade: value => { shouldHoldFade = value; } };
+  return { ...context, content, heading, setHoldFade: value => { shouldHoldFade = value; } };
 }
 
 const response = html => ({ ok: true, text: async () => html });
@@ -169,6 +182,33 @@ test('reloads a pending language-switched Publications route when its filter int
 
   assert.equal(harness.content.innerHTML, '<p>Chinese conference publications</p>');
   assert.equal(harness.loader.getLastLoadedPage(), 'publications');
+});
+
+test('moves focus to the freshly rendered page heading', async () => {
+  const harness = createLoaderHarness(() => Promise.resolve(response('<p>About</p>')));
+
+  await harness.loader.loadPage('about');
+
+  assert.equal(harness.heading.attributes.get('tabindex'), '-1');
+  assert.equal(harness.heading.focusOptions?.preventScroll, true);
+});
+
+test('keeps the shell inaccessible while a mobile menu or image dialog is closed', () => {
+  assert.match(homepage, /<main id="content" tabindex="-1" aria-live="polite">/);
+  assert.match(homepage, /<div id="image-modal"[^>]*\bhidden\b/);
+  assert.match(homepage, /<button type="button" id="easter-egg" class="easter-egg-trigger">/);
+  assert.match(script, /sidebar\.inert = isMobile && !shouldOpen;/);
+  assert.match(script, /sidebar\.setAttribute\('aria-hidden', String\(sidebar\.inert\)\);/);
+  assert.match(script, /e\.key === 'Escape' && sidebar\.classList\.contains\('menu-open'\)/);
+  assert.match(script, /modal\.hidden = false;/);
+  assert.match(script, /modal\.hidden = true;/);
+  assert.match(script, /setPageShellInert\(true\);/);
+  assert.match(script, /setPageShellInert\(false\);/);
+  assert.match(script, /e\.key !== 'Tab'/);
+  assert.match(script, /<p role="alert">/);
+  assert.match(style, /\.modal\[hidden\]\s*\{\s*display:\s*none;/);
+  assert.match(style, /\.about-section a\s*\{[\s\S]*?text-decoration:\s*underline;/);
+  assert.match(style, /\.easter-egg-trigger\s*\{[\s\S]*?background:\s*none;/);
 });
 
 test('does not render journal index labels', () => {
@@ -349,8 +389,8 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(script, /linkedin: '领英'/);
   assert.match(script, /setLanguage/);
   assert.match(script, /document\.documentElement\.lang/);
-  assert.match(script, /sidebar\.classList\.remove\('menu-open'\)/);
-  assert.match(script, /menuToggle\.focus\(\)/);
+  assert.match(script, /setMobileMenuState\(false, \{ restoreFocus: true \}\);/);
+  assert.match(script, /if \(restoreFocus\) btn\.focus\(\);/);
   assert.match(script, /const pageSources = page === 'home'/);
   assert.match(script, /`\$\{pageRoot\}\/home\.html\?v=\$\{pageVersion\}`, `\$\{pageRoot\}\/about\.html\?v=\$\{pageVersion\}`, `\$\{pageRoot\}\/selected-publications\.html\?v=\$\{pageVersion\}`/);
   assert.match(script, /if \(page === 'publications' \|\| page === 'home'\)/);
