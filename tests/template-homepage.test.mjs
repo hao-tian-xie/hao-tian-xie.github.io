@@ -49,10 +49,10 @@ test('publishes synchronized Google Scholar metrics without per-publication cita
 
   const expectedCitations = [
     ['Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis', 28],
-    ['Exploring the drivers of green supply chain management in the chinese electronics industry: evidence from a gdematel–aism approach', 17],
-    ['Classifying drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction', 6],
+    ['Exploring the drivers of green supply chain management in the Chinese electronics industry: evidence from a GDEMATEL–AISM approach', 17],
+    ['Classifying Drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction', 6],
     ['Topological persistence pinpoints higher-order network vulnerabilities', 3],
-    ['Decentralized autonomous organizations in e-commerce supply chains: a bayesian method to barrier identification and interrelationship mapping', 3]
+    ['Decentralized autonomous organizations in e-commerce supply chains: A Bayesian method to barrier identification and interrelationship mapping', 3]
   ];
 
   assert.equal(academicProfile.publicationCitations.length, 9);
@@ -118,6 +118,14 @@ test('keeps Scholar metrics in a fixed desktop track while publication filters c
 test('keeps Scholar metrics from drifting right and underlines sidebar information links', () => {
   assert.match(style, /\.publication-header\s*\{[\s\S]*?justify-content:\s*flex-start;/);
   assert.match(style, /\.sidebar-info a:hover,\s*\.sidebar-info a:focus-visible\s*\{[\s\S]*?text-decoration:\s*underline;[\s\S]*?text-underline-offset:\s*3px/);
+});
+
+test('keeps publication content and image assets in parity', () => {
+  assert.equal((publications.match(/data-selected="false"/g) ?? []).length, 6);
+  assert.match(publications, /A Bayesian method/);
+  assert.match(publications, /the Chinese electronics industry: evidence from a GDEMATEL–AISM approach/);
+  assert.match(publications, /Classifying Drosophila olfactory/);
+  assert.equal((publications.match(/asset\/publications\/[^"?]+\.jpg\?v=28/g) ?? []).length, 7);
 });
 
 function contrastRatio(foreground, background) {
@@ -284,7 +292,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.match(publications, /data-year="2026"/);
   assert.equal((publications.match(/class="publication"/g) ?? []).length, 9);
   assert.equal((publications.match(/data-selected="true"/g) ?? []).length, 3);
-  assert.equal((publications.match(/data-selected="false"/g) ?? []).length, 3);
+  assert.equal((publications.match(/data-selected="false"/g) ?? []).length, 6);
   assert.match(publications, /PREPRINT ARTICLES/);
   assert.match(publications, /Journal Articles &amp; Preprints/);
   assert.doesNotMatch(publications, /Journal Articles &amp; Preprint<\/h4>/);
@@ -297,11 +305,11 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
     'BEXTools-ESGPath: A text-mining-based ESG report analyser for advancing supply chain sustainability',
     'Topological persistence pinpoints higher-order network vulnerabilities',
     'A virtual node based zero-shot learning framework for link prediction in complex networks',
-    'Decentralized autonomous organizations in e-commerce supply chains: a bayesian method to barrier identification and interrelationship mapping',
+    'Decentralized autonomous organizations in e-commerce supply chains: A Bayesian method to barrier identification and interrelationship mapping',
     'Evaluating airline service quality through a comprehensive text-mining and multi-criteria decision-making analysis',
-    'Exploring the drivers of green supply chain management in the chinese electronics industry: evidence from a gdematel–aism approach',
+    'Exploring the drivers of green supply chain management in the Chinese electronics industry: evidence from a GDEMATEL–AISM approach',
     'AISM: A novel method for node importance ranking in complex network',
-    'Classifying drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction'
+    'Classifying Drosophila olfactory projection neuron boutons by quantitative analysis of electron microscopic reconstruction'
   ];
   for (const title of sentenceCasePublicationTitles) {
     assert.ok(publications.includes(title), `publications should use sentence case: ${title}`);
@@ -309,9 +317,9 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   }
   const publicationDisplay = publications.replace(/ data-citation="[^"]*"/g, '');
   assert.doesNotMatch(publicationDisplay, /Forecasting Return Time of Extreme Precipitation by Large Deviation Theory/);
-  assert.doesNotMatch(publicationDisplay, /: A bayesian method/);
-  assert.doesNotMatch(publicationDisplay, /: Evidence from a GDEMATEL–AISM approach/);
-  assert.doesNotMatch(publicationDisplay, /Classifying Drosophila olfactory projection neuron boutons/);
+  assert.match(publicationDisplay, /: A Bayesian method/);
+  assert.match(publicationDisplay, /: evidence from a GDEMATEL–AISM approach/);
+  assert.match(publicationDisplay, /Classifying Drosophila olfactory projection neuron boutons/);
   assert.match(publications, /<p><strong>H\. Xie<\/strong>, H\. Liu, J\. Fan, &amp; Y\. Tang\*<\/p>/);
   assert.match(publications, /Topological persistence pinpoints higher-order network vulnerabilities/);
   assert.match(publications, /A virtual node based zero-shot learning framework for link prediction in complex networks/);
@@ -335,10 +343,10 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((conferenceList.match(/class="publication"/g) ?? []).length, 2);
   assert.doesNotMatch(conferenceList, /<img\b/);
   assert.doesNotMatch(selectedPublications, /BEXTools-ESGPath|AISM: A novel method/);
-  assert.equal((publications.match(/src="asset\/publications\/[^\"]+\.png\?v=28"/g) ?? []).length, 7);
+  assert.equal((publications.match(/src="asset\/publications\/[^\"]+\.jpg\?v=28"/g) ?? []).length, 7);
   assert.doesNotMatch(style, /\.pub-image\s*\{[\s\S]*?filter:\s*grayscale/);
   assert.doesNotMatch(style, /\.pub-image:hover\s*\{[\s\S]*?filter:\s*grayscale/);
-  assert.equal((selectedPublications.match(/src="asset\/publications\/[^\"]+\.png\?v=28"/g) ?? []).length, 3);
+  assert.equal((selectedPublications.match(/src="asset\/publications\/[^\"]+\.jpg\?v=28"/g) ?? []).length, 3);
   assert.equal((publications.match(/class="cite-link"/g) ?? []).length, 9);
   assert.equal((selectedPublications.match(/class="cite-link"/g) ?? []).length, 3);
   assert.equal((publications.match(/>\[Cite \(APA\)\]<\/button>/g) ?? []).length, 9);
@@ -456,7 +464,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.equal((selectedPublications.match(/class="publication"/g) ?? []).length, 3);
   assert.match(selectedPublications, /Topological persistence pinpoints higher-order network vulnerabilities/);
   assert.match(selectedPublications, /A virtual node based zero-shot learning framework for link prediction in complex networks/);
-  assert.match(selectedPublications, /Decentralized autonomous organizations in e-commerce supply chains: a bayesian method to barrier identification and interrelationship mapping/);
+  assert.match(selectedPublications, /Decentralized autonomous organizations in e-commerce supply chains: A Bayesian method to barrier identification and interrelationship mapping/);
   assert.match(style, /\.selected-publications\s*\{[\s\S]*?margin-top:\s*2rem;/);
   assert.doesNotMatch(site, /Your Name|your@email\.com|Your Paper Title|Research Lab|University of XX|Advisor Name/);
   assert.doesNotMatch(site, /—/);
@@ -512,7 +520,7 @@ test('homepage uses the SimpleAcademicHomepage shell with Haotian Xie content', 
   assert.doesNotMatch(zhPublications, /Xie, H\., Liu, H\., Fan, J\., &amp; Tang, Y\.\* \(2026\)/);
   assert.equal((zhPublications.match(/class="publication"/g) ?? []).length, (publications.match(/class="publication"/g) ?? []).length);
   assert.equal((zhPublications.match(/class="cite-link"/g) ?? []).length, 9);
-  assert.equal((zhPublications.match(/src="asset\/publications\/[^\"]+\.png\?v=28"/g) ?? []).length, (publications.match(/src="asset\/publications\/[^\"]+\.png\?v=28"/g) ?? []).length);
+  assert.equal((zhPublications.match(/src="asset\/publications\/[^\"]+\.jpg\?v=28"/g) ?? []).length, (publications.match(/src="asset\/publications\/[^\"]+\.jpg\?v=28"/g) ?? []).length);
   assert.equal((zhSelectedPublications.match(/class="publication"/g) ?? []).length, (selectedPublications.match(/class="publication"/g) ?? []).length);
   assert.equal((zhPublications.match(/class="cite-link"/g) ?? []).length, (zhPublications.match(/class="publication"/g) ?? []).length);
   assert.equal((zhSelectedPublications.match(/class="cite-link"/g) ?? []).length, (selectedPublications.match(/class="cite-link"/g) ?? []).length);
